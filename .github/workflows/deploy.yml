@@ -27,7 +27,7 @@ jobs:
           cache: npm
 
       - name: Install
-       run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Build
         run: npm run build
