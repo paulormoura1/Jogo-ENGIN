@@ -1,44 +1,29 @@
-import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
-import react from '@vitejs/plugin-react';
+import caminho from 'caminho';
+import { defineConfig, carregarAmbiente } from 'convite';
+import reagir from '@vitejs/plugin-react';
 
-export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, '.', '');
-   retornar {
-  base: "/Jogo-ENGIN/",
+exportar padrão defineConfig(({ modo }) => {
+  const ambiente = carregarAmbiente(modo, '.', '');
 
-  servidor: {
-    porta: 3000,
-    hospedar: "0.0.0.0",
-  },
+  retornar {
+    base: '/Jogo-ENGIN/',
 
-  plugins: [reagir()],
-
-  definir: {
-    "process.env.API_KEY": JSON.stringify(ambiente.GEMINI_API_KEY),
-    "process.env.GEMINI_API_KEY": JSON.stringify(ambiente.GEMINI_API_KEY),
-  },
-
-  resolver: {
-    pseudonimo: {
-      "@": caminho.resolver(__dirname, "."),
+    servidor: {
+      porta: 3000,
+      hospedagem: '0.0.0.0',
     },
-  },
-};
 
-      server: {
-        port: 3000,
-        host: '0.0.0.0',
+    plugins: [reagir()],
+
+    definir: {
+      'process.env.API_KEY': JSON.stringify(ambiente.GEMINI_API_KEY),
+      'process.env.GEMINI_API_KEY': JSON.stringify(ambiente.GEMINI_API_KEY),
+    },
+
+    resolver: {
+      pseudonimo: {
+        '@': caminho.resolver(__dirname, '.'),
       },
-      plugins: [react()],
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
-      resolve: {
-        alias: {
-          '@': path.resolve(__dirname, '.'),
-        }
-      }
-    };
+    },
+  };
 });
