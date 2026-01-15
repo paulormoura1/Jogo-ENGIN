@@ -22,6 +22,9 @@ export interface ActionRecord {
   verdict: string;
   explanation: string;
   executors: string[];
+  // Added optional fields for scientific grounding
+  references?: string[];
+  sourceType?: string;
 }
 
 export interface GameState {
