@@ -1,28 +1,20 @@
-import caminho from 'caminho';
-import { defineConfig, carregarAmbiente } from 'convite';
-import reagir from '@vitejs/plugin-react';
+import { defineConfig, loadEnv } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
-exportar padrão defineConfig(({ modo }) => {
-  const ambiente = carregarAmbiente(modo, '.', '');
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, ".", "");
 
-  retornar {
-    base: '/Jogo-ENGIN/',
-
-    servidor: {
-      porta: 3000,
-      hospedagem: '0.0.0.0',
+  return {
+    base: "/Jogo-ENGIN/",
+    plugins: [react()],
+    define: {
+      "process.env.API_KEY": JSON.stringify(env.GEMINI_API_KEY),
+      "process.env.GEMINI_API_KEY": JSON.stringify(env.GEMINI_API_KEY),
     },
-
-    plugins: [reagir()],
-
-    definir: {
-      'process.env.API_KEY': JSON.stringify(ambiente.GEMINI_API_KEY),
-      'process.env.GEMINI_API_KEY': JSON.stringify(ambiente.GEMINI_API_KEY),
-    },
-
-    resolver: {
-      pseudonimo: {
-        '@': caminho.resolver(__dirname, '.'),
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "."),
       },
     },
   };
