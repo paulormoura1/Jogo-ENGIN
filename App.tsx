@@ -286,6 +286,7 @@ const App: React.FC = () => {
                       </div>
                     ) : (
                       <>
+                        <div className="space-y-6">
                         <div className="space-y-3">
                           <h2 className="text-lg md:text-xl font-orbitron text-white leading-tight">{currentChallenge.title}</h2>
                           <div className="border-l-2 border-blue-600 pl-4 py-1">
