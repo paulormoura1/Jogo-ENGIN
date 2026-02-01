@@ -285,16 +285,43 @@ const App: React.FC = () => {
                         <button onClick={() => { setCurrentChallenge(null); setFeedback(null); }} className="w-full py-4 bg-blue-600 text-white font-orbitron text-[9px] rounded-xl tracking-widest uppercase">Retornar</button>
                       </div>
                     ) : (
-                      <>
-                        <div className="space-y-6">
-                        <div className="space-y-3">
-                          <h2 className="text-lg md:text-xl font-orbitron text-white leading-tight">{currentChallenge.title}</h2>
-                          <div className="border-l-2 border-blue-600 pl-4 py-1">
-                            <p className="text-blue-100/70 text-xs md:text-sm font-light italic leading-relaxed">{currentChallenge.description}</p>
-                          </div>
-                        </div>
-                        <div className="space-y-4">
-                          <textarea 
+                     <>
+                    <div className="space-y-6">
+                   <div className="space-y-3">
+                   <h2 className="text-lg md:text-xl font-orbitron text-white leading-tight">
+                  {currentChallenge.title}
+                   </h2>
+
+                 <div className="border-l-2 border-blue-600 pl-4 py-1">
+                 <p className="text-blue-100/70 text-xs md:text-sm font-light italic leading-relaxed">
+                {currentChallenge.description}
+               </p>
+              </div>
+             </div>
+    <div className="space-y-4">
+      <textarea
+        value={playerInput}
+        onChange={e => setPlayerInput(e.target.value)}
+        placeholder="Descreva sua manobra estratégica..."
+        className="w-full h-32 md:h-40 bg-black/40 border border-blue-900/30 rounded-xl p-4 text-[11px] md:text-xs font-mono text-blue-50 focus:border-blue-500 outline-none resize-none placeholder:text-blue-900"
+      />
+
+      <button
+        disabled={!canSubmit || loading}
+        onClick={submitAction}
+        className={`w-full py-4 md:py-5 font-orbitron text-[10px] rounded-xl tracking-[0.2em] transition-all uppercase shadow-xl ${
+          canSubmit && !loading
+            ? 'bg-green-600 hover:bg-green-500 text-white'
+            : 'bg-slate-800 text-slate-600 border border-slate-700'
+        }`}
+      >
+        {loading ? 'ANALISANDO...' : 'Transmitir Proposta'}
+      </button>
+    </div>
+  </div>
+</>
+
+                       <textarea 
                             value={playerInput} 
                             onChange={e => setPlayerInput(e.target.value)} 
                             placeholder="Descreva sua manobra estratégica..." 
