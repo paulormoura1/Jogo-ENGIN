@@ -2,10 +2,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { ResearchArea, GameState } from "./types";
 
-const ai = new GoogleGenAI({
-  apiKey: import.meta.env.VITE_GEMINI_API_KEY
-});
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
+if (!apiKey) {
+  throw new Error("VITE_GEMINI_API_KEY não definida no build (GitHub Actions).");
+}
+const ai = new GoogleGenAI({ apiKey });
 const SUBTHEMES: Record<ResearchArea, string[]> = {
   [ResearchArea.GOVERNANCE_KNOWLEDGE]: [
     "Auditoria do conhecimento",
