@@ -28,8 +28,10 @@ jobs:
       - name: Install
         run: npm install --legacy-peer-deps
 
-      - name: Build
+    name: Build
         run: npm run build
+        env:
+          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -44,7 +46,4 @@ jobs:
     steps:
       - name: Deploy
         uses: actions/deploy-pages@v4
-      - name: Build
-        run: npm run build
-        env:
-          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+    
