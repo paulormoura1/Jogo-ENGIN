@@ -218,7 +218,7 @@ const App: React.FC = () => {
           <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1 space-y-4">
               <div className="bg-slate-900/80 p-6 rounded-xl border border-blue-900/30 shadow-lg text-base">
-                <h3 className="text-lg font-orbitron text-blue-400 mb-2 uppercase tracking-widest">Acesso</h3>
+                <h3 className="text-2xl font-orbitron text-blue-400 mb-3 uppercase tracking-widest">Acesso</h3>
                 {gameState.phase === GamePhase.INTRO ? (
                   <div className="flex gap-2">
                     <input 
