@@ -246,7 +246,7 @@ const App: React.FC = () => {
             <div className="lg:col-span-2">
               {gameState.phase === GamePhase.INTRO && (
                 <div className="bg-blue-900/5 p-8 md:p-14 border border-blue-500/10 rounded-3xl text-center space-y-6 animate-in fade-in zoom-in duration-700">
-                  <h2 className="text-3xl md:text-5xl font-orbitron font-bold text-blue-400 tracking-tighter">NEXUS DE CRISE</h2>
+                  <h2 className="text-4xl md:text-6xl font-orbitron font-bold text-blue-400 tracking-tighter">NEXUS DE CRISE</h2>
                   <p className="text-[10px] md:text-xs text-blue-100/60 max-w-sm mx-auto leading-relaxed">
                     Facilitador de crescimento estratégico. Todas as propostas negativas tornam-se ativos de rede. Nada é apagado.
                   </p>
