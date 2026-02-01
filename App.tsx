@@ -299,29 +299,7 @@ const App: React.FC = () => {
               </div>
              </div>
     <div className="space-y-4">
-      <textarea
-        value={playerInput}
-        onChange={e => setPlayerInput(e.target.value)}
-        placeholder="Descreva sua manobra estratégica..."
-        className="w-full h-32 md:h-40 bg-black/40 border border-blue-900/30 rounded-xl p-4 text-[11px] md:text-xs font-mono text-blue-50 focus:border-blue-500 outline-none resize-none placeholder:text-blue-900"
-      />
-
-      <button
-        disabled={!canSubmit || loading}
-        onClick={submitAction}
-        className={`w-full py-4 md:py-5 font-orbitron text-[10px] rounded-xl tracking-[0.2em] transition-all uppercase shadow-xl ${
-          canSubmit && !loading
-            ? 'bg-green-600 hover:bg-green-500 text-white'
-            : 'bg-slate-800 text-slate-600 border border-slate-700'
-        }`}
-      >
-        {loading ? 'ANALISANDO...' : 'Transmitir Proposta'}
-      </button>
-    </div>
-  </div>
-</>
-
-                       <textarea 
+                           <textarea 
                             value={playerInput} 
                             onChange={e => setPlayerInput(e.target.value)} 
                             placeholder="Descreva sua manobra estratégica..." 
