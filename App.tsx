@@ -167,7 +167,7 @@ const App: React.FC = () => {
             <StatBar label="INOVA" value={gameState.innovation} color="bg-blue-400" />
           </div>
         </div>
-      </header>
+    </div>
 
       <main className="max-w-6xl mx-auto">
         {showRanking ? (
