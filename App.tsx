@@ -140,7 +140,7 @@ const App: React.FC = () => {
           </div>
           <div className="text-center sm:text-left">
             <h1 className="font-orbitron text-lg md:text-xl font-bold tracking-widest text-blue-400">NEXUS ENGIN</h1>
-            <p className="text-[8px] md:text-[9px] text-blue-300/50 font-mono uppercase">Memória Coletiva UFSC</p>
+            <p className="text-[8px] md:text-[9px] text-blue-300/50 font-mono uppercase">"text-sm md:text-base text-slate-200/90"
           </div>
         </div>
         
