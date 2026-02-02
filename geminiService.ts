@@ -48,42 +48,43 @@ export const getGeminiFeedback = async (
     .map(r => `Area: ${r.area}, Veredito: ${r.verdict}, Proposta: ${r.proposal.substring(0, 50)}...`)
     .join("\n");
 
+
 export const getGeminiFeedback = async (
-  prompt: string,
-  state: GameState,
+  prompt: string, 
+  state: GameState, 
   action: string,
   team: string[]
 ) => {
   const model = 'gemini-3-pro-preview';
 
   const UFSC_COLLECTION = "https://repositorio.ufsc.br/handle/123456789/76395";
-
-  const pastProposalsSummary = (state as any).report
-    ?.slice?.(0, 5)
-    ?.map((r: any) => `Area: ${r.area}, Veredito: ${r.verdict}, Proposta: ${String(r.proposal || '').substring(0, 50)}...`)
-    ?.join("\n") || "";
+  
+  const pastProposalsSummary = state.report
+    .slice(0, 5)
+    .map(r => `Area: ${r.area}, Veredito: ${r.verdict}, Proposta: ${r.proposal.substring(0, 50)}...`)
+    .join("\n");
 
   const systemInstruction = `
 Você é o facilitador do Nexus ENGIN/UFSC e deve avaliar propostas estratégicas com BASE EM EVIDÊNCIA.
 
-CONTEXTO COLETIVO (últimas ações):
+CONTEXTO COLETIVO:
 ${pastProposalsSummary || "Início da base de dados."}
 
 PRIORIDADE DE BUSCA (OBRIGATÓRIA):
 1) PRIMEIRO: Repositório UFSC (DSpace) — coleção ENGIN/EGC: ${UFSC_COLLECTION}
    - Use a busca para encontrar teses/dissertações relacionadas ao DESAFIO e à PROPOSTA.
    - Prefira links do tipo: https://repositorio.ufsc.br/handle/...
-2) Se NÃO houver evidência suficiente na UFSC: amplie para outras fontes acadêmicas abertas na web (ex.: páginas institucionais, editoras acadêmicas, indexadores abertos).
+2) Se NÃO houver evidência suficiente na UFSC: amplie para outras fontes acadêmicas abertas na web.
 
 REGRAS:
-- Se a resposta for genérica, superficial ou repetir o problema sem estratégia, o veredito é "NEGATIVA".
-- Identifique conceitos técnicos (ex: 8'C, Auditoria do Conhecimento, Governança, Capital Intelectual etc.).
+- Se a resposta for genérica ou repetir o problema sem estratégia, o veredito é "NEGATIVA".
+- Identifique conceitos técnicos (ex: 8'C, Auditoria do conhecimento, Governança etc.).
 - Quando CORRETA: diga que a proposta "corrobora" com ao menos 1 autor/obra e cite.
 - Quando NEGATIVA: diga por que diverge e cite ao menos 1 autor/obra que oriente o caminho correto.
-- NÃO invente citações. Use apenas o que conseguir apoiar com os resultados de busca.
+- NÃO invente citações.
 - NÃO afirme que acessou Scopus/Web of Science diretamente (sem APIs). Use somente resultados obtidos via busca.
 
-SAÍDA (JSON OBRIGATÓRIO) — responda SOMENTE em JSON:
+FORMATO (JSON obrigatório) — responda SOMENTE em JSON:
 {
   "verdict": "CORRETA" | "NEGATIVA",
   "explanation": string,
@@ -99,7 +100,10 @@ REFERÊNCIAS:
 - Sempre que possível, use LINK da UFSC (handle).
 `;
 
-  const contents = `
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: `
 DESAFIO: ${prompt}
 PROPOSTA: "${action}"
 EQUIPE: ${team.join(', ')}
@@ -109,7 +113,26 @@ INSTRUÇÃO DE BUSCA:
    site:repositorio.ufsc.br/handle/123456789/76395 <palavras-chave do DESAFIO e da PROPOSTA>
 2) Se não achar evidência suficiente, amplie a busca para outras fontes acadêmicas abertas.
 3) Produza o JSON final, incluindo referências com autor+título+link+trecho.
-`;
+`,
+      config: {
+        systemInstruction,
+        tools: [{ googleSearch: {} }],
+        responseMimeType: "application/json"
+      }
+    });
+
+    return JSON.parse(response.text || '{}');
+  } catch (error) {
+    return {
+      verdict: "NEGATIVA",
+      explanation: "Não foi possível obter evidências (UFSC/web) nesta tentativa. Tente novamente com termos mais específicos.",
+      sourceType: "EXTERNA",
+      stabilityDelta: -10,
+      innovationDelta: 0,
+      references: []
+    };
+  }
+};
 
   try {
     const response = await ai.models.generateContent({
