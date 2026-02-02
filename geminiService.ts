@@ -48,21 +48,25 @@ export const getGeminiFeedback = async (
     .map(r => `Area: ${r.area}, Veredito: ${r.verdict}, Proposta: ${r.proposal.substring(0, 50)}...`)
     .join("\n");
 
+ export const getGeminiFeedback = async (
+  prompt: string,
+  state: GameState,
+  action: string,
+  team: string[]
+) => {
+  const model = 'gemini-3-pro-preview';
+
+  const UFSC_COLLECTION = "https://repositorio.ufsc.br/handle/123456789/76395";
+
+  const pastProposalsSummary = (state as any).report
+    ?.slice?.(0, 5)
+    ?.map((r: any) => `Area: ${r.area}, Veredito: ${r.verdict}, Proposta: ${String(r.proposal || '').substring(0, 50)}...`)
+    ?.join("\n") || "";
+
   const systemInstruction = `
-    Você é o facilitador do Nexus ENGIN/UFSC.
-    Avalie propostas estratégicas com base científica rigorosa (EGC).
-    
-    CONTEXTO COLETIVO:
-    ${pastProposalsSummary || "Início da base de dados."}
-    
-    REGRAS:
-    1. Prioridade: Repositório ENGIN/UFSC.
-    2. Se a resposta for genérica ou repetir o problema, o veredito é "NEGATIVA".
-    3. Identifique conceitos técnicos (ex: 8'C, Auditoria).
-    4. Cite: Autor, Obra e UFSC.
-    
-    JSON: { "verdict": "CORRETA"|"NEGATIVA", "explanation": string, "sourceType": string, "stabilityDelta": number, "innovationDelta": number, "references": string[] }
-  `;
+Você é o facilitador do Nexus ENGIN/UFSC e deve avaliar propostas estratégicas com BASE EM EVIDÊNCIA.
+
+CONTEXTO COLETIVO (últimas ações):
 
   try {
     const response = await ai.models.generateContent({
