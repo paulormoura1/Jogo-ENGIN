@@ -95,7 +95,7 @@ const App: React.FC = () => {
       requiredArea: area,
     });
     setLoading(false);
-    };
+   
   const submitAction = async () => {
   if (!currentChallenge || !canSubmit) return;
 
