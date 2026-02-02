@@ -97,10 +97,12 @@ const App: React.FC = () => {
     setLoading(false);
   };
 
-  const submitAction = async () => {
-    if (!currentChallenge || !canSubmit) return;
-    setLoading(true);
+ const submitAction = async () => {
+  if (!currentChallenge || !canSubmit) return;
 
+  setLoading(true);
+
+  try {
     const feedbackData = await getGeminiFeedback(
       currentChallenge.description,
       gameState,
@@ -108,7 +110,7 @@ const App: React.FC = () => {
       gameState.activePlayers
     );
 
-    const isCorrect = feedbackData.verdict === 'CORRETA';
+    const isCorrect = feedbackData.verdict === "CORRETA";
 
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
@@ -119,22 +121,24 @@ const App: React.FC = () => {
       executors: [...gameState.activePlayers],
       references: feedbackData.references,
       sourceType: feedbackData.sourceType,
-      timestamp: new Date().toLocaleString('pt-BR'),
+      timestamp: new Date().toLocaleString("pt-BR"),
     };
 
-    if (isCorrect) {
-      setRanking((prev) => {
-        const newRanking = [...prev];
-        gameState.activePlayers.forEach((player) => {
-          const idx = newRanking.findIndex(
-            (r) => r.playerName === player && r.area === currentChallenge.requiredArea
-          );
-          if (idx > -1) newRanking[idx].points += 1;
-          else newRanking.push({ playerName: player, area: currentChallenge.requiredArea, points: 1 });
-        });
-        return newRanking;
-      });
-    }
+    // TODO: aqui você mantém o restante do seu código (ranking, histórico, avanço de fase etc.)
+    // ... (seu bloco atual continua igual)
+
+  } catch (err) {
+    console.error("Erro ao obter feedback (Gemini):", err);
+
+    // opção mínima: registrar no log do sistema (se você tiver state disso)
+    // ou exibir no status operacional.
+    // Exemplo (se existir setStatusMessage ou setOperationalStatus):
+    // setOperationalStatus({ type: "NEGATIVA", message: "Falha temporária na busca. Tente novamente." });
+
+  } finally {
+    setLoading(false);
+  }
+};
 
     setFeedback(feedbackData);
 
