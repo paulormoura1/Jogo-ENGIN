@@ -42,19 +42,6 @@ export const getGeminiFeedback = async (
   team: string[]
 ) => {
   const model = 'gemini-3-pro-preview';
-  
-  const pastProposalsSummary = state.report
-    .slice(0, 5)
-    .map(r => `Area: ${r.area}, Veredito: ${r.verdict}, Proposta: ${r.proposal.substring(0, 50)}...`)
-    .join("\n");
-
-export const getGeminiFeedback = async (
-  prompt: string, 
-  state: GameState, 
-  action: string,
-  team: string[]
-) => {
-  const model = 'gemini-3-pro-preview';
 
   const UFSC_COLLECTION = "https://repositorio.ufsc.br/handle/123456789/76395";
   
