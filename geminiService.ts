@@ -48,7 +48,7 @@ export const getGeminiFeedback = async (
     .map(r => `Area: ${r.area}, Veredito: ${r.verdict}, Proposta: ${r.proposal.substring(0, 50)}...`)
     .join("\n");
 
- export const getGeminiFeedback = async (
+export const getGeminiFeedback = async (
   prompt: string,
   state: GameState,
   action: string,
@@ -67,8 +67,95 @@ export const getGeminiFeedback = async (
 Você é o facilitador do Nexus ENGIN/UFSC e deve avaliar propostas estratégicas com BASE EM EVIDÊNCIA.
 
 CONTEXTO COLETIVO (últimas ações):
+${pastProposalsSummary || "Início da base de dados."}
+
+PRIORIDADE DE BUSCA (OBRIGATÓRIA):
+1) PRIMEIRO: Repositório UFSC (DSpace) — coleção ENGIN/EGC: ${UFSC_COLLECTION}
+   - Use a busca para encontrar teses/dissertações relacionadas ao DESAFIO e à PROPOSTA.
+   - Prefira links do tipo: https://repositorio.ufsc.br/handle/...
+2) Se NÃO houver evidência suficiente na UFSC: amplie para outras fontes acadêmicas abertas na web (ex.: páginas institucionais, editoras acadêmicas, indexadores abertos).
+
+REGRAS:
+- Se a resposta for genérica, superficial ou repetir o problema sem estratégia, o veredito é "NEGATIVA".
+- Identifique conceitos técnicos (ex: 8'C, Auditoria do Conhecimento, Governança, Capital Intelectual etc.).
+- Quando CORRETA: diga que a proposta "corrobora" com ao menos 1 autor/obra e cite.
+- Quando NEGATIVA: diga por que diverge e cite ao menos 1 autor/obra que oriente o caminho correto.
+- NÃO invente citações. Use apenas o que conseguir apoiar com os resultados de busca.
+- NÃO afirme que acessou Scopus/Web of Science diretamente (sem APIs). Use somente resultados obtidos via busca.
+
+SAÍDA (JSON OBRIGATÓRIO) — responda SOMENTE em JSON:
+{
+  "verdict": "CORRETA" | "NEGATIVA",
+  "explanation": string,
+  "sourceType": "UFSC" | "MISTA" | "EXTERNA",
+  "stabilityDelta": number,
+  "innovationDelta": number,
+  "references": string[]
+}
+
+REFERÊNCIAS:
+- "references" deve conter itens no formato:
+  "Autor (Ano) — Título — LINK — Trecho: <1-2 frases curtas>"
+- Sempre que possível, use LINK da UFSC (handle).
+`;
+
+  const contents = `
+DESAFIO: ${prompt}
+PROPOSTA: "${action}"
+EQUIPE: ${team.join(', ')}
+
+INSTRUÇÃO DE BUSCA:
+1) Pesquise PRIMEIRO dentro da coleção UFSC:
+   site:repositorio.ufsc.br/handle/123456789/76395 <palavras-chave do DESAFIO e da PROPOSTA>
+2) Se não achar evidência suficiente, amplie a busca para outras fontes acadêmicas abertas.
+3) Produza o JSON final, incluindo referências com autor+título+link+trecho.
+`;
 
   try {
+    const response = await ai.models.generateContent({
+      model,
+      contents,
+      config: {
+        systemInstruction,
+        tools: [{ googleSearch: {} }],
+        responseMimeType: "application/json"
+      }
+    });
+
+    const raw = response.text || "{}";
+    const parsed = JSON.parse(raw);
+
+    // Pequena normalização defensiva (evita quebra no UI)
+    if (!parsed || typeof parsed !== "object") {
+      return {
+        verdict: "NEGATIVA",
+        explanation: "Não foi possível interpretar a resposta do avaliador nesta tentativa.",
+        sourceType: "EXTERNA",
+        stabilityDelta: -10,
+        innovationDelta: 0,
+        references: []
+      };
+    }
+
+    if (!Array.isArray(parsed.references)) parsed.references = [];
+    if (typeof parsed.sourceType !== "string") parsed.sourceType = parsed.references.length ? "MISTA" : "EXTERNA";
+    if (typeof parsed.stabilityDelta !== "number") parsed.stabilityDelta = parsed.verdict === "CORRETA" ? 5 : -10;
+    if (typeof parsed.innovationDelta !== "number") parsed.innovationDelta = parsed.verdict === "CORRETA" ? 5 : 0;
+
+    return parsed;
+  } catch (error) {
+    return {
+      verdict: "NEGATIVA",
+      explanation: "Não foi possível obter evidências (UFSC/web) nesta tentativa. Tente novamente com termos mais específicos.",
+      sourceType: "EXTERNA",
+      stabilityDelta: -10,
+      innovationDelta: 0,
+      references: []
+    };
+  }
+};
+
+try {
     const response = await ai.models.generateContent({
       model,
       contents: `DESAFIO: ${prompt}\nPROPOSTA: "${action}"\nEQUIPE: ${team.join(', ')}`,
