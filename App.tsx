@@ -148,15 +148,7 @@ const App: React.FC = () => {
       innovation: Math.min(100, Math.max(0, prev.innovation + (feedbackData.innovationDelta || 0))),
       report: [record, ...prev.report],
       energy: {
-        ...prev.energy,
-        [currentChallenge.requiredArea]: Math.max(0, prev.energy[currentChallenge.requiredArea] - 25),
-      },
-      history: [`[${feedbackData.verdict}] Registro em ${currentChallenge.requiredArea}.`, ...prev.history],
-    }));
-
-    setLoading(false);
-  };
-
+      
   return (
     <div className="min-h-screen terminal-bg text-blue-50 p-3 md:p-8 font-inter overflow-x-hidden">
       <header className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 border-b border-blue-900/50 pb-4">
