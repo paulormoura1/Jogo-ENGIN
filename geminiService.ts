@@ -48,7 +48,6 @@ export const getGeminiFeedback = async (
     .map(r => `Area: ${r.area}, Veredito: ${r.verdict}, Proposta: ${r.proposal.substring(0, 50)}...`)
     .join("\n");
 
-
 export const getGeminiFeedback = async (
   prompt: string, 
   state: GameState, 
