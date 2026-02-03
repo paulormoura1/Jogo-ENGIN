@@ -98,7 +98,7 @@ const App: React.FC = () => {
      }
   }; 
   
-   const submitAction = async () => {
+ const submitAction = async () => {
   if (!currentChallenge || !canSubmit) return;
 
   setLoading(true);
@@ -125,17 +125,26 @@ const App: React.FC = () => {
       timestamp: new Date().toLocaleString("pt-BR"),
     };
 
-    // TODO: aqui você mantém o restante do seu código (ranking, histórico, avanço de fase etc.)
-    // ... (seu bloco atual continua igual)
+    // ✅ IMPORTANTÍSSIMO: estas linhas DEVEM ficar AQUI DENTRO (porque usam feedbackData)
+    setFeedback(feedbackData);
 
+    setGameState((prev) => ({
+      ...prev,
+      stability: Math.min(100, Math.max(0, prev.stability + (feedbackData.stabilityDelta || 0))),
+      innovation: Math.min(100, Math.max(0, prev.innovation + (feedbackData.innovationDelta || 0))),
+      report: [record, ...prev.report],
+      energy: {
+        ...prev.energy,
+        [currentChallenge.requiredArea]: Math.max(0, prev.energy[currentChallenge.requiredArea] - 25),
+      },
+      history: [`[${feedbackData.verdict}] Registro em ${currentChallenge.requiredArea}.`, ...prev.history],
+    }));
+
+    // Se você tinha lógica de ranking/avanço, ela também deve ficar AQUI dentro,
+    // e usando feedbackData/record daqui (nunca fora da função).
+    // if (isCorrect) { ... }
   } catch (err) {
     console.error("Erro ao obter feedback (Gemini):", err);
-
-    // opção mínima: registrar no log do sistema (se você tiver state disso)
-    // ou exibir no status operacional.
-    // Exemplo (se existir setStatusMessage ou setOperationalStatus):
-    // setOperationalStatus({ type: "NEGATIVA", message: "Falha temporária na busca. Tente novamente." });
-
   } finally {
     setLoading(false);
   }
