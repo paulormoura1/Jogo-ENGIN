@@ -95,15 +95,12 @@ const App: React.FC = () => {
       requiredArea: area,
     });
     setLoading(false);
-     }
-  }; 
-  
- const submitAction = async () => {
-  if (!currentChallenge || !canSubmit) return;
+  };
 
-  setLoading(true);
+  const submitAction = async () => {
+    if (!currentChallenge || !canSubmit) return;
+    setLoading(true);
 
-  try {
     const feedbackData = await getGeminiFeedback(
       currentChallenge.description,
       gameState,
@@ -111,7 +108,7 @@ const App: React.FC = () => {
       gameState.activePlayers
     );
 
-    const isCorrect = feedbackData.verdict === "CORRETA";
+    const isCorrect = feedbackData.verdict === 'CORRETA';
 
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
@@ -122,10 +119,23 @@ const App: React.FC = () => {
       executors: [...gameState.activePlayers],
       references: feedbackData.references,
       sourceType: feedbackData.sourceType,
-      timestamp: new Date().toLocaleString("pt-BR"),
+      timestamp: new Date().toLocaleString('pt-BR'),
     };
 
-    // ✅ IMPORTANTÍSSIMO: estas linhas DEVEM ficar AQUI DENTRO (porque usam feedbackData)
+    if (isCorrect) {
+      setRanking((prev) => {
+        const newRanking = [...prev];
+        gameState.activePlayers.forEach((player) => {
+          const idx = newRanking.findIndex(
+            (r) => r.playerName === player && r.area === currentChallenge.requiredArea
+          );
+          if (idx > -1) newRanking[idx].points += 1;
+          else newRanking.push({ playerName: player, area: currentChallenge.requiredArea, points: 1 });
+        });
+        return newRanking;
+      });
+    }
+
     setFeedback(feedbackData);
 
     setGameState((prev) => ({
@@ -140,17 +150,10 @@ const App: React.FC = () => {
       history: [`[${feedbackData.verdict}] Registro em ${currentChallenge.requiredArea}.`, ...prev.history],
     }));
 
-    // Se você tinha lógica de ranking/avanço, ela também deve ficar AQUI dentro,
-    // e usando feedbackData/record daqui (nunca fora da função).
-    // if (isCorrect) { ... }
-  } catch (err) {
-    console.error("Erro ao obter feedback (Gemini):", err);
-  } finally {
     setLoading(false);
-  }
-};
+  };
 
-     return (
+  return (
     <div className="min-h-screen terminal-bg text-blue-50 p-3 md:p-8 font-inter overflow-x-hidden">
       <header className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 border-b border-blue-900/50 pb-4">
         <div
@@ -351,75 +354,82 @@ const App: React.FC = () => {
                     <span className="text-blue-500 uppercase">{currentChallenge.requiredArea}</span>
                   </div>
 
-             <div className="p-5 md:p-8 space-y-6">
-  {feedback ? (
-    <div className="space-y-5 animate-in slide-in-from-bottom-2">
-      <div
-        className={`p-5 rounded-xl border ${
-          feedback.verdict === 'CORRETA'
-            ? 'border-green-500/30 bg-green-500/5'
-            : 'border-red-500/30 bg-red-500/5'
-        }`}
-      >
-        <h4
-          className={`font-orbitron text-lg mb-3 ${
-            feedback.verdict === 'CORRETA' ? 'text-green-400' : 'text-red-400'
-          }`}
-        >
-          {feedback.verdict}
-        </h4>
-        <p className="text-[10px] md:text-xs text-blue-50 leading-relaxed mb-4">{feedback.explanation}</p>
-      </div>
+                  <div className="p-5 md:p-8 space-y-6">
+                    {feedback ? (
+                      <div className="space-y-5 animate-in slide-in-from-bottom-2">
+                        <div
+                          className={`p-5 rounded-xl border ${
+                            feedback.verdict === 'CORRETA'
+                              ? 'border-green-500/30 bg-green-500/5'
+                              : 'border-red-500/30 bg-red-500/5'
+                          }`}
+                        >
+                          <h4
+                            className={`font-orbitron text-lg mb-3 ${
+                              feedback.verdict === 'CORRETA' ? 'text-green-400' : 'text-red-400'
+                            }`}
+                          >
+                            {feedback.verdict}
+                          </h4>
+                          <p className="text-[10px] md:text-xs text-blue-50 leading-relaxed mb-4">{feedback.explanation}</p>
+                        </div>
 
-      <button
-        onClick={() => {
-          setCurrentChallenge(null);
-          setFeedback(null);
-        }}
-        className="w-full py-4 bg-blue-600 text-white font-orbitron text-[9px] rounded-xl tracking-widest uppercase"
-      >
-        Retornar
-      </button>
-    </div>
-  ) : (
-    <>
-      <div className="space-y-6">
-        <div className="space-y-3">
-          <h2 className="text-lg md:text-xl font-orbitron text-white leading-tight">{currentChallenge.title}</h2>
-          <div className="border-l-2 border-blue-600 pl-4 py-1">
-            <p className="text-blue-100/70 text-xs md:text-sm font-light italic leading-relaxed">
-              {currentChallenge.description}
-            </p>
+                        <button
+                          onClick={() => {
+                            setCurrentChallenge(null);
+                            setFeedback(null);
+                          }}
+                          className="w-full py-4 bg-blue-600 text-white font-orbitron text-[9px] rounded-xl tracking-widest uppercase"
+                        >
+                          Retornar
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="space-y-6">
+                          <div className="space-y-3">
+                            <h2 className="text-lg md:text-xl font-orbitron text-white leading-tight">{currentChallenge.title}</h2>
+                            <div className="border-l-2 border-blue-600 pl-4 py-1">
+                              <p className="text-blue-100/70 text-xs md:text-sm font-light italic leading-relaxed">
+                                {currentChallenge.description}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="space-y-4">
+                            <textarea
+                              value={playerInput}
+                              onChange={(e) => setPlayerInput(e.target.value)}
+                              placeholder="Descreva sua manobra estratégica..."
+                              className="w-full h-32 md:h-40 bg-black/40 border border-blue-900/30 rounded-xl p-4 text-[11px] md:text-xs font-mono text-blue-50 focus:border-blue-500 outline-none resize-none placeholder:text-blue-900"
+                            />
+
+                            <button
+                              disabled={!canSubmit || loading}
+                              onClick={submitAction}
+                              className={`w-full py-4 md:py-5 font-orbitron text-[10px] rounded-xl tracking-[0.2em] transition-all uppercase shadow-xl ${
+                                canSubmit && !loading
+                                  ? 'bg-green-600 hover:bg-green-500 text-white'
+                                  : 'bg-slate-800 text-slate-600 border border-slate-700'
+                              }`}
+                            >
+                              {loading ? 'ANALISANDO...' : 'Transmitir Proposta'}
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-
-        <div className="space-y-4">
-          <textarea
-            value={playerInput}
-            onChange={(e) => setPlayerInput(e.target.value)}
-            placeholder="Descreva sua manobra estratégica..."
-            className="w-full h-32 md:h-40 bg-black/40 border border-blue-900/30 rounded-xl p-4 text-[11px] md:text-xs font-mono text-blue-50 focus:border-blue-500 outline-none resize-none placeholder:text-blue-900"
-          />
-
-          <button
-            disabled={!canSubmit || loading}
-            onClick={submitAction}
-            className={`w-full py-4 md:py-5 font-orbitron text-[10px] rounded-xl tracking-[0.2em] transition-all uppercase shadow-xl ${
-              canSubmit && !loading
-                ? 'bg-green-600 hover:bg-green-500 text-white'
-                : 'bg-slate-800 text-slate-600 border border-slate-700'
-            }`}
-          >
-            {loading ? 'ANALISANDO...' : 'Transmitir Proposta'}
-          </button>
-        </div>
-      </div>
-    )}
-</div>
+        )}
       </main>
     </div>
   );
 };
+
 const StatBar = ({ label, value, color }: { label: string; value: number; color: string }) => (
   <div className="text-center group shrink-0">
     <p className="text-[7px] uppercase text-blue-400 mb-1 font-orbitron tracking-tighter opacity-70">{label}</p>
