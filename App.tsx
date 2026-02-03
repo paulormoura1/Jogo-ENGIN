@@ -405,8 +405,7 @@ const App: React.FC = () => {
                             </button>
                           </div>
                         </div>
-                      </>
-                    )}
+                      )}
                   </div>
                 </div>
               )}
@@ -417,7 +416,6 @@ const App: React.FC = () => {
     </div>
   );
 };
-
 const StatBar = ({ label, value, color }: { label: string; value: number; color: string }) => (
   <div className="text-center group shrink-0">
     <p className="text-[7px] uppercase text-blue-400 mb-1 font-orbitron tracking-tighter opacity-70">{label}</p>
