@@ -141,16 +141,7 @@ const App: React.FC = () => {
   }
 };
 
-    setFeedback(feedbackData);
-
-    setGameState((prev) => ({
-      ...prev,
-      stability: Math.min(100, Math.max(0, prev.stability + (feedbackData.stabilityDelta || 0))),
-      innovation: Math.min(100, Math.max(0, prev.innovation + (feedbackData.innovationDelta || 0))),
-      report: [record, ...prev.report],
-      energy: {
-      
-  return (
+     return (
     <div className="min-h-screen terminal-bg text-blue-50 p-3 md:p-8 font-inter overflow-x-hidden">
       <header className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 border-b border-blue-900/50 pb-4">
         <div
