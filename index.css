@@ -67,3 +67,44 @@ span {
     font-size: 1.1rem;
   }
 }
+/* =========================================
+   AJUSTE FINO – PERGUNTAS E RESPOSTAS
+   Leitura confortável (nível acadêmico)
+   ========================================= */
+
+/* Texto narrativo dos desafios (perguntas) */
+p {
+  font-size: 1.15rem;
+  line-height: 1.65;
+}
+
+/* Campo de resposta */
+textarea {
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+/* Placeholders (ex: "Descreva sua manobra...") */
+textarea::placeholder {
+  font-size: 1.05rem;
+  opacity: 0.7;
+}
+
+/* Textos pequenos do Tailwind que ainda escapam */
+.text-xs,
+.text-sm,
+.text-\[10px\],
+.text-\[11px\] {
+  font-size: 1.05rem !important;
+}
+
+/* Desktop e telas grandes */
+@media (min-width: 1024px) {
+  p {
+    font-size: 1.2rem;
+  }
+
+  textarea {
+    font-size: 1.2rem;
+  }
+}
