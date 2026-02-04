@@ -1,4 +1,4 @@
-import { getSourcesByArea, searchSources } from "./services/sourcesService";
+import { getSourcesByArea, searchSources } from "./src/services/sourcesService";
 import { GoogleGenAI } from "@google/genai";
 import { ResearchArea, GameState } from "./types";
 
@@ -76,16 +76,16 @@ Você é o facilitador do Nexus ENGIN/UFSC e deve avaliar propostas estratégica
 
 CONTEXTO COLETIVO:
 ${pastProposalsSummary || "Início da base de dados."}
+
 EVIDÊNCIAS CIENTÍFICAS DISPONÍVEIS:
 ${evidenceBlock}
 
 INSTRUÇÕES:
 - Avalie a proposta considerando coerência estratégica
 - Use as evidências quando pertinentes
-- Indique claramente se a proposta é CORRETA ou INCORRETA
-`;
+- Indique claramente se a proposta é CORRETA ou NEGATIVA
 
-  PRIORIDADE DE BUSCA (OBRIGATÓRIA):
+PRIORIDADE DE BUSCA (OBRIGATÓRIA):
 1) PRIMEIRO: Repositório UFSC (DSpace) — coleção ENGIN/EGC: ${UFSC_COLLECTION}
    - Use a busca para encontrar teses/dissertações relacionadas ao DESAFIO e à PROPOSTA.
    - Prefira links do tipo: https://repositorio.ufsc.br/handle/...
@@ -94,7 +94,7 @@ INSTRUÇÕES:
 REGRAS:
 - Se a resposta for genérica ou repetir o problema sem estratégia, o veredito é "NEGATIVA".
 - Identifique conceitos técnicos (ex: 8'C, Auditoria do conhecimento, Governança etc.).
-- Quando CORRETA: diga que a proposta "corrobora" com ao menos 1 autor/obra e cite.
+- Quando CORRETA: diga que a proposta corrobora com ao menos 1 autor/obra e cite.
 - Quando NEGATIVA: diga por que diverge e cite ao menos 1 autor/obra que oriente o caminho correto.
 - NÃO invente citações.
 - NÃO afirme que acessou Scopus/Web of Science diretamente (sem APIs). Use somente resultados obtidos via busca.
@@ -114,6 +114,7 @@ REFERÊNCIAS:
   "Autor (Ano) — Título — LINK — Trecho: <1-2 frases curtas>"
 - Sempre que possível, use LINK da UFSC (handle).
 `;
+
 
   try {
     const response = await ai.models.generateContent({
