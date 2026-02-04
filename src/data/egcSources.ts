@@ -1,4 +1,4 @@
-import { ResearchArea } from "../types";
+import { ResearchArea } from "../../types";
 
 export type SourceType = "UFSC" | "SCIELO" | "SCHOLAR" | "OUTRO";
 
