@@ -58,13 +58,34 @@ export const getGeminiFeedback = async (
     )
     .join("\n");
 
+  const sources = searchSources(action, state.phase === "CORE_GAME" ? undefined : undefined);
+const topSources = sources.slice(0, 5);
+
+const evidenceBlock =
+  topSources.length === 0
+    ? "Nenhuma evidência científica localizada nos repositórios institucionais."
+    : topSources
+        .map(
+          (s, i) =>
+            `${i + 1}) [${s.tipo}] ${s.titulo} — ${s.autores} (${s.ano}) — ${s.instituicao}\nLink: ${s.link}`
+        )
+        .join("\n\n");
+  
   const systemInstruction = `
 Você é o facilitador do Nexus ENGIN/UFSC e deve avaliar propostas estratégicas com BASE EM EVIDÊNCIA.
 
 CONTEXTO COLETIVO:
 ${pastProposalsSummary || "Início da base de dados."}
+EVIDÊNCIAS CIENTÍFICAS DISPONÍVEIS:
+${evidenceBlock}
 
-PRIORIDADE DE BUSCA (OBRIGATÓRIA):
+INSTRUÇÕES:
+- Avalie a proposta considerando coerência estratégica
+- Use as evidências quando pertinentes
+- Indique claramente se a proposta é CORRETA ou INCORRETA
+`;
+
+  PRIORIDADE DE BUSCA (OBRIGATÓRIA):
 1) PRIMEIRO: Repositório UFSC (DSpace) — coleção ENGIN/EGC: ${UFSC_COLLECTION}
    - Use a busca para encontrar teses/dissertações relacionadas ao DESAFIO e à PROPOSTA.
    - Prefira links do tipo: https://repositorio.ufsc.br/handle/...
