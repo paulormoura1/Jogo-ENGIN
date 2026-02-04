@@ -1,4 +1,4 @@
-import { ResearchArea } from "../types";
+import { ResearchArea } from "../../types";
 import { EGC_SOURCES } from "../data/egcSources";
 import { GC_SOURCES } from "../data/gcSources";
 
