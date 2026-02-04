@@ -30,4 +30,27 @@ body {
     font-size: 18px;
   }
 }
+/* ================================
+   AJUSTE DE TEXTO CORPO (LEITURA)
+   Não afeta títulos
+   ================================ */
+
+/* Texto base (parágrafos, descrições, logs) */
+p,
+textarea,
+input,
+label,
+span {
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+/* Texto auxiliar muito pequeno (subtítulos, hints) */
+.text-xs,
+.text-\[10px\],
+.text-\[11px\] {
+  font-size: 0.95rem !important;
+}
+
+/
 
