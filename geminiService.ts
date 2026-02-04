@@ -1,3 +1,4 @@
+import { getSourcesByArea, searchSources } from "./services/sourcesService";
 import { GoogleGenAI } from "@google/genai";
 import { ResearchArea, GameState } from "./types";
 
