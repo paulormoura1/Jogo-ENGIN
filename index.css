@@ -108,3 +108,40 @@ textarea::placeholder {
     font-size: 1.2rem;
   }
 }
+/* =========================================
+   AJUSTE DE ÍCONES – COLUNA ESQUERDA
+   ========================================= */
+
+/* Ícones em painéis laterais */
+aside svg,
+aside img,
+aside .icon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  aside svg,
+  aside img,
+  aside .icon {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+/* =========================================
+   TEXTO EXPLICATIVO – PAINEL DIREITO
+   ========================================= */
+
+/* Texto narrativo / explicativo */
+p {
+  font-size: 1.2rem; /* ~19px */
+  line-height: 1.7;
+}
+
+/* Desktop maior */
+@media (min-width: 1024px) {
+  p {
+    font-size: 1.25rem; /* ~20px */
+  }
+}
