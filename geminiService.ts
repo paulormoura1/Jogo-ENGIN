@@ -41,13 +41,20 @@ export const getGeminiFeedback = async (
   prompt: string,
   state: GameState,
   action: string,
-  team: string[]
+  team: string[],
+  area: ResearchArea
 ) => {
-  const model = "gemini-3-pro-preview";
+const model = "gemini-3-pro-preview";
 
   const UFSC_COLLECTION = "https://repositorio.ufsc.br/handle/123456789/76395";
-
-  const pastProposalsSummary = state.report
+const sources = getSourcesByArea(area);
+  const sourcesContext = sources
+  .map(
+    (s) =>
+      `Fonte: ${s.titulo} (${s.ano ?? "s.d."}) — ${s.autores}. Palavras-chave: ${s.palavrasChave.join(", ")}.`
+  )
+  .join("\n");
+const pastProposalsSummary = state.report
     .slice(0, 5)
     .map(
       (r) =>
@@ -120,6 +127,9 @@ REFERÊNCIAS:
     const response = await ai.models.generateContent({
       model,
       contents: `
+      Fontes de referência para esta área:
+${sourcesContext}
+
 DESAFIO: ${prompt}
 PROPOSTA: "${action}"
 EQUIPE: ${team.join(", ")}
