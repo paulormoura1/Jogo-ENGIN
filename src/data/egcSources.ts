@@ -19,7 +19,6 @@ export interface EGCSource {
  * Base inicial de fontes científicas por área (EGC).
  * Conteúdo curado, auditável e evolutivo.
  */
-export const EGC_SOURCES: EGCSource[] = [];
 export const EGC_SOURCES: EGCSource[] = [
   {
     id: "gc-ufsc-001",
