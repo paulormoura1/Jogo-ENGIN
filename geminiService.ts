@@ -47,8 +47,8 @@ export const getGeminiFeedback = async (
 const model = "gemini-3-pro-preview";
 
   const UFSC_COLLECTION = "https://repositorio.ufsc.br/handle/123456789/76395";
-const sources = getSourcesByArea(area);
-  const sourcesContext = sources
+const areaSources = getSourcesByArea(area);
+  const sourcesContext = areaSources
   .map(
     (s) =>
       `Fonte: ${s.titulo} (${s.ano ?? "s.d."}) — ${s.autores}. Palavras-chave: ${s.palavrasChave.join(", ")}.`
