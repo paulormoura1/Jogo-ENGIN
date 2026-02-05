@@ -102,11 +102,12 @@ const App: React.FC = () => {
     setLoading(true);
 
     const feedbackData = await getGeminiFeedback(
-      currentChallenge.description,
-      gameState,
-      playerInput,
-      gameState.activePlayers
-    );
+  currentChallenge.description,
+  gameState,
+  playerInput,
+  gameState.activePlayers,
+  currentChallenge.requiredArea
+);
 
     const isCorrect = feedbackData.verdict === 'CORRETA';
 
