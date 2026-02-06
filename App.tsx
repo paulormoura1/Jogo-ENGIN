@@ -560,4 +560,4 @@ const StatBar = ({ label, value, color }: { label: string; value: number; color:
   </div>
 );
 
-export default App;
+export default App;    
