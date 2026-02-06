@@ -172,7 +172,7 @@ const submitAction = async () => {
   if (!currentChallenge || !canSubmit) return;
 
   setLoading(true);
-
+console.log("submitAction clicado");
   try {
     const localEval = evaluateProposalWithSources(
       playerInput,
