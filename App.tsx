@@ -196,6 +196,13 @@ const submitAction = async () => {
       ),
       45000
     );
+const combinedExplanation =
+  (feedbackData.explanation && feedbackData.explanation.trim().length > 0
+    ? feedbackData.explanation.trim()
+    : "") +
+  (localEval.recommendedSources.length > 0
+    ? `\n\nJustificativa: sua proposta não apresentou termos/evidências alinhadas às fontes-base desta área. Para evoluir, incorpore conceitos e autores das referências recomendadas e explique como sua ação se conecta ao desafio.`
+    : "");
 
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
@@ -203,7 +210,7 @@ const submitAction = async () => {
       proposal: playerInput,
       verdict: localEval.verdict,
       pointsEarned,
-      explanation: feedbackData.explanation,
+     explanation: combinedExplanation,
       executors: [...gameState.activePlayers],
       references: feedbackData.references,
       sourceType: feedbackData.sourceType,
