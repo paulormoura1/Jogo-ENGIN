@@ -193,7 +193,6 @@ const submitAction = async () => {
     );
 
     const record: ExtendedActionRecord = {
-      setLastRecord(record);
       area: currentChallenge.requiredArea,
       title: currentChallenge.title,
       proposal: playerInput,
@@ -215,7 +214,8 @@ const submitAction = async () => {
       })),
       timestamp: new Date().toLocaleString("pt-BR"),
     };
-
+setLastRecord(record);
+    
     setRanking((prev) => {
       const newRanking = [...prev];
       gameState.activePlayers.forEach((player) => {
