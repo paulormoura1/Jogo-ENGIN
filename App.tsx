@@ -488,7 +488,7 @@ setLastRecord(record);
                           </h4>
                           <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest mb-2">
   Pontos ganhos nesta rodada:{" "}
-  <span className="text-white font-bold">{feedback.pointsEarned}</span>
+  <span className="text-white font-bold">{lastRecord?.pointsEarned}</span>
 </p>
                           <p className="text-[10px] md:text-xs text-blue-50 leading-relaxed mb-4">{feedback.explanation}</p>
                        {(lastRecord?.usedSources?.length || 0) > 0 && (
