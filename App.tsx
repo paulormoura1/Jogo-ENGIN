@@ -200,9 +200,7 @@ const combinedExplanation =
   (feedbackData.explanation && feedbackData.explanation.trim().length > 0
     ? feedbackData.explanation.trim()
     : "") +
-  (localEval.recommendedSources.length > 0
-    ? `\n\nJustificativa: sua proposta não apresentou termos/evidências alinhadas às fontes-base desta área. Para evoluir, incorpore conceitos e autores das referências recomendadas e explique como sua ação se conecta ao desafio.`
-    : "");
+  "\n\nJustificativa: sua proposta não apresentou termos ou evidências alinhadas às fontes-base desta área. Para evoluir, incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
 
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
