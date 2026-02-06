@@ -184,10 +184,10 @@ timestamp: new Date().toLocaleString('pt-BR'),
 
    const pointsEarned =
   localEval.verdict === "CORRETA"
-    ? 10 + Math.floor(localEval.score / 10) // 10–20
+    ? 40
     : localEval.verdict === "PARCIAL"
-    ? 4 + Math.floor(localEval.score / 20)  // 4–9
-    : 1; // tentativa (mantém engajamento)
+    ? 20
+    : 5;
 
 setRanking((prev) => {
   const newRanking = [...prev];
