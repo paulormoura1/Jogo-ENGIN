@@ -142,22 +142,54 @@ const App: React.FC = () => {
     setLoading(false);
   };
 
-  const submitAction = async () => {
-    if (!currentChallenge || !canSubmit) return;
-    setLoading(true);
-const localEval = evaluateProposalWithSources(
-  playerInput,
-  currentChallenge.requiredArea
-);
-    const feedbackData = await getGeminiFeedback(
-  currentChallenge.description,
-  gameState,
-  playerInput,
-  gameState.activePlayers,
-  currentChallenge.requiredArea
-);
+function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  timeoutMsg = "Timeout na análise da IA"
+) {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(timeoutMsg)), ms);
 
-    const isCorrect = localEval.verdict === 'CORRETA';
+    promise
+      .then((res) => {
+        clearTimeout(timer);
+        resolve(res);
+      })
+      .catch((err) => {
+        clearTimeout(timer);
+        reject(err);
+      });
+  });
+}
+
+const submitAction = async () => {
+  if (!currentChallenge || !canSubmit) return;
+
+  setLoading(true);
+
+  try {
+    const localEval = evaluateProposalWithSources(
+      playerInput,
+      currentChallenge.requiredArea
+    );
+
+    const pointsEarned =
+      localEval.verdict === "CORRETA"
+        ? 40
+        : localEval.verdict === "PARCIAL"
+        ? 20
+        : 5;
+
+    const feedbackData = await withTimeout(
+      getGeminiFeedback(
+        currentChallenge.description,
+        gameState,
+        playerInput,
+        gameState.activePlayers,
+        currentChallenge.requiredArea
+      ),
+      45000
+    );
 
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
@@ -170,53 +202,69 @@ const localEval = evaluateProposalWithSources(
       references: feedbackData.references,
       sourceType: feedbackData.sourceType,
       usedSources: localEval.usedSources.map((s) => ({
-  titulo: s.titulo,
-  autores: s.autores,
-  link: s.link,
-})),
-recommendedSources: localEval.recommendedSources.map((s) => ({
-  titulo: s.titulo,
-  autores: s.autores,
-  link: s.link,
-})),
-timestamp: new Date().toLocaleString('pt-BR'),
+        titulo: s.titulo,
+        autores: s.autores,
+        link: s.link,
+      })),
+      recommendedSources: localEval.recommendedSources.map((s) => ({
+        titulo: s.titulo,
+        autores: s.autores,
+        link: s.link,
+      })),
+      timestamp: new Date().toLocaleString("pt-BR"),
     };
 
-   const pointsEarned =
-  localEval.verdict === "CORRETA"
-    ? 40
-    : localEval.verdict === "PARCIAL"
-    ? 20
-    : 5;
-
-setRanking((prev) => {
-  const newRanking = [...prev];
-  gameState.activePlayers.forEach((player) => {
-    const idx = newRanking.findIndex(
-      (r) => r.playerName === player && r.area === currentChallenge.requiredArea
-    );
-    if (idx > -1) newRanking[idx].points += pointsEarned;
-    else newRanking.push({ playerName: player, area: currentChallenge.requiredArea, points: pointsEarned });
-  });
-  return newRanking;
-});
+    setRanking((prev) => {
+      const newRanking = [...prev];
+      gameState.activePlayers.forEach((player) => {
+        const idx = newRanking.findIndex(
+          (r) =>
+            r.playerName === player &&
+            r.area === currentChallenge.requiredArea
+        );
+        if (idx > -1) newRanking[idx].points += pointsEarned;
+        else
+          newRanking.push({
+            playerName: player,
+            area: currentChallenge.requiredArea,
+            points: pointsEarned,
+          });
+      });
+      return newRanking;
+    });
 
     setFeedback(feedbackData);
 
     setGameState((prev) => ({
       ...prev,
-      stability: Math.min(100, Math.max(0, prev.stability + (feedbackData.stabilityDelta || 0))),
-      innovation: Math.min(100, Math.max(0, prev.innovation + (feedbackData.innovationDelta || 0))),
+      stability: Math.min(
+        100,
+        Math.max(0, prev.stability + (feedbackData.stabilityDelta || 0))
+      ),
+      innovation: Math.min(
+        100,
+        Math.max(0, prev.innovation + (feedbackData.innovationDelta || 0))
+      ),
       report: [record, ...prev.report],
       energy: {
         ...prev.energy,
-        [currentChallenge.requiredArea]: Math.max(0, prev.energy[currentChallenge.requiredArea] - 25),
+        [currentChallenge.requiredArea]: Math.max(
+          0,
+          prev.energy[currentChallenge.requiredArea] - 25
+        ),
       },
-      history: [`[${feedbackData.verdict}] Registro em ${currentChallenge.requiredArea}.`, ...prev.history],
+      history: [
+        `[${feedbackData.verdict}] Registro em ${currentChallenge.requiredArea}.`,
+        ...prev.history,
+      ],
     }));
 
+  } catch (err) {
+    console.error("submitAction error:", err);
+  } finally {
     setLoading(false);
-  };
+  }
+};
 
   return (
     <div className="min-h-screen terminal-bg text-blue-50 p-3 md:p-8 font-inter overflow-x-hidden">
