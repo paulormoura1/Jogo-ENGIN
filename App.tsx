@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GamePhase, ResearchArea, GameState, Challenge, ActionRecord } from './types';
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from './constants';
 import { getGeminiFeedback, generateChallenge } from './geminiService';
+import { getSourcesByArea } from "./services/sourcesService";
 
 interface ExtendedActionRecord extends ActionRecord {
   references?: string[];
@@ -14,6 +15,50 @@ interface RankingEntry {
   area: ResearchArea;
   points: number;
 }
+const evaluateProposalWithSources = (
+  proposal: string,
+  area: ResearchArea
+) => {
+  const sources = getSourcesByArea(area);
+
+  const text = proposal.toLowerCase();
+
+  const perSource = sources.map((s) => {
+    const keywords = s.palavrasChave || [];
+    const hits = keywords.filter((k) => text.includes(k.toLowerCase())).length;
+    const coverage = keywords.length ? hits / keywords.length : 0;
+
+    return {
+      source: s,
+      hits,
+      coverage,
+    };
+  });
+
+  const totalHits = perSource.reduce((sum, s) => sum + s.hits, 0);
+
+  // score simples e previsível
+  const score = Math.min(100, totalHits * 10);
+
+  const usedSources = perSource
+    .filter((s) => s.coverage >= 0.4)
+    .map((s) => s.source);
+
+  const recommendedSources = perSource
+    .filter((s) => s.coverage < 0.4)
+    .map((s) => s.source);
+
+  let verdict: 'CORRETA' | 'PARCIAL' | 'INCORRETA' = 'INCORRETA';
+  if (score >= 70) verdict = 'CORRETA';
+  else if (score >= 50) verdict = 'PARCIAL';
+
+  return {
+    score,
+    verdict,
+    usedSources,
+    recommendedSources,
+  };
+};
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState & { report: ExtendedActionRecord[] }>(() => {
@@ -100,7 +145,10 @@ const App: React.FC = () => {
   const submitAction = async () => {
     if (!currentChallenge || !canSubmit) return;
     setLoading(true);
-
+const localEval = evaluateProposalWithSources(
+  playerInput,
+  currentChallenge.requiredArea
+);
     const feedbackData = await getGeminiFeedback(
   currentChallenge.description,
   gameState,
@@ -109,33 +157,49 @@ const App: React.FC = () => {
   currentChallenge.requiredArea
 );
 
-    const isCorrect = feedbackData.verdict === 'CORRETA';
+    const isCorrect = localEval.verdict === 'CORRETA';
 
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
       title: currentChallenge.title,
       proposal: playerInput,
-      verdict: feedbackData.verdict,
+      verdict: localEval.verdict,
+      pointsEarned,
       explanation: feedbackData.explanation,
       executors: [...gameState.activePlayers],
       references: feedbackData.references,
       sourceType: feedbackData.sourceType,
-      timestamp: new Date().toLocaleString('pt-BR'),
+      usedSources: localEval.usedSources.map((s) => ({
+  titulo: s.titulo,
+  autores: s.autores,
+  link: s.link,
+})),
+recommendedSources: localEval.recommendedSources.map((s) => ({
+  titulo: s.titulo,
+  autores: s.autores,
+  link: s.link,
+})),
+timestamp: new Date().toLocaleString('pt-BR'),
     };
 
-    if (isCorrect) {
-      setRanking((prev) => {
-        const newRanking = [...prev];
-        gameState.activePlayers.forEach((player) => {
-          const idx = newRanking.findIndex(
-            (r) => r.playerName === player && r.area === currentChallenge.requiredArea
-          );
-          if (idx > -1) newRanking[idx].points += 1;
-          else newRanking.push({ playerName: player, area: currentChallenge.requiredArea, points: 1 });
-        });
-        return newRanking;
-      });
-    }
+   const pointsEarned =
+  localEval.verdict === "CORRETA"
+    ? 10 + Math.floor(localEval.score / 10) // 10–20
+    : localEval.verdict === "PARCIAL"
+    ? 4 + Math.floor(localEval.score / 20)  // 4–9
+    : 1; // tentativa (mantém engajamento)
+
+setRanking((prev) => {
+  const newRanking = [...prev];
+  gameState.activePlayers.forEach((player) => {
+    const idx = newRanking.findIndex(
+      (r) => r.playerName === player && r.area === currentChallenge.requiredArea
+    );
+    if (idx > -1) newRanking[idx].points += pointsEarned;
+    else newRanking.push({ playerName: player, area: currentChallenge.requiredArea, points: pointsEarned });
+  });
+  return newRanking;
+});
 
     setFeedback(feedbackData);
 
@@ -372,7 +436,63 @@ const App: React.FC = () => {
                           >
                             {feedback.verdict}
                           </h4>
+                          <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest mb-2">
+  Pontos ganhos nesta rodada:{" "}
+  <span className="text-white font-bold">{feedback.pointsEarned}</span>
+</p>
                           <p className="text-[10px] md:text-xs text-blue-50 leading-relaxed mb-4">{feedback.explanation}</p>
+                        {(record.usedSources?.length || 0) > 0 && (
+  <div className="mt-4 space-y-2">
+    <p className="text-[9px] font-orbitron text-green-400 uppercase tracking-widest">
+      Fontes acionadas
+    </p>
+    <ul className="space-y-1 text-[9px] text-blue-100/70">
+      {record.usedSources.slice(0, 3).map((s: any, idx: number) => (
+        <li key={idx} className="leading-snug">
+          <span className="text-white font-bold">{s.autores}</span>{" "}
+          <span className="text-blue-200/80">— {s.titulo}</span>{" "}
+          {s.link ? (
+            <a
+              href={s.link}
+              target="_blank"
+              rel="noreferrer"
+              className="text-yellow-400 underline ml-1"
+            >
+              link
+            </a>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+{(record.recommendedSources?.length || 0) > 0 && (
+  <div className="mt-4 space-y-2">
+    <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest">
+      Recomendações para evoluir
+    </p>
+    <ul className="space-y-1 text-[9px] text-blue-100/70">
+      {record.recommendedSources.slice(0, 3).map((s: any, idx: number) => (
+        <li key={idx} className="leading-snug">
+          <span className="text-white font-bold">{s.autores}</span>{" "}
+          <span className="text-blue-200/80">— {s.titulo}</span>{" "}
+          {s.link ? (
+            <a
+              href={s.link}
+              target="_blank"
+              rel="noreferrer"
+              className="text-yellow-400 underline ml-1"
+            >
+              link
+            </a>
+          ) : null}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
                         </div>
 
                         <button
