@@ -27,6 +27,11 @@ const evaluateProposalWithSources = (
     const keywords = s.palavrasChave || [];
     const hits = keywords.filter((k) => text.includes(k.toLowerCase())).length;
     const coverage = keywords.length ? hits / keywords.length : 0;
+// REGRA PEDAGÓGICA: erro também ensina
+if (usedSources.length === 0 && recommendedSources.length === 0) {
+  const fallbackSources = sources.slice(0, 3);
+  recommendedSources.push(...fallbackSources);
+}
 
     return {
       source: s,
