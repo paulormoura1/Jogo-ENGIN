@@ -89,7 +89,8 @@ const App: React.FC = () => {
   const [currentChallenge, setCurrentChallenge] = useState<Challenge | null>(null);
   const [playerInput, setPlayerInput] = useState('');
   const [loading, setLoading] = useState(false);
-
+const [lastRecord, setLastRecord] = useState<ExtendedActionRecord | null>(null);
+  
   const [feedback, setFeedback] = useState<{
     verdict: string;
     explanation: string;
@@ -192,6 +193,7 @@ const submitAction = async () => {
     );
 
     const record: ExtendedActionRecord = {
+      setLastRecord(record);
       area: currentChallenge.requiredArea,
       title: currentChallenge.title,
       proposal: playerInput,
@@ -489,13 +491,13 @@ const submitAction = async () => {
   <span className="text-white font-bold">{feedback.pointsEarned}</span>
 </p>
                           <p className="text-[10px] md:text-xs text-blue-50 leading-relaxed mb-4">{feedback.explanation}</p>
-                        {(record.usedSources?.length || 0) > 0 && (
+                       {(lastRecord?.usedSources?.length || 0) > 0 && (
   <div className="mt-4 space-y-2">
     <p className="text-[9px] font-orbitron text-green-400 uppercase tracking-widest">
       Fontes acionadas
     </p>
     <ul className="space-y-1 text-[9px] text-blue-100/70">
-      {record.usedSources.slice(0, 3).map((s: any, idx: number) => (
+      {lastRecord?.usedSources?.slice(0, 3).map((s: any, idx: number) => (
         <li key={idx} className="leading-snug">
           <span className="text-white font-bold">{s.autores}</span>{" "}
           <span className="text-blue-200/80">— {s.titulo}</span>{" "}
@@ -515,13 +517,13 @@ const submitAction = async () => {
   </div>
 )}
 
-{(record.recommendedSources?.length || 0) > 0 && (
+{(lastRecord?.recommendedSources?.length || 0) > 0 && (
   <div className="mt-4 space-y-2">
     <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest">
       Recomendações para evoluir
     </p>
     <ul className="space-y-1 text-[9px] text-blue-100/70">
-      {record.recommendedSources.slice(0, 3).map((s: any, idx: number) => (
+      {lastRecord?.recommendedSources?.slice(0, 3).map((s: any, idx: number) => (
         <li key={idx} className="leading-snug">
           <span className="text-white font-bold">{s.autores}</span>{" "}
           <span className="text-blue-200/80">— {s.titulo}</span>{" "}
