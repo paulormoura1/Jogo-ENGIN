@@ -172,18 +172,12 @@ const submitAction = async () => {
   if (!currentChallenge || !canSubmit) return;
 
   setLoading(true);
-  try {
-    const localEval = evaluateProposalWithSources(
-      playerInput,
-      currentChallenge.requiredArea
-    );
 
-    const pointsEarned =
-      localEval.verdict === "CORRETA"
-        ? 40
-        : localEval.verdict === "PARCIAL"
-        ? 20
-        : 5;
+  try {
+    // const localEval = evaluateProposalWithSources(
+    //   playerInput,
+    //   currentChallenge.requiredArea
+    // );
 
     const feedbackData = await withTimeout(
       getGeminiFeedback(
@@ -195,80 +189,37 @@ const submitAction = async () => {
       ),
       45000
     );
-const combinedExplanation =
-  (feedbackData.explanation && feedbackData.explanation.trim().length > 0
-    ? feedbackData.explanation.trim()
-    : "") +
-  "\n\nJustificativa: sua proposta não apresentou termos ou evidências alinhadas às fontes-base desta área. Para evoluir, incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
+
+    const combinedExplanation =
+      (feedbackData.explanation && feedbackData.explanation.trim().length > 0
+        ? feedbackData.explanation.trim()
+        : "") +
+      "\n\nJustificativa: sua proposta não apresentou termos ou evidências alinhadas às fontes-base desta área. Para evoluir, incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
 
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
       title: currentChallenge.title,
       proposal: playerInput,
-      verdict: localEval.verdict,
-      pointsEarned,
-     explanation: combinedExplanation,
+      // verdict: localEval.verdict,
+      explanation: combinedExplanation,
       executors: [...gameState.activePlayers],
       references: feedbackData.references,
       sourceType: feedbackData.sourceType,
-      usedSources: localEval.usedSources.map((s) => ({
-        titulo: s.titulo,
-        autores: s.autores,
-        link: s.link,
-      })),
-      recommendedSources: localEval.recommendedSources.map((s) => ({
-        titulo: s.titulo,
-        autores: s.autores,
-        link: s.link,
-      })),
+      // usedSources: localEval.usedSources.map((s) => ({
+      //   titulo: s.titulo,
+      //   autores: s.autores,
+      //   link: s.link,
+      // })),
+      // recommendedSources: localEval.recommendedSources.map((s) => ({
+      //   titulo: s.titulo,
+      //   autores: s.autores,
+      //   link: s.link,
+      // })),
       timestamp: new Date().toLocaleString("pt-BR"),
     };
-setLastRecord(record);
-    
-    setRanking((prev) => {
-      const newRanking = [...prev];
-      gameState.activePlayers.forEach((player) => {
-        const idx = newRanking.findIndex(
-          (r) =>
-            r.playerName === player &&
-            r.area === currentChallenge.requiredArea
-        );
-        if (idx > -1) newRanking[idx].points += pointsEarned;
-        else
-          newRanking.push({
-            playerName: player,
-            area: currentChallenge.requiredArea,
-            points: pointsEarned,
-          });
-      });
-      return newRanking;
-    });
 
+    setLastRecord(record);
     setFeedback(feedbackData);
-
-    setGameState((prev) => ({
-      ...prev,
-      stability: Math.min(
-        100,
-        Math.max(0, prev.stability + (feedbackData.stabilityDelta || 0))
-      ),
-      innovation: Math.min(
-        100,
-        Math.max(0, prev.innovation + (feedbackData.innovationDelta || 0))
-      ),
-      report: [record, ...prev.report],
-      energy: {
-        ...prev.energy,
-        [currentChallenge.requiredArea]: Math.max(
-          0,
-          prev.energy[currentChallenge.requiredArea] - 25
-        ),
-      },
-      history: [
-        `[${feedbackData.verdict}] Registro em ${currentChallenge.requiredArea}.`,
-        ...prev.history,
-      ],
-    }));
 
   } catch (err) {
     console.error("submitAction error:", err);
