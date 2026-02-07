@@ -215,11 +215,14 @@ const submitAction = async () => {
       autores: s.autores,
       link: s.link,
       })),
-      timestamp: new Date().toLocaleString("pt-BR"),
-    };
+timestamp: new Date().toLocaleString("pt-BR"),
+};
 
-    setLastRecord(record);
-    setFeedback({
+setLastRecord(record);
+
+console.log("ANTES do setFeedback", { hasRecommended: localEval.recommendedSources?.length });
+
+setFeedback({
   ...feedbackData,
   references: feedbackData.references,
   sourceType: feedbackData.sourceType,
@@ -229,6 +232,8 @@ const submitAction = async () => {
     link: s.link,
   })),
 });
+
+console.log("DEPOIS do setFeedback");
 
   } catch (err) {
     console.error("submitAction error:", err);
