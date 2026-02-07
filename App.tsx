@@ -228,13 +228,11 @@ setFeedback({
   pointsEarned,
   references: feedbackData.references ?? [],
   sourceType: feedbackData.sourceType ?? "local",
-});
-
- recommendedSources: localEval.recommendedSources.map((s) => ({
-  titulo: s.titulo,
-  autores: s.autores,
-  link: s.link,
-})),
+  recommendedSources: localEval.recommendedSources.map((s) => ({
+    titulo: s.titulo,
+    autores: s.autores,
+    link: s.link,
+  })),
 });
 
 console.log("DEPOIS do setFeedback");
