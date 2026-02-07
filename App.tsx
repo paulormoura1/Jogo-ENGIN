@@ -223,7 +223,7 @@ setLastRecord(record);
 console.log("ANTES do setFeedback", { hasRecommended: localEval.recommendedSources?.length });
 
 setFeedback({
-  verdict: localEval.verdict,
+  verdict: feedbackData.verdict,
   explanation: combinedExplanation,
   pointsEarned,
   references: feedbackData.references ?? [],
