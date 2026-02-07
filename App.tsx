@@ -223,9 +223,13 @@ setLastRecord(record);
 console.log("ANTES do setFeedback", { hasRecommended: localEval.recommendedSources?.length });
 
 setFeedback({
-  ...feedbackData,
-  references: feedbackData.references,
-  sourceType: feedbackData.sourceType,
+  verdict: localEval.verdict,
+  explanation: combinedExplanation,
+  pointsEarned,
+  references: feedbackData.references ?? [],
+  sourceType: feedbackData.sourceType ?? "local",
+});
+
   recommendedSources: localEval.recommendedSources.map((s) => ({
     titulo: s.titulo,
     autores: s.autores,
