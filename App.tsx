@@ -1,4 +1,4 @@
-0import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GamePhase, ResearchArea, GameState, Challenge, ActionRecord } from './types';
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from './constants';
 import { getGeminiFeedback, generateChallenge } from './geminiService';
