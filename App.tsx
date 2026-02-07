@@ -219,7 +219,16 @@ const submitAction = async () => {
     };
 
     setLastRecord(record);
-    setFeedback(feedbackData);
+    setFeedback({
+  ...feedbackData,
+  references: feedbackData.references,
+  sourceType: feedbackData.sourceType,
+  recommendedSources: localEval.recommendedSources.map((s) => ({
+    titulo: s.titulo,
+    autores: s.autores,
+    link: s.link,
+  })),
+});
 
   } catch (err) {
     console.error("submitAction error:", err);
@@ -477,13 +486,13 @@ const submitAction = async () => {
   </div>
 )}
 
-{(lastRecord?.recommendedSources?.length || 0) > 0 && (
+{((feedback as any)?.recommendedSources?.length || 0) > 0 && (
   <div className="mt-4 space-y-2">
     <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest">
       Recomendações para evoluir
     </p>
     <ul className="space-y-1 text-[9px] text-blue-100/70">
-      {lastRecord?.recommendedSources?.slice(0, 3).map((s: any, idx: number) => (
+    {(feedback as any)?.recommendedSources?.slice(0, 3).map((s: any, idx: number) => (
         <li key={idx} className="leading-snug">
           <span className="text-white font-bold">{s.autores}</span>{" "}
           <span className="text-blue-200/80">— {s.titulo}</span>{" "}
