@@ -174,10 +174,10 @@ const submitAction = async () => {
   setLoading(true);
 
   try {
-    // const localEval = evaluateProposalWithSources(
-    //   playerInput,
-    //   currentChallenge.requiredArea
-    // );
+  const localEval = evaluateProposalWithSources(
+  playerInput,
+  currentChallenge.requiredArea
+  );
 
     const feedbackData = await withTimeout(
       getGeminiFeedback(
@@ -210,11 +210,11 @@ const submitAction = async () => {
       //   autores: s.autores,
       //   link: s.link,
       // })),
-      // recommendedSources: localEval.recommendedSources.map((s) => ({
-      //   titulo: s.titulo,
-      //   autores: s.autores,
-      //   link: s.link,
-      // })),
+      recommendedSources: localEval.recommendedSources.map((s) => ({
+      titulo: s.titulo,
+      autores: s.autores,
+      link: s.link,
+      })),
       timestamp: new Date().toLocaleString("pt-BR"),
     };
 
