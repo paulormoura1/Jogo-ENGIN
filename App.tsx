@@ -237,9 +237,11 @@ setFeedback({
 
 console.log("DEPOIS do setFeedback");
 
-  } catch (err) {
-    console.error("submitAction error:", err);
-  } finally {
+} catch (err) {
+  console.error("submitAction error:", err);
+  alert("ERRO no submitAction. Veja o console (F12) para detalhes.");
+} finally {
+
     setLoading(false);
   }
 };
