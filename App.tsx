@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+0import React, { useState, useEffect } from 'react';
 import { GamePhase, ResearchArea, GameState, Challenge, ActionRecord } from './types';
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from './constants';
 import { getGeminiFeedback, generateChallenge } from './geminiService';
@@ -230,11 +230,11 @@ setFeedback({
   sourceType: feedbackData.sourceType ?? "local",
 });
 
-  recommendedSources: localEval.recommendedSources.map((s) => ({
-    titulo: s.titulo,
-    autores: s.autores,
-    link: s.link,
-  })),
+ recommendedSources: localEval.recommendedSources.map((s) => ({
+  titulo: s.titulo,
+  autores: s.autores,
+  link: s.link,
+})),
 });
 
 console.log("DEPOIS do setFeedback");
