@@ -22,7 +22,9 @@ const evaluateProposalWithSources = (
   const sources = getSourcesByArea(area);
 
   const text = proposal.toLowerCase();
-
+const usedSources: any[] = [];
+const recommendedSources: any[] = [];
+  
   const perSource = sources.map((s) => {
     const keywords = s.palavrasChave || [];
     const hits = keywords.filter((k) => text.includes(k.toLowerCase())).length;
