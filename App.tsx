@@ -169,6 +169,7 @@ function withTimeout<T>(
 }
 
 const submitAction = async () => {
+  console.log("[CLICK] submitAction disparou. playerInput =", playerInput);
   if (!currentChallenge || !canSubmit) return;
 
   setLoading(true);
