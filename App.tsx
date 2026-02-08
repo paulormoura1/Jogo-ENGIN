@@ -590,5 +590,20 @@ const StatBar = ({ label, value, color }: { label: string; value: number; color:
     </div>
   </div>
 );
+async function getGeminiFeedback(
+  challengeDescription: string,
+  gameState: any,
+  playerInput: string,
+  activePlayers: string[],
+  requiredArea: string
+) {
+  return {
+    verdict: "CORRETA",
+    explanation: `Proposta recebida com sucesso: "${playerInput}"`,
+    pointsEarned: 10,
+    references: [],
+    sourceType: "local",
+  };
+}
 
-export default App;    
+export default App;   
