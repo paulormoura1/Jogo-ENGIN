@@ -180,16 +180,18 @@ const submitAction = async () => {
   currentChallenge.requiredArea
   );
 
-    const feedbackData = await withTimeout(
-      (
-        currentChallenge.description,
-        gameState,
-        playerInput,
-        gameState.activePlayers,
-        currentChallenge.requiredArea
-      ),
-      45000
-    );
+  const feedbackData = await withTimeout(
+  Promise.resolve(
+    getGeminiFeedback(
+      currentChallenge.description,
+      gameState,
+      playerInput,
+      gameState.activePlayers,
+      currentChallenge.requiredArea
+    )
+  ),
+  45000
+);
 
     const combinedExplanation =
       (feedbackData.explanation && feedbackData.explanation.trim().length > 0
