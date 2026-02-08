@@ -22,19 +22,16 @@ const evaluateProposalWithSources = (
   const sources = getSourcesByArea(area);
 
   const text = proposal.toLowerCase();
-const usedSources: any[] = [];
-const recommendedSources: any[] = [];
   
   const perSource = sources.map((s) => {
     const keywords = s.palavrasChave || [];
     const hits = keywords.filter((k) => text.includes(k.toLowerCase())).length;
     const coverage = keywords.length ? hits / keywords.length : 0;
 // REGRA PEDAGÓGICA: erro também ensina
-if (fontesUsadas.length === 0 && fontesRecomendadas.length === 0) {
-  const fallbackSources = fontes.slice(0, 3);
-  fontesRecomendadas.push(...fallbackSources);
+if (usedSources.length === 0 && recommendedSources.length === 0) {
+  const fallbackSources = sources.slice(0, 3);
+  recommendedSources.push(...fallbackSources);
 }
-
     return {
       source: s,
       hits,
@@ -47,7 +44,7 @@ if (fontesUsadas.length === 0 && fontesRecomendadas.length === 0) {
   // score simples e previsível
   const score = Math.min(100, totalHits * 10);
 
-  const usedSources = perSource
+   = perSource
     .filter((s) => s.coverage >= 0.4)
     .map((s) => s.source);
 
