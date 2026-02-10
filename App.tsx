@@ -169,83 +169,76 @@ function withTimeout<T>(
 
 const submitAction = async () => {
   console.log("[CLICK] submitAction disparou. playerInput =", playerInput);
-  if (!currentChallenge || !canSubmit) return;
+  if (!currentChallenge || !canSubmit || loading) return;
 
   setLoading(true);
 
   try {
-    // 1) Avaliação local primeiro (sempre)
-    const localEval = evaluateProposalWithSources(
-      playerInput,
-      currentChallenge.requiredArea
-    );
+    // localEval protegido
+    let localEval: any;
+    try {
+      localEval = evaluateProposalWithSources(playerInput, currentChallenge.requiredArea);
+    } catch (e) {
+      console.warn("evaluateProposalWithSources falhou, fallback vazio:", e);
+      localEval = { score: 0, verdict: "INCORRETA", usedSources: [], recommendedSources: [] };
+    }
 
-    // 2) Normalização segura (NENHUM map inline depois disso)
-    const safeUsedSources = Array.isArray(localEval?.usedSources)
-      ? localEval.usedSources
-      : [];
+    const safeUsed = Array.isArray(localEval?.usedSources) ? localEval.usedSources : [];
+    const safeRec = Array.isArray(localEval?.recommendedSources) ? localEval.recommendedSources : [];
 
-    const safeRecommendedSources = Array.isArray(localEval?.recommendedSources)
-      ? localEval.recommendedSources
-      : [];
+    let usedMapped = safeUsed.map((s: any) => ({ titulo: s.titulo, autores: s.autores, link: s.link }));
+    let recommendedMapped = safeRec.map((s: any) => ({ titulo: s.titulo, autores: s.autores, link: s.link }));
 
-    const usedMapped = safeUsedSources.map((s) => ({
-      titulo: s.titulo,
-      autores: s.autores,
-      link: s.link,
-    }));
+    // feedbackData com fallback para 429/503
+    let feedbackData: any;
+    try {
+      feedbackData = await withTimeout(
+        Promise.resolve(
+          getGeminiFeedback(
+            currentChallenge.description,
+            gameState,
+            playerInput,
+            gameState.activePlayers,
+            currentChallenge.requiredArea
+          )
+        ),
+        45000
+      );
+    } catch (e) {
+      console.warn("Gemini falhou (429/503/etc), usando fallback local:", e);
+      feedbackData = {
+        verdict: localEval.verdict ?? "PARCIAL",
+        explanation: `Proposta recebida com sucesso: "${playerInput}"`,
+        pointsEarned: 10,
+        references: [],
+        sourceType: "local",
+      };
+    }
 
-    const recommendedMapped = safeRecommendedSources.map((s) => ({
-      titulo: s.titulo,
-      autores: s.autores,
-      link: s.link,
-    }));
-
-   // 3) Feedback (IA/stub) com timeout + FALLBACK
-let feedbackData: any;
-
-try {
-  feedbackData = await withTimeout(
-    Promise.resolve(
-      getGeminiFeedback(
-        currentChallenge.description,
-        gameState,
-        playerInput,
-        gameState.activePlayers,
-        currentChallenge.requiredArea
-      )
-    ),
-    45000
-  );
-} catch (e) {
-  console.warn("Gemini falhou, usando fallback local:", e);
-  feedbackData = {
-    verdict: localEval.verdict ?? "PARCIAL",
-    explanation: `Proposta recebida com sucesso: "${playerInput}"`,
-    pointsEarned: 10,
-    references: [],
-    sourceType: "local",
-  };
-}
-
-
-    // 4) Pontos SEM TDZ (declarado antes de uso)
     const pointsEarned =
       typeof feedbackData.pointsEarned === "number" ? feedbackData.pointsEarned : 10;
 
-    // 5) Explicação combinada (mantive seu texto)
+    // Fallback pedagógico de fontes (se não vier nada)
+    if (usedMapped.length === 0 && recommendedMapped.length === 0) {
+      const fallback = (sources ?? []).slice(0, 3).map((s: any) => ({
+        titulo: s.titulo,
+        autores: s.autores,
+        link: s.link,
+      }));
+      recommendedMapped = fallback;
+    }
+
     const combinedExplanation =
       (feedbackData.explanation && feedbackData.explanation.trim().length > 0
         ? feedbackData.explanation.trim()
         : "") +
       "\n\nJustificativa: sua proposta não apresentou termos ou evidências alinhadas às fontes-base desta área. Para evoluir, incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
 
-    // 6) Record COMPLETO com fontes (para UI renderizar via lastRecord)
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
       title: currentChallenge.title,
       proposal: playerInput,
-      verdict: feedbackData.verdict, // (você tinha comentado; aqui fica consistente com a tela)
+      verdict: feedbackData.verdict,
       explanation: combinedExplanation,
       executors: [...gameState.activePlayers],
       references: feedbackData.references ?? [],
@@ -258,12 +251,8 @@ try {
 
     setLastRecord(record);
 
-    console.log("ANTES do setFeedback", {
-      hasUsed: usedMapped.length,
-      hasRecommended: recommendedMapped.length,
-    });
+    console.log("ANTES do setFeedback", { hasRec: recommendedMapped.length, hasUsed: usedMapped.length });
 
-    // 7) Feedback também recebe fontes (caso UI use feedback ao invés de lastRecord)
     setFeedback({
       verdict: feedbackData.verdict,
       explanation: combinedExplanation,
