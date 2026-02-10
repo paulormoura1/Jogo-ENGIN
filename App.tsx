@@ -178,7 +178,10 @@ const submitAction = async () => {
   playerInput,
   currentChallenge.requiredArea
   );
-
+const safeRecommendedSources = Array.isArray(localEval?.recommendedSources)
+  ? localEval.recommendedSources
+  : [];
+    
   const feedbackData = await withTimeout(
   Promise.resolve(
     getGeminiFeedback(
@@ -212,7 +215,7 @@ const submitAction = async () => {
       //   autores: s.autores,
       //   link: s.link,
       // })),
-      recommendedSources: localEval.recommendedSources.map((s) => ({
+      recommendedSources: safeRecommendedSources.map((s) => ({ ... }))
       titulo: s.titulo,
       autores: s.autores,
       link: s.link,
@@ -234,12 +237,11 @@ const pointsEarned =
   pointsEarned,
   references: feedbackData.references ?? [],
   sourceType: feedbackData.sourceType ?? "local",
-  recommendedSources: localEval.recommendedSources.map((s) => ({
-    titulo: s.titulo,
-    autores: s.autores,
-    link: s.link,
-  })),
-});
+  recommendedSources: safeRecommendedSources.map((s) => ({
+  titulo: s.titulo,
+  autores: s.autores,
+  link: s.link,
+})),
 
 console.log("DEPOIS do setFeedback");
 
