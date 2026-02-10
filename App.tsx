@@ -44,9 +44,9 @@ if (usedSources.length === 0 && recommendedSources.length === 0) {
   // score simples e previsível
   const score = Math.min(100, totalHits * 10);
 
-   = perSource
-    .filter((s) => s.coverage >= 0.4)
-    .map((s) => s.source);
+  const usedSources = perSource
+  .filter((s) => s.coverage >= 0.4)
+  .map((s) => s.source);
 
   const recommendedSources = perSource
     .filter((s) => s.coverage < 0.4)
