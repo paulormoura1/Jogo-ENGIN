@@ -201,19 +201,33 @@ const submitAction = async () => {
       link: s.link,
     }));
 
-    // 3) Feedback (IA/stub) com timeout
-    const feedbackData = await withTimeout(
-      Promise.resolve(
-        getGeminiFeedback(
-          currentChallenge.description,
-          gameState,
-          playerInput,
-          gameState.activePlayers,
-          currentChallenge.requiredArea
-        )
-      ),
-      45000
-    );
+   // 3) Feedback (IA/stub) com timeout + FALLBACK
+let feedbackData: any;
+
+try {
+  feedbackData = await withTimeout(
+    Promise.resolve(
+      getGeminiFeedback(
+        currentChallenge.description,
+        gameState,
+        playerInput,
+        gameState.activePlayers,
+        currentChallenge.requiredArea
+      )
+    ),
+    45000
+  );
+} catch (e) {
+  console.warn("Gemini falhou, usando fallback local:", e);
+  feedbackData = {
+    verdict: localEval.verdict ?? "PARCIAL",
+    explanation: `Proposta recebida com sucesso: "${playerInput}"`,
+    pointsEarned: 10,
+    references: [],
+    sourceType: "local",
+  };
+}
+
 
     // 4) Pontos SEM TDZ (declarado antes de uso)
     const pointsEarned =
