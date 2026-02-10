@@ -223,8 +223,12 @@ timestamp: new Date().toLocaleString("pt-BR"),
 setLastRecord(record);
 
 console.log("ANTES do setFeedback", { hasRecommended: localEval.recommendedSources?.length });
-
-setFeedback({
+const pointsEarned =
+  typeof feedbackData.pointsEarned === "number"
+    ? feedbackData.pointsEarned
+    : 10;
+    
+  setFeedback({
   verdict: feedbackData.verdict,
   explanation: combinedExplanation,
   pointsEarned,
