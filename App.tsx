@@ -174,83 +174,97 @@ const submitAction = async () => {
   setLoading(true);
 
   try {
-  const localEval = evaluateProposalWithSources(
-  playerInput,
-  currentChallenge.requiredArea
-  );
-const safeRecommendedSources = Array.isArray(localEval?.recommendedSources)
-  ? localEval.recommendedSources
-  : [];
-    
-  const feedbackData = await withTimeout(
-  Promise.resolve(
-    getGeminiFeedback(
-      currentChallenge.description,
-      gameState,
+    // 1) Avaliação local primeiro (sempre)
+    const localEval = evaluateProposalWithSources(
       playerInput,
-      gameState.activePlayers,
       currentChallenge.requiredArea
-    )
-  ),
-  45000
-);
+    );
 
+    // 2) Normalização segura (NENHUM map inline depois disso)
+    const safeUsedSources = Array.isArray(localEval?.usedSources)
+      ? localEval.usedSources
+      : [];
+
+    const safeRecommendedSources = Array.isArray(localEval?.recommendedSources)
+      ? localEval.recommendedSources
+      : [];
+
+    const usedMapped = safeUsedSources.map((s) => ({
+      titulo: s.titulo,
+      autores: s.autores,
+      link: s.link,
+    }));
+
+    const recommendedMapped = safeRecommendedSources.map((s) => ({
+      titulo: s.titulo,
+      autores: s.autores,
+      link: s.link,
+    }));
+
+    // 3) Feedback (IA/stub) com timeout
+    const feedbackData = await withTimeout(
+      Promise.resolve(
+        getGeminiFeedback(
+          currentChallenge.description,
+          gameState,
+          playerInput,
+          gameState.activePlayers,
+          currentChallenge.requiredArea
+        )
+      ),
+      45000
+    );
+
+    // 4) Pontos SEM TDZ (declarado antes de uso)
+    const pointsEarned =
+      typeof feedbackData.pointsEarned === "number" ? feedbackData.pointsEarned : 10;
+
+    // 5) Explicação combinada (mantive seu texto)
     const combinedExplanation =
       (feedbackData.explanation && feedbackData.explanation.trim().length > 0
         ? feedbackData.explanation.trim()
         : "") +
       "\n\nJustificativa: sua proposta não apresentou termos ou evidências alinhadas às fontes-base desta área. Para evoluir, incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
 
+    // 6) Record COMPLETO com fontes (para UI renderizar via lastRecord)
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
       title: currentChallenge.title,
       proposal: playerInput,
-      // verdict: localEval.verdict,
+      verdict: feedbackData.verdict, // (você tinha comentado; aqui fica consistente com a tela)
       explanation: combinedExplanation,
       executors: [...gameState.activePlayers],
-      references: feedbackData.references,
-      sourceType: feedbackData.sourceType,
-      // usedSources: localEval.usedSources.map((s) => ({
-      //   titulo: s.titulo,
-      //   autores: s.autores,
-      //   link: s.link,
-      // })),
-     recommendedSources: safeRecommendedSources.map((s) => ({
-  titulo: s.titulo,
-  autores: s.autores,
-  link: s.link,
-})),
-timestamp: new Date().toLocaleString("pt-BR"),
-};
+      references: feedbackData.references ?? [],
+      sourceType: feedbackData.sourceType ?? "local",
+      pointsEarned,
+      usedSources: usedMapped,
+      recommendedSources: recommendedMapped,
+      timestamp: new Date().toLocaleString("pt-BR"),
+    };
 
-setLastRecord(record);
+    setLastRecord(record);
 
-console.log("ANTES do setFeedback", { hasRecommended: localEval.recommendedSources?.length });
-const pointsEarned =
-  typeof feedbackData.pointsEarned === "number"
-    ? feedbackData.pointsEarned
-    : 10;
-    
-  setFeedback({
-  verdict: feedbackData.verdict,
-  explanation: combinedExplanation,
-  pointsEarned,
-  references: feedbackData.references ?? [],
-  sourceType: feedbackData.sourceType ?? "local",
-  recommendedSources: safeRecommendedSources.map((s) => ({
-  titulo: s.titulo,
-  autores: s.autores,
-  link: s.link,
-})),
-});
-    
-console.log("DEPOIS do setFeedback");
+    console.log("ANTES do setFeedback", {
+      hasUsed: usedMapped.length,
+      hasRecommended: recommendedMapped.length,
+    });
 
-} catch (err) {
-  console.error("submitAction error:", err);
-  alert("ERRO no submitAction. Veja o console (F12) para detalhes.");
-} finally {
+    // 7) Feedback também recebe fontes (caso UI use feedback ao invés de lastRecord)
+    setFeedback({
+      verdict: feedbackData.verdict,
+      explanation: combinedExplanation,
+      pointsEarned,
+      references: feedbackData.references ?? [],
+      sourceType: feedbackData.sourceType ?? "local",
+      usedSources: usedMapped,
+      recommendedSources: recommendedMapped,
+    });
 
+    console.log("DEPOIS do setFeedback");
+  } catch (err) {
+    console.error("submitAction error:", err);
+    alert("ERRO no submitAction. Veja o console (F12) para detalhes.");
+  } finally {
     setLoading(false);
   }
 };
