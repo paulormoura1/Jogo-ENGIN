@@ -215,11 +215,11 @@ const safeRecommendedSources = Array.isArray(localEval?.recommendedSources)
       //   autores: s.autores,
       //   link: s.link,
       // })),
-      recommendedSources: safeRecommendedSources.map((s) => ({ ... }))
-      titulo: s.titulo,
-      autores: s.autores,
-      link: s.link,
-      })),
+     recommendedSources: safeRecommendedSources.map((s) => ({
+  titulo: s.titulo,
+  autores: s.autores,
+  link: s.link,
+})),
 timestamp: new Date().toLocaleString("pt-BR"),
 };
 
