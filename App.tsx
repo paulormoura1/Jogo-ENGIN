@@ -242,7 +242,8 @@ const pointsEarned =
   autores: s.autores,
   link: s.link,
 })),
-
+});
+    
 console.log("DEPOIS do setFeedback");
 
 } catch (err) {
