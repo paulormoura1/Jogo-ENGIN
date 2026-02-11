@@ -1,4 +1,4 @@
-import { ResearchArea } from "../../types";
+import { ResearchArea } from "../tipos";
 
 /**
  * Tipos de fonte aceitos no jogo
