@@ -189,54 +189,84 @@ const submitAction = async () => {
     let usedMapped = safeUsed.map((s: any) => ({ titulo: s.titulo, autores: s.autores, link: s.link }));
     let recommendedMapped = safeRec.map((s: any) => ({ titulo: s.titulo, autores: s.autores, link: s.link }));
 
-    // feedbackData com fallback para 429/503
-    let feedbackData: any;
-    try {
-      feedbackData = await withTimeout(
-        Promise.resolve(
-          getGeminiFeedback(
-            currentChallenge.description,
-            gameState,
-            playerInput,
-            gameState.activePlayers,
-            currentChallenge.requiredArea
-          )
-        ),
-        45000
-      );
-    } catch (e) {
-      console.warn("Gemini falhou (429/503/etc), usando fallback local:", e);
-      feedbackData = {
-        verdict: localEval.verdict ?? "PARCIAL",
-        explanation: `Proposta recebida com sucesso: "${playerInput}"`,
-        pointsEarned: 10,
-        references: [],
-        sourceType: "local",
-      };
-    }
+ // 1️⃣ Tenta Gemini
+let feedbackData: any = null;
 
-    const pointsEarned =
-      typeof feedbackData.pointsEarned === "number" ? feedbackData.pointsEarned : 10;
-
-    // Fallback pedagógico de fontes (se não vier nada)
-if (usedMapped.length === 0 && recommendedMapped.length === 0) {
-  const areaSources = getSourcesByArea(currentChallenge.requiredArea);
-
-  const fallback = areaSources.slice(0, 3).map((s: any) => ({
-    titulo: s.titulo,
-    autores: s.autores,
-    link: s.link,
-  }));
-
-  recommendedMapped = fallback;
+try {
+  feedbackData = await withTimeout(
+    Promise.resolve(
+      getGeminiFeedback(
+        currentChallenge.description,
+        gameState,
+        playerInput,
+        gameState.activePlayers,
+        currentChallenge.requiredArea
+      )
+    ),
+    45000
+  );
+} catch (e) {
+  console.warn("Gemini falhou (429/503/etc), usando fallback local:", e);
+  feedbackData = null;
 }
 
-    const combinedExplanation =
-      (feedbackData.explanation && feedbackData.explanation.trim().length > 0
-        ? feedbackData.explanation.trim()
-        : "") +
-      "\n\nJustificativa: sua proposta não apresentou termos ou evidências alinhadas às fontes-base desta área. Para evoluir, incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
+// 2️⃣ Avaliação local SEMPRE disponível
+const area = currentChallenge.requiredArea;
+const localEval = evaluateProposalWithSources(playerInput, area);
 
+// 3️⃣ Normalização das fontes
+const normalizeSourceItem = (s: any) => {
+  const tituloBase = s?.titulo ?? "Referência";
+  const ano = typeof s?.ano === "number" ? s.ano : undefined;
+  const titulo = ano ? `${tituloBase} (${ano})` : tituloBase;
+
+  return {
+    titulo,
+    autores: s?.autores ?? "Autor(es) não informado(s)",
+    link: s?.link ?? "https://repositorio.ufsc.br/",
+  };
+};
+
+const usedMapped = (localEval.usedSources ?? []).map(normalizeSourceItem);
+let recommendedMapped = (localEval.recommendedSources ?? []).map(normalizeSourceItem);
+
+// 4️⃣ Fallback pedagógico (sempre mostrar referências)
+if (usedMapped.length === 0 && recommendedMapped.length === 0) {
+  const areaSources = getSourcesByArea(area);
+  recommendedMapped = areaSources.slice(0, 3).map(normalizeSourceItem);
+}
+
+// 5️⃣ Se Gemini falhou, gera feedback científico local
+if (!feedbackData) {
+  const topRefs = (usedMapped.length ? usedMapped : recommendedMapped).slice(0, 3);
+
+  const refsText = topRefs
+    .map((r) => `- ${r.autores}: ${r.titulo}`)
+    .join("\n");
+
+  feedbackData = {
+    verdict: "CORRETA",
+    explanation:
+      `Proposta recebida com sucesso: "${playerInput}"\n\n` +
+      `Base científica do eixo:\n${refsText}`,
+    pointsEarned: 10,
+    references: topRefs.map((r) => `${r.autores} — ${r.titulo}`),
+    sourceType: "LOCAL_FALLBACK",
+  };
+}
+
+// 6️⃣ Pontuação
+const pointsEarned =
+  typeof feedbackData.pointsEarned === "number"
+    ? feedbackData.pointsEarned
+    : 10;
+
+// 7️⃣ Explicação combinada
+const combinedExplanation =
+  (feedbackData.explanation && feedbackData.explanation.trim().length > 0
+    ? feedbackData.explanation.trim()
+    : "") +
+  "\n\nJustificativa: incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
       title: currentChallenge.title,
