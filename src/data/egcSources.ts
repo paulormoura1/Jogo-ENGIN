@@ -19,10 +19,9 @@ export interface EGCSource {
  * Base inicial de fontes científicas por área (EGC).
  * Conteúdo curado, auditável e evolutivo.
  *
- * Regra prática do jogo:
- * - link pode ser geral (repositório), mas deve existir.
- * - autores/título/ano/palavrasChave precisam estar preenchidos para dar match
- *   e para a recomendação aparecer no feedback.
+ * Regra do projeto (conforme solicitado):
+ * - Link pode ser geral do repositório, mas deve existir.
+ * - Deve haver autores/título/ano e palavras-chave para melhorar o match.
  */
 export const EGC_SOURCES: EGCSource[] = [
   {
@@ -34,27 +33,22 @@ export const EGC_SOURCES: EGCSource[] = [
     ano: 2021,
     instituicao: "Universidade Federal de Santa Catarina",
     tipo: "UFSC",
-    // Link geral (conforme sua regra). Mantido, mas sempre presente:
     link: "https://repositorio.ufsc.br/",
-    // Palavras-chave mais “operacionais” para o evaluator casar com propostas reais:
     palavrasChave: [
       "governança do conhecimento",
       "governança",
       "auditoria do conhecimento",
-      "maturidade em gestão do conhecimento",
       "maturidade em GC",
       "maturidade organizacional",
       "estrutura de decisão",
       "decisão estratégica",
       "políticas de GC",
-      "compliance e conhecimento",
       "indicadores de GC",
-      "modelo de governança",
-      "setor público",
+      "compliance",
+      "gestão pública",
       "organizações públicas",
     ],
     observacao:
-      "Base conceitual do EGC/UFSC para desafios de Governança do Conhecimento. Link direciona ao repositório geral (regra do projeto).",
+      "Base conceitual para desafios de Governança do Conhecimento. Link geral do repositório (regra do projeto).",
   },
 ];
-
