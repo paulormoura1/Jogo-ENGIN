@@ -219,14 +219,17 @@ const submitAction = async () => {
       typeof feedbackData.pointsEarned === "number" ? feedbackData.pointsEarned : 10;
 
     // Fallback pedagógico de fontes (se não vier nada)
-    if (usedMapped.length === 0 && recommendedMapped.length === 0) {
-      const fallback = (sources ?? []).slice(0, 3).map((s: any) => ({
-        titulo: s.titulo,
-        autores: s.autores,
-        link: s.link,
-      }));
-      recommendedMapped = fallback;
-    }
+if (usedMapped.length === 0 && recommendedMapped.length === 0) {
+  const areaSources = getSourcesByArea(currentChallenge.requiredArea);
+
+  const fallback = areaSources.slice(0, 3).map((s: any) => ({
+    titulo: s.titulo,
+    autores: s.autores,
+    link: s.link,
+  }));
+
+  recommendedMapped = fallback;
+}
 
     const combinedExplanation =
       (feedbackData.explanation && feedbackData.explanation.trim().length > 0
