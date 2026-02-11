@@ -174,21 +174,7 @@ const submitAction = async () => {
   setLoading(true);
 
   try {
-    // localEval protegido
-    let localEval: any;
-    try {
-      localEval = evaluateProposalWithSources(playerInput, currentChallenge.requiredArea);
-    } catch (e) {
-      console.warn("evaluateProposalWithSources falhou, fallback vazio:", e);
-      localEval = { score: 0, verdict: "INCORRETA", usedSources: [], recommendedSources: [] };
-    }
-
-    const safeUsed = Array.isArray(localEval?.usedSources) ? localEval.usedSources : [];
-    const safeRec = Array.isArray(localEval?.recommendedSources) ? localEval.recommendedSources : [];
-
-    let usedMapped = safeUsed.map((s: any) => ({ titulo: s.titulo, autores: s.autores, link: s.link }));
-    let recommendedMapped = safeRec.map((s: any) => ({ titulo: s.titulo, autores: s.autores, link: s.link }));
-
+    
  // 1️⃣ Tenta Gemini
 let feedbackData: any = null;
 
