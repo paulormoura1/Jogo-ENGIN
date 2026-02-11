@@ -208,16 +208,22 @@ try {
   localEval = { usedSources: [], recommendedSources: [] };
 }
 
-// 3️⃣ Normalização das fontes (blindada)
 const normalizeSourceItem = (s: any) => {
   const tituloBase = s?.titulo ?? "Referência";
   const ano = typeof s?.ano === "number" ? s.ano : undefined;
   const titulo = ano ? `${tituloBase} (${ano})` : tituloBase;
 
+  let link = s?.link ?? "https://repositorio.ufsc.br/";
+
+  // ✅ Garante que o link seja absoluto
+  if (link && !link.startsWith("http")) {
+    link = `https://${link.replace(/^\/+/, "")}`;
+  }
+
   return {
     titulo,
     autores: s?.autores ?? "Autor(es) não informado(s)",
-    link: s?.link ?? "https://repositorio.ufsc.br/",
+    link,
   };
 };
 
