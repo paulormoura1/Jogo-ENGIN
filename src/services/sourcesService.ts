@@ -6,8 +6,14 @@ export type AnySource = (typeof EGC_SOURCES)[number] | (typeof GC_SOURCES)[numbe
 
 const ALL_SOURCES: AnySource[] = [...EGC_SOURCES, ...GC_SOURCES];
 
+/**
+ * Regra do jogo:
+ * - Sempre devolver alguma fonte para evitar telas “sem autores/link”.
+ * - Se não houver fontes cadastradas para o eixo (area), retorna fallback (ALL_SOURCES).
+ */
 export function getSourcesByArea(area: ResearchArea): AnySource[] {
-  return ALL_SOURCES.filter((s) => s.area === area);
+  const filtered = ALL_SOURCES.filter((s) => s.area === area);
+  return filtered.length > 0 ? filtered : ALL_SOURCES;
 }
 
 export function searchSources(term: string, area?: ResearchArea): AnySource[] {
@@ -20,9 +26,10 @@ export function searchSources(term: string, area?: ResearchArea): AnySource[] {
     const hay = [
       s.titulo,
       s.autores,
-      s.instituicao,
-      ...(s.palavrasChave ?? []),
-      s.observacao ?? "",
+      (s as any).instituicao ?? "",
+      ...(((s as any).palavrasChave ?? []) as string[]),
+      (s as any).observacao ?? "",
+      String((s as any).ano ?? ""),
     ]
       .join(" ")
       .toLowerCase();
