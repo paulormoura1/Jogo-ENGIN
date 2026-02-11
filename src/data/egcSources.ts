@@ -117,5 +117,4 @@ export const EGC_SOURCES: EGCSource[] = [
     observacao: "Base conceitual para desafios relacionados à educação corporativa em rede."
   }
 ];
-
 ];
