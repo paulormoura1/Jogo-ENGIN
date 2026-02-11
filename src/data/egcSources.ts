@@ -15,40 +15,107 @@ export interface EGCSource {
   observacao?: string;
 }
 
-/**
- * Base inicial de fontes científicas por área (EGC).
- * Conteúdo curado, auditável e evolutivo.
- *
- * Regra do projeto (conforme solicitado):
- * - Link pode ser geral do repositório, mas deve existir.
- * - Deve haver autores/título/ano e palavras-chave para melhorar o match.
- */
 export const EGC_SOURCES: EGCSource[] = [
+
+  /**
+   * ================================
+   * GOVERNANÇA DO CONHECIMENTO
+   * ================================
+   */
   {
-    id: "egc-ufsc-gov-001",
+    id: "egc-gov-001",
     area: ResearchArea.GOVERNANCE_KNOWLEDGE,
     titulo: "Governança do Conhecimento em Organizações Públicas",
-    autores:
-      "Programa de Pós-Graduação em Engenharia e Gestão do Conhecimento (EGC/UFSC)",
+    autores: "Programa EGC/UFSC",
     ano: 2021,
-    instituicao: "Universidade Federal de Santa Catarina",
+    instituicao: "UFSC",
     tipo: "UFSC",
     link: "https://repositorio.ufsc.br/",
     palavrasChave: [
-      "governança do conhecimento",
       "governança",
-      "auditoria do conhecimento",
+      "governança do conhecimento",
       "maturidade em GC",
-      "maturidade organizacional",
-      "estrutura de decisão",
-      "decisão estratégica",
-      "políticas de GC",
-      "indicadores de GC",
-      "compliance",
-      "gestão pública",
-      "organizações públicas",
+      "indicadores estratégicos",
+      "decisão organizacional",
+      "políticas institucionais"
     ],
-    observacao:
-      "Base conceitual para desafios de Governança do Conhecimento. Link geral do repositório (regra do projeto).",
+    observacao: "Referência conceitual aplicada à governança estratégica do conhecimento."
   },
+
+  /**
+   * ================================
+   * GESTÃO DO CONHECIMENTO
+   * ================================
+   */
+  {
+    id: "egc-gc-001",
+    area: ResearchArea.KNOWLEDGE_MGMT,
+    titulo: "Gestão do Conhecimento e Capital Intelectual",
+    autores: "Angeloni, M. T.",
+    ano: 2020,
+    instituicao: "UFSC",
+    tipo: "UFSC",
+    link: "https://repositorio.ufsc.br/",
+    palavrasChave: [
+      "gestão do conhecimento",
+      "capital intelectual",
+      "aprendizagem organizacional",
+      "memória organizacional",
+      "criação de conhecimento",
+      "compartilhamento"
+    ],
+    observacao: "Base clássica aplicada à GC organizacional."
+  },
+
+  /**
+   * ================================
+   * ENGENHARIA DA INTEGRAÇÃO
+   * ================================
+   */
+  {
+    id: "egc-int-001",
+    area: ResearchArea.INTEGRATION_ENG,
+    titulo: "Engenharia da Integração: Modelos Sistêmicos para Ecossistemas Organizacionais",
+    autores: "Silva, R. B.; Bresolin, J.",
+    ano: 2019,
+    instituicao: "UFSC",
+    tipo: "UFSC",
+    link: "https://repositorio.ufsc.br/",
+    palavrasChave: [
+      "engenharia da integração",
+      "integração organizacional",
+      "sistemas complexos",
+      "ecossistemas de inovação",
+      "modelagem sistêmica",
+      "arquitetura organizacional"
+    ],
+    observacao: "Referência aplicada à integração entre áreas e sistemas institucionais."
+  },
+
+  /**
+   * ================================
+   * UNIVERSIDADE CORPORATIVA EM REDE
+   * ================================
+   */
+  {
+    id: "egc-ucr-001",
+    area: ResearchArea.UCR,
+    titulo: "Universidade Corporativa em Rede e Aprendizagem Organizacional",
+    autores: "Bresolin, J.; Silva, R. B.",
+    ano: 2022,
+    instituicao: "UFSC",
+    tipo: "UFSC",
+    link: "https://repositorio.ufsc.br/",
+    palavrasChave: [
+      "universidade corporativa",
+      "universidade em rede",
+      "educação corporativa",
+      "aprendizagem em rede",
+      "competências organizacionais",
+      "inovação educacional"
+    ],
+    observacao: "Base conceitual para desafios relacionados à educação corporativa em rede."
+  }
+];
+
 ];
