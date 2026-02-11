@@ -1,5 +1,4 @@
-import { ResearchArea } from "../../tipos";
-
+import { ResearchArea } from "../tipos";
 export type SourceType = "UFSC" | "SCIELO" | "SCHOLAR" | "OUTRO";
 
 export interface EGCSource {
