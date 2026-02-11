@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ResearchArea } from './types';
+import { ... } from './src/tipos';
 
 export const INITIAL_ENERGY = 20;
 export const STABILITY_THRESHOLD = 0;
