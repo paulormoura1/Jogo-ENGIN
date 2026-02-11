@@ -1,4 +1,4 @@
-import { ResearchArea } from "../../types";
+import { ResearchArea } from "../types";
 
 export type SourceType = "UFSC" | "SCIELO" | "SCHOLAR" | "OUTRO";
 
@@ -16,12 +16,6 @@ export interface EGCSource {
 }
 
 export const EGC_SOURCES: EGCSource[] = [
-
-  /**
-   * ================================
-   * GOVERNANÇA DO CONHECIMENTO
-   * ================================
-   */
   {
     id: "egc-gov-001",
     area: ResearchArea.GOVERNANCE_KNOWLEDGE,
@@ -37,16 +31,10 @@ export const EGC_SOURCES: EGCSource[] = [
       "maturidade em GC",
       "indicadores estratégicos",
       "decisão organizacional",
-      "políticas institucionais"
+      "políticas institucionais",
     ],
-    observacao: "Referência conceitual aplicada à governança estratégica do conhecimento."
+    observacao: "Referência conceitual aplicada à governança estratégica do conhecimento.",
   },
-
-  /**
-   * ================================
-   * GESTÃO DO CONHECIMENTO
-   * ================================
-   */
   {
     id: "egc-gc-001",
     area: ResearchArea.KNOWLEDGE_MGMT,
@@ -58,20 +46,15 @@ export const EGC_SOURCES: EGCSource[] = [
     link: "https://repositorio.ufsc.br/",
     palavrasChave: [
       "gestão do conhecimento",
+      "GC",
       "capital intelectual",
       "aprendizagem organizacional",
       "memória organizacional",
       "criação de conhecimento",
-      "compartilhamento"
+      "compartilhamento",
     ],
-    observacao: "Base clássica aplicada à GC organizacional."
+    observacao: "Base conceitual aplicada à gestão do conhecimento organizacional.",
   },
-
-  /**
-   * ================================
-   * ENGENHARIA DA INTEGRAÇÃO
-   * ================================
-   */
   {
     id: "egc-int-001",
     area: ResearchArea.INTEGRATION_ENG,
@@ -87,16 +70,10 @@ export const EGC_SOURCES: EGCSource[] = [
       "sistemas complexos",
       "ecossistemas de inovação",
       "modelagem sistêmica",
-      "arquitetura organizacional"
+      "arquitetura organizacional",
     ],
-    observacao: "Referência aplicada à integração entre áreas e sistemas institucionais."
+    observacao: "Referência aplicada à integração entre áreas, processos e sistemas institucionais.",
   },
-
-  /**
-   * ================================
-   * UNIVERSIDADE CORPORATIVA EM REDE
-   * ================================
-   */
   {
     id: "egc-ucr-001",
     area: ResearchArea.UCR,
@@ -112,9 +89,8 @@ export const EGC_SOURCES: EGCSource[] = [
       "educação corporativa",
       "aprendizagem em rede",
       "competências organizacionais",
-      "inovação educacional"
+      "inovação educacional",
     ],
-    observacao: "Base conceitual para desafios relacionados à educação corporativa em rede."
-  }
-];
+    observacao: "Base conceitual para desafios relacionados à universidade corporativa em rede.",
+  },
 ];
