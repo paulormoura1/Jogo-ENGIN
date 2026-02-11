@@ -6,7 +6,7 @@ import { ResearchArea } from "../../types";
 export type SourceType = "UFSC" | "SCIELO" | "SCHOLAR" | "OUTRO";
 
 /**
- * Estrutura base de uma fonte científica do EGC
+ * Estrutura base de uma fonte científica
  */
 export interface EGCSource {
   id: string;
@@ -26,10 +26,13 @@ export interface EGCSource {
  * GESTÃO DO CONHECIMENTO
  * Base inicial curada
  * ================================
+ *
+ * Regra do projeto (conforme solicitado):
+ * - Link pode ser geral do repositório, mas o item deve trazer autores + ano + tema.
  */
 export const GC_SOURCES: EGCSource[] = [
   {
-    id: "gc-ufsc-001",
+    id: "gc-ufsc-km-001",
     area: ResearchArea.KNOWLEDGE_MGMT,
     titulo: "Gestão do Conhecimento em Organizações Intensivas em Conhecimento",
     autores: "Angeloni, M. T.; Fernandes, R. B.",
@@ -39,10 +42,14 @@ export const GC_SOURCES: EGCSource[] = [
     link: "https://repositorio.ufsc.br/",
     palavrasChave: [
       "gestão do conhecimento",
+      "GC",
       "capital intelectual",
       "aprendizagem organizacional",
-      "tomada de decisão"
+      "tomada de decisão",
+      "criação de conhecimento",
+      "compartilhamento de conhecimento",
+      "memória organizacional",
     ],
-    observacao: "Base conceitual clássica utilizada em disciplinas do EGC."
-  }
+    observacao: "Base conceitual utilizada em disciplinas e desafios de GC. Link geral do repositório (regra do projeto).",
+  },
 ];
