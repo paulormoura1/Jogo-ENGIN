@@ -1,14 +1,13 @@
-
 import React from 'react';
-import { ... } from './src/tipos';
+import { ResearchArea } from './src/tipos';
 
 export const INITIAL_ENERGY = 20;
 export const STABILITY_THRESHOLD = 0;
 export const INNOVATION_TARGET = 100;
 
 export const TEAM_MEMBERS = [
-  'Patricia', 'Paulo', 'Gisele', 'Roprelato', 
-  'Bresolin', 'Silva', 'Riva', 'Bruna', 
+  'Patricia', 'Paulo', 'Gisele', 'Roprelato',
+  'Bresolin', 'Silva', 'Riva', 'Bruna',
   'Angela', 'Gisely'
 ];
 
