@@ -196,11 +196,19 @@ try {
   feedbackData = null;
 }
 
-// 2️⃣ Avaliação local SEMPRE disponível
+// 2️⃣ Avaliação local (blindada)
 const area = currentChallenge.requiredArea;
-const localEval = evaluateProposalWithSources(playerInput, area);
 
-// 3️⃣ Normalização das fontes
+let localEval: any = { usedSources: [], recommendedSources: [] };
+
+try {
+  localEval = evaluateProposalWithSources(playerInput, area) ?? localEval;
+} catch (e) {
+  console.error("[LOCAL_EVAL] evaluateProposalWithSources falhou:", e);
+  localEval = { usedSources: [], recommendedSources: [] };
+}
+
+// 3️⃣ Normalização das fontes (blindada)
 const normalizeSourceItem = (s: any) => {
   const tituloBase = s?.titulo ?? "Referência";
   const ano = typeof s?.ano === "number" ? s.ano : undefined;
@@ -213,8 +221,17 @@ const normalizeSourceItem = (s: any) => {
   };
 };
 
-const usedMapped = (localEval.usedSources ?? []).map(normalizeSourceItem);
-let recommendedMapped = (localEval.recommendedSources ?? []).map(normalizeSourceItem);
+let usedMapped: any[] = [];
+let recommendedMapped: any[] = [];
+
+try {
+  usedMapped = (localEval.usedSources ?? []).map(normalizeSourceItem);
+  recommendedMapped = (localEval.recommendedSources ?? []).map(normalizeSourceItem);
+} catch (e) {
+  console.error("[LOCAL_MAP] falhou ao mapear fontes:", e);
+  usedMapped = [];
+  recommendedMapped = [];
+}
 
 // 4️⃣ Fallback pedagógico (sempre mostrar referências)
 if (usedMapped.length === 0 && recommendedMapped.length === 0) {
@@ -283,12 +300,23 @@ const combinedExplanation =
     });
 
     console.log("DEPOIS do setFeedback");
-  } catch (err) {
-    console.error("submitAction error:", err);
-    alert("ERRO no submitAction. Veja o console (F12) para detalhes.");
-  } finally {
-    setLoading(false);
-  }
+} catch (err) {
+  console.error("submitAction error:", err);
+
+  // fallback...
+  setFeedback({
+    verdict: "ANALISE_INDISPONIVEL",
+    explanation: emergencyExplanation,
+    pointsEarned: 0,
+    references: safeMapped.map((r) => `${r.autores} — ${r.titulo}`),
+    sourceType: "EMERGENCY_FALLBACK",
+    usedSources: [],
+    recommendedSources: safeMapped,
+  });
+
+} finally {
+  setLoading(false); // ✅ ESSENCIAL
+}
 };
 
   return (
