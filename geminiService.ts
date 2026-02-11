@@ -1,6 +1,6 @@
 import { getSourcesByArea, searchSources } from "./src/services/sourcesService";
 import { GoogleGenAI } from "@google/genai";
-import { ResearchArea, GameState } from "./types";
+import { ResearchArea, GameState } from "./src/tipos";
 
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
