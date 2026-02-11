@@ -2,9 +2,23 @@ import { ResearchArea } from "../../types";
 import { EGC_SOURCES } from "../data/egcSources";
 import { GC_SOURCES } from "../data/gcSources";
 
-export type AnySource = (typeof EGC_SOURCES)[number] | (typeof GC_SOURCES)[number];
+export type AnySource =
+  | (typeof EGC_SOURCES)[number]
+  | (typeof GC_SOURCES)[number];
 
-const ALL_SOURCES: AnySource[] = [...EGC_SOURCES, ...GC_SOURCES];
+// ✅ Lazy init para evitar TDZ em caso de import circular
+let ALL_SOURCES_CACHE: AnySource[] | null = null;
+
+function getAllSourcesInternal(): AnySource[] {
+  if (ALL_SOURCES_CACHE) return ALL_SOURCES_CACHE;
+
+  // defensivo: garante arrays válidos mesmo se algum módulo vier undefined em runtime
+  const egc = Array.isArray(EGC_SOURCES) ? EGC_SOURCES : [];
+  const gc = Array.isArray(GC_SOURCES) ? GC_SOURCES : [];
+
+  ALL_SOURCES_CACHE = [...egc, ...gc];
+  return ALL_SOURCES_CACHE;
+}
 
 /**
  * Regra do jogo:
@@ -12,20 +26,23 @@ const ALL_SOURCES: AnySource[] = [...EGC_SOURCES, ...GC_SOURCES];
  * - Se não houver fontes cadastradas para o eixo (area), retorna fallback (ALL_SOURCES).
  */
 export function getSourcesByArea(area: ResearchArea): AnySource[] {
-  const filtered = ALL_SOURCES.filter((s) => s.area === area);
-  return filtered.length > 0 ? filtered : ALL_SOURCES;
+  const all = getAllSourcesInternal();
+  const filtered = all.filter((s) => s.area === area);
+  return filtered.length > 0 ? filtered : all;
 }
 
 export function searchSources(term: string, area?: ResearchArea): AnySource[] {
-  const q = term.trim().toLowerCase();
-  if (!q) return area ? getSourcesByArea(area) : ALL_SOURCES;
+  const all = getAllSourcesInternal();
 
-  const base = area ? getSourcesByArea(area) : ALL_SOURCES;
+  const q = (term ?? "").trim().toLowerCase();
+  if (!q) return area ? getSourcesByArea(area) : all;
+
+  const base = area ? getSourcesByArea(area) : all;
 
   return base.filter((s) => {
     const hay = [
-      s.titulo,
-      s.autores,
+      s.titulo ?? "",
+      s.autores ?? "",
       (s as any).instituicao ?? "",
       ...(((s as any).palavrasChave ?? []) as string[]),
       (s as any).observacao ?? "",
@@ -39,5 +56,5 @@ export function searchSources(term: string, area?: ResearchArea): AnySource[] {
 }
 
 export function getAllSources(): AnySource[] {
-  return ALL_SOURCES;
+  return getAllSourcesInternal();
 }
