@@ -608,7 +608,11 @@ const combinedExplanation =
 
   const raw = (s?.link ?? "").trim();
   const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
+const doiFromLink =
+  raw.includes("doi.org/") ? raw.split("doi.org/")[1]?.trim() : "";
 
+const doiHref = doiFromLink ? `https://doi.org/${doiFromLink}` : "";
+          
   const links = [
   { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
   { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
@@ -618,17 +622,17 @@ const combinedExplanation =
 ];
   return (
     <div className="mt-1">
-      {!!mainHref && (
-        <a
-          href={mainHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-yellow-400 underline ml-1 inline-block break-all"
-          onClick={(e) => e.stopPropagation()}
-        >
-          Abrir artigo
-        </a>
-      )}
+     {!!(doiHref || mainHref) && (
+  <a
+    href={doiHref || mainHref}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-yellow-400 underline ml-1 inline-block break-all"
+    onClick={(e) => e.stopPropagation()}
+  >
+    Abrir artigo
+  </a>
+)}
 
       <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
         {links.map((l) => (
