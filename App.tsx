@@ -325,7 +325,24 @@ const combinedExplanation =
 }
 };
 
-  return (
+  const buildQuery = (s: any) => {
+    const titulo = (s?.titulo ?? "").toString().trim();
+    const autores = (s?.autores ?? "").toString().trim();
+    const doiLike = (s?.doi ?? "").toString().trim();
+    const rawLink = (s?.link ?? "").toString().trim();
+
+    const doiFromLink =
+      rawLink.includes("doi.org/") ? rawLink.split("doi.org/")[1]?.trim() : "";
+
+    const doi = doiLike || doiFromLink;
+
+    const q = [titulo, autores, doi].filter(Boolean).join(" ");
+    return q || titulo || autores || rawLink;
+  };
+
+  const u = (url: string) => url;
+
+ return (
     <div className="min-h-screen terminal-bg text-blue-50 p-3 md:p-8 font-inter overflow-x-hidden">
       <header className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 border-b border-blue-900/50 pb-4">
         <div
@@ -585,16 +602,51 @@ const combinedExplanation =
         <li key={idx} className="leading-snug">
           <span className="text-white font-bold">{s.autores}</span>{" "}
           <span className="text-blue-200/80">— {s.titulo}</span>{" "}
-          {s.link ? (
-            <a
-              href={s.link}
-              target="_blank"
-              rel="noreferrer"
-              className="text-yellow-400 underline ml-1"
-            >
-              link
-            </a>
-          ) : null}
+          {(() => {
+  const q = buildQuery(s);
+  const qEnc = encodeURIComponent(q);
+
+  const raw = (s?.link ?? "").trim();
+  const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
+
+  const links = [
+    { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
+    { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
+    { label: "UFSC/EGC", href: `https://repositorio.ufsc.br/simple-search?query=${qEnc}` },
+    { label: "Scopus", href: `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&s=${qEnc}` },
+  ];
+
+  return (
+    <div className="mt-1">
+      {!!mainHref && (
+        <a
+          href={mainHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-yellow-400 underline ml-1 inline-block break-all"
+          onClick={(e) => e.stopPropagation()}
+        >
+          Abrir artigo
+        </a>
+      )}
+
+      <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
+        {links.map((l) => (
+          <a
+            key={l.label}
+            href={l.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[9px] text-cyan-300 underline"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {l.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+})()}
         </li>
       ))}
     </ul>
