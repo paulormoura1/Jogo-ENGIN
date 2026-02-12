@@ -573,7 +573,7 @@ const combinedExplanation =
     <ul className="space-y-1 text-[9px] text-blue-100/70">
       {lastRecord?.usedSources?.slice(0, 3).map((s: any, idx: number) => (
         <li key={idx} className="leading-snug">
-          <span className="text-white font-bold">{s.autores}</span>{" "}
+          <span className="text-white font-bold">{s.autores || "Autor não informado"}</span>{" "}
           <span className="text-blue-200/80">— {s.titulo}</span>{" "}
           {s.link ? (
            <a
@@ -610,11 +610,11 @@ const combinedExplanation =
   const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
 
   const links = [
-    { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
-    { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
-    { label: "UFSC/EGC", href: `https://repositorio.ufsc.br/simple-search?query=${qEnc}` },
-    { label: "Scopus", href: `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&s=${qEnc}` },
-  ];
+  { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
+  { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
+
+  { label: "UFSC/EGC", href: `https://www.google.com/search?q=${encodeURIComponent(`site:repositorio.ufsc.br ${q}`)}` },
+{ label: "Scopus", href: `https://www.google.com/search?q=${encodeURIComponent(`site:scopus.com ${q}`)}` },
 
   return (
     <div className="mt-1">
