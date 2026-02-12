@@ -559,14 +559,15 @@ const combinedExplanation =
           <span className="text-white font-bold">{s.autores}</span>{" "}
           <span className="text-blue-200/80">— {s.titulo}</span>{" "}
           {s.link ? (
-            <a
-              href={s.link}
-              target="_blank"
-              rel="noreferrer"
-              className="text-yellow-400 underline ml-1"
-            >
-              link
-            </a>
+           <a
+  href={s.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-yellow-400 underline ml-1 inline-block break-all"
+  onClick={(e) => e.stopPropagation()}
+>
+  abrir
+</a>
           ) : null}
         </li>
       ))}
