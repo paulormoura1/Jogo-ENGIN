@@ -614,7 +614,7 @@ const combinedExplanation =
   { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
 
   { label: "UFSC/EGC", href: `https://www.google.com/search?q=${encodeURIComponent(`site:repositorio.ufsc.br ${q}`)}` },
-{ label: "Scopus", href: `https://www.google.com/search?q=${encodeURIComponent(`site:scopus.com ${q}`)}` },
+{ label: "Scopus", href: `https://www.google.com/search?q=${encodeURIComponent(`Scopus ${q}`)}` },
 ];
   return (
     <div className="mt-1">
