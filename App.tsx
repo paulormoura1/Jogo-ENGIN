@@ -277,9 +277,34 @@ const combinedExplanation =
     ? feedbackData.explanation.trim()
     : "") +
   "\n\nJustificativa: incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
-    const enrichedRecommendedMapped = await Promise.all(
+  const enrichedRecommendedMapped = await Promise.all(
   recommendedMapped.map(async (source) => {
+    const cacheKey = `openalex_${source.titulo}`;
+    const cached = localStorage.getItem(cacheKey);
+
+    if (cached) {
+      return JSON.parse(cached);
+    }
+
     const enriched = await enrichWithOpenAlex(source.titulo);
+
+    if (!enriched) return source;
+
+    const doi = enriched.doi?.trim();
+    const doiHref = doi ? `https://doi.org/${doi}` : "";
+
+    const finalSource = {
+      ...source,
+      titulo: enriched.titulo || source.titulo,
+      autores: enriched.autores || source.autores,
+      link: doiHref || enriched.link || source.link,
+    };
+
+    localStorage.setItem(cacheKey, JSON.stringify(finalSource));
+
+    return finalSource;
+  })
+);
 
     if (!enriched) return source;
 
