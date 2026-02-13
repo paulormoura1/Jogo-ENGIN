@@ -1,9 +1,9 @@
-import { enrichWithOpenAlex } from "./src/services/openAlexService";
+import { enrichWithOpenAlex } from "./src/services/openAlexService.ts";
 import React, { useState, useEffect } from 'react';
 import { GamePhase, ResearchArea, GameState, Challenge, ActionRecord }from './src/tipos';
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from './constants';
 import { generateChallenge } from './geminiService';
-import { getSourcesByArea } from "./src/services/sourcesService";
+import { getSourcesByArea } from "./src/services/sourcesService.ts";
 
 interface ExtendedActionRecord extends ActionRecord {
   references?: string[];
