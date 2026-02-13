@@ -277,7 +277,7 @@ const combinedExplanation =
     ? feedbackData.explanation.trim()
     : "") +
   "\n\nJustificativa: incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
-  const enrichedRecommendedMapped = await Promise.all(
+const enrichedRecommendedMapped = await Promise.all(
   recommendedMapped.map(async (source) => {
     const cacheKey = `openalex_${source.titulo}`;
     const cached = localStorage.getItem(cacheKey);
