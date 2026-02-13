@@ -309,21 +309,7 @@ const record: ExtendedActionRecord = {
   recommendedSources: enrichedRecommendedMapped,
   timestamp: new Date().toLocaleString("pt-BR"),
 };
-    const record: ExtendedActionRecord = {
-      area: currentChallenge.requiredArea,
-      title: currentChallenge.title,
-      proposal: playerInput,
-      verdict: feedbackData.verdict,
-      explanation: combinedExplanation,
-      executors: [...gameState.activePlayers],
-      references: feedbackData.references ?? [],
-      sourceType: feedbackData.sourceType ?? "local",
-      pointsEarned,
-      usedSources: usedMapped,
-      recommendedSources: recommendedMapped,
-      timestamp: new Date().toLocaleString("pt-BR"),
-    };
-
+  
     setLastRecord(record);
 
     console.log("ANTES do setFeedback", { hasRec: recommendedMapped.length, hasUsed: usedMapped.length });
