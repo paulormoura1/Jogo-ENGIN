@@ -1,3 +1,4 @@
+import { enrichWithOpenAlex } from "./services/openAlexService";
 import React, { useState, useEffect } from 'react';
 import { GamePhase, ResearchArea, GameState, Challenge, ActionRecord }from './src/tipos';
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from './constants';
@@ -276,6 +277,38 @@ const combinedExplanation =
     ? feedbackData.explanation.trim()
     : "") +
   "\n\nJustificativa: incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
+    const enrichedRecommendedMapped = await Promise.all(
+  recommendedMapped.map(async (source) => {
+    const enriched = await enrichWithOpenAlex(source.titulo);
+
+    if (!enriched) return source;
+
+    const doi = enriched.doi?.trim();
+    const doiHref = doi ? `https://doi.org/${doi}` : "";
+
+    return {
+      ...source,
+      titulo: enriched.titulo || source.titulo,
+      autores: enriched.autores || source.autores,
+      link: doiHref || enriched.link || source.link,
+    };
+  })
+);
+
+const record: ExtendedActionRecord = {
+  area: currentChallenge.requiredArea,
+  title: currentChallenge.title,
+  proposal: playerInput,
+  verdict: feedbackData.verdict,
+  explanation: combinedExplanation,
+  executors: [...gameState.activePlayers],
+  references: feedbackData.references ?? [],
+  sourceType: feedbackData.sourceType ?? "local",
+  pointsEarned,
+  usedSources: usedMapped,
+  recommendedSources: enrichedRecommendedMapped,
+  timestamp: new Date().toLocaleString("pt-BR"),
+};
     const record: ExtendedActionRecord = {
       area: currentChallenge.requiredArea,
       title: currentChallenge.title,
