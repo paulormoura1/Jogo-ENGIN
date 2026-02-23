@@ -284,7 +284,10 @@ const enrichedRecommendedMapped = await Promise.all(
       // ignora erros de cache
     }
 
-    const enriched = await enrichWithOpenAlex(source.titulo);
+    const enriched = await enrichWithOpenAlex({
+  doi: (source as any)?.doi,
+  title: source.titulo,
+});
 
     if (!enriched) return source;
 
