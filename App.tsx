@@ -282,7 +282,7 @@ const buildCacheKey = (source: { doi?: string; titulo: string }) => {
 // 7️⃣ Explicação combinada
 const enrichedRecommendedMapped = await Promise.all(
   recommendedMapped.map(async (source) => {
-    const cacheKey = `openalex_${buildCacheKey(source as any)}`;
+    const cacheKey = `openalex:${buildCacheKey(source as any)}`;
     
     // cache read (protegido)
     try {
