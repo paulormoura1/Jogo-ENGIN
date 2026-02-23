@@ -385,7 +385,8 @@ console.log("ANTES do setFeedback", {
   hasRec: recommendedMapped.length,
   hasUsed: usedMapped.length,
 });
-
+console.log("DEBUG RECOMMENDED:", dedupedRecommended);
+  
 setFeedback({
   verdict: feedbackData.verdict,
   explanation: combinedExplanation,
