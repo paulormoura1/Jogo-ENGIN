@@ -283,7 +283,7 @@ const buildCacheKey = (source: { doi?: string; titulo: string }) => {
 const enrichedRecommendedMapped = await Promise.all(
   recommendedMapped.map(async (source) => {
     const cacheKey = `openalex:${buildCacheKey(source as any)}`;
-    
+
     // cache read (protegido)
     try {
       const cached = localStorage.getItem(cacheKey);
@@ -293,9 +293,9 @@ const enrichedRecommendedMapped = await Promise.all(
     }
 
     const enriched = await enrichWithOpenAlex({
-  doi: (source as any)?.doi,
-  title: source.titulo,
-});
+      doi: (source as any)?.doi,
+      title: source.titulo,
+    });
 
     if (!enriched) return source;
 
@@ -304,6 +304,7 @@ const enrichedRecommendedMapped = await Promise.all(
 
     const finalSource = {
       ...source,
+      doi: doi || (source as any)?.doi, // ✅ garante DOI no objeto final para dedupe
       titulo: enriched.titulo || source.titulo,
       autores: enriched.autores || source.autores,
       link: doiHref || enriched.link || source.link,
@@ -319,6 +320,51 @@ const enrichedRecommendedMapped = await Promise.all(
     return finalSource;
   })
 );
+
+// ✅ Deduplicação por DOI (mantém ordem e preenche campos faltantes quando necessário)
+const dedupeByDoi = <T extends { doi?: string }>(items: T[]) => {
+  const seen = new Map<string, T>();
+  const out: T[] = [];
+
+  for (const item of items) {
+    const doi = item?.doi?.toLowerCase().trim();
+
+    // Sem DOI -> mantém como está (não deduplica)
+    if (!doi) {
+      out.push(item);
+      continue;
+    }
+
+    const existing = seen.get(doi);
+    if (!existing) {
+      seen.set(doi, item);
+      out.push(item);
+    } else {
+      // merge suave: se o existente estiver faltando campos, completa com o novo
+      const merged = {
+        ...item,
+        ...existing,
+        titulo: (existing as any).titulo || (item as any).titulo,
+        autores: (existing as any).autores || (item as any).autores,
+        link: (existing as any).link || (item as any).link,
+        ano: (existing as any).ano ?? (item as any).ano,
+        doi,
+      } as T;
+
+      // atualiza no map
+      seen.set(doi, merged);
+
+      // substitui na lista mantendo ordem (primeira ocorrência permanece na posição)
+      const idx = out.indexOf(existing);
+      if (idx >= 0) out[idx] = merged;
+    }
+  }
+
+  return out;
+};
+
+const dedupedRecommended = dedupeByDoi(enrichedRecommendedMapped as any[]);
+
 const record: ExtendedActionRecord = {
   area: currentChallenge.requiredArea,
   title: currentChallenge.title,
@@ -330,25 +376,28 @@ const record: ExtendedActionRecord = {
   sourceType: feedbackData.sourceType ?? "local",
   pointsEarned,
   usedSources: usedMapped,
-  recommendedSources: enrichedRecommendedMapped,
+  recommendedSources: dedupedRecommended, // ✅ aplica dedupe aqui
   timestamp: new Date().toLocaleString("pt-BR"),
 };
-  
-    setLastRecord(record);
 
-    console.log("ANTES do setFeedback", { hasRec: recommendedMapped.length, hasUsed: usedMapped.length });
+setLastRecord(record);
 
-    setFeedback({
-      verdict: feedbackData.verdict,
-      explanation: combinedExplanation,
-      pointsEarned,
-      references: feedbackData.references ?? [],
-      sourceType: feedbackData.sourceType ?? "local",
-      usedSources: usedMapped,
-      recommendedSources: recommendedMapped,
-    });
+console.log("ANTES do setFeedback", {
+  hasRec: recommendedMapped.length,
+  hasUsed: usedMapped.length,
+});
 
-    console.log("DEPOIS do setFeedback");
+setFeedback({
+  verdict: feedbackData.verdict,
+  explanation: combinedExplanation,
+  pointsEarned,
+  references: feedbackData.references ?? [],
+  sourceType: feedbackData.sourceType ?? "local",
+  usedSources: usedMapped,
+  recommendedSources: recommendedMapped,
+});
+
+console.log("DEPOIS do setFeedback");
 } catch (err) {
   console.error("submitAction error:", err);
 
