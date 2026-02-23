@@ -16,23 +16,15 @@ interface RankingEntry {
   area: ResearchArea;
   points: number;
 }
-const evaluateProposalWithSources = (
-  proposal: string,
-  area: ResearchArea
-) => {
+const evaluateProposalWithSources = (proposal: string, area: ResearchArea) => {
   const sources = getSourcesByArea(area);
-
   const text = proposal.toLowerCase();
-  
+
   const perSource = sources.map((s) => {
     const keywords = s.palavrasChave || [];
     const hits = keywords.filter((k) => text.includes(k.toLowerCase())).length;
     const coverage = keywords.length ? hits / keywords.length : 0;
-// REGRA PEDAGÓGICA: erro também ensina
-if (usedSources.length === 0 && recommendedSources.length === 0) {
-  const fallbackSources = sources.slice(0, 3);
-  recommendedSources.push(...fallbackSources);
-}
+
     return {
       source: s,
       hits,
@@ -46,20 +38,21 @@ if (usedSources.length === 0 && recommendedSources.length === 0) {
   const score = Math.min(100, totalHits * 10);
 
   const usedSources = perSource
-  .filter((s) => s.coverage >= 0.4)
-  .map((s) => s.source);
+    .filter((x) => x.coverage >= 0.4)
+    .map((x) => x.source);
 
   const recommendedSources = perSource
-    .filter((s) => s.coverage < 0.4)
-    .map((s) => s.source);
+    .filter((x) => x.coverage < 0.4)
+    .map((x) => x.source);
 
-  let verdict: 'CORRETA' | 'PARCIAL' | 'INCORRETA' = 'INCORRETA';
-  if (score >= 70) verdict = 'CORRETA';
-  else if (score >= 50) verdict = 'PARCIAL';
+  // ✅ REGRA PEDAGÓGICA: erro também ensina (AGORA no lugar correto)
+  if (usedSources.length === 0 && recommendedSources.length === 0) {
+    const fallbackSources = sources.slice(0, 3);
+    recommendedSources.push(...fallbackSources);
+  }
 
   return {
     score,
-    verdict,
     usedSources,
     recommendedSources,
   };
