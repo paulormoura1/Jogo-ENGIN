@@ -270,12 +270,20 @@ const pointsEarned =
   typeof feedbackData.pointsEarned === "number"
     ? feedbackData.pointsEarned
     : 10;
+    
+const buildCacheKey = (source: { doi?: string; titulo: string }) => {
+  const doi = source?.doi?.toLowerCase().trim();
+  if (doi) return `doi:${doi}`;
 
+  const title = (source?.titulo ?? "").toLowerCase().trim();
+  return `title:${title}`;
+};
+    
 // 7️⃣ Explicação combinada
 const enrichedRecommendedMapped = await Promise.all(
   recommendedMapped.map(async (source) => {
-    const cacheKey = `openalex_${source.titulo}`;
-
+    const cacheKey = `openalex_${buildCacheKey(source as any)}`;
+    
     // cache read (protegido)
     try {
       const cached = localStorage.getItem(cacheKey);
