@@ -272,18 +272,16 @@ const pointsEarned =
     : 10;
 
 // 7️⃣ Explicação combinada
-const combinedExplanation =
-  (feedbackData.explanation && feedbackData.explanation.trim().length > 0
-    ? feedbackData.explanation.trim()
-    : "") +
-  "\n\nJustificativa: incorpore conceitos, autores e termos das referências recomendadas e explique como sua ação responde ao desafio.";
 const enrichedRecommendedMapped = await Promise.all(
   recommendedMapped.map(async (source) => {
     const cacheKey = `openalex_${source.titulo}`;
-    const cached = localStorage.getItem(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    // cache read (protegido)
+    try {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) return JSON.parse(cached);
+    } catch {
+      // ignora erros de cache
     }
 
     const enriched = await enrichWithOpenAlex(source.titulo);
@@ -300,26 +298,16 @@ const enrichedRecommendedMapped = await Promise.all(
       link: doiHref || enriched.link || source.link,
     };
 
-    localStorage.setItem(cacheKey, JSON.stringify(finalSource));
+    // cache write (protegido)
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify(finalSource));
+    } catch {
+      // ignora erros de cache
+    }
 
     return finalSource;
   })
 );
-
-    if (!enriched) return source;
-
-    const doi = enriched.doi?.trim();
-    const doiHref = doi ? `https://doi.org/${doi}` : "";
-
-    return {
-      ...source,
-      titulo: enriched.titulo || source.titulo,
-      autores: enriched.autores || source.autores,
-      link: doiHref || enriched.link || source.link,
-    };
-  })
-);
-
 const record: ExtendedActionRecord = {
   area: currentChallenge.requiredArea,
   title: currentChallenge.title,
