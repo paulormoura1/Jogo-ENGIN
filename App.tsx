@@ -394,7 +394,7 @@ setFeedback({
   references: feedbackData.references ?? [],
   sourceType: feedbackData.sourceType ?? "local",
   usedSources: usedMapped,
-  recommendedSources: recommendedMapped,
+  recommendedSources: dedupedRecommended,
 });
 
 console.log("DEPOIS do setFeedback");
