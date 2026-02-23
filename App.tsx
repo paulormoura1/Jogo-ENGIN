@@ -385,7 +385,16 @@ console.log("ANTES do setFeedback", {
   hasRec: recommendedMapped.length,
   hasUsed: usedMapped.length,
 });
-console.log("DEBUG RECOMMENDED:", dedupedRecommended);
+console.log(
+  "DEBUG RECOMMENDED (flat):",
+  (dedupedRecommended as any[]).map((s) => ({
+    titulo: s?.titulo,
+    ano: s?.ano,
+    doi: s?.doi,
+    autores: s?.autores,
+    link: s?.link,
+  }))
+);
   
 setFeedback({
   verdict: feedbackData.verdict,
