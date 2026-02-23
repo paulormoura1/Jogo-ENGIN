@@ -171,15 +171,19 @@ function withTimeout<T>(
 const submitAction = async () => {
   console.log("[CLICK] submitAction disparou. playerInput =", playerInput);
   if (!currentChallenge || !canSubmit || loading) return;
+  
+ const emergencyExplanation =
+    "Falha temporária ao avaliar sua proposta. Tente novamente em instantes.";
+  let combinedExplanation = "";
 
   setLoading(true);
 
   try {
     
  // 1️⃣ Tenta Gemini
-let feedbackData: any = null;
+  let feedbackData: any = null;
 
-try {
+  try {
   feedbackData = await withTimeout(
     Promise.resolve(
       getGeminiFeedback(
@@ -364,7 +368,9 @@ const dedupeByDoi = <T extends { doi?: string }>(items: T[]) => {
 };
 
 const dedupedRecommended = dedupeByDoi(enrichedRecommendedMapped as any[]);
-
+  
+combinedExplanation =
+(feedbackData?.explanation ?? "").trim() || combinedExplanation || emergencyExplanation;
 const record: ExtendedActionRecord = {
   area: currentChallenge.requiredArea,
   title: currentChallenge.title,
