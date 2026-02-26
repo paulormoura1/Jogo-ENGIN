@@ -16,6 +16,7 @@ export interface EGCSource {
   ano: number;
   instituicao: string;
   tipo: SourceType;
+  doi?: string;
   link: string;
   palavrasChave: string[];
   observacao?: string;
