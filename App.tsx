@@ -300,13 +300,14 @@ const enrichedRecommendedMapped = await Promise.all(
     const doiHref = doi ? `https://doi.org/${doi}` : "";
 
     const finalSource = {
-      ...source,
-      doi: doi || (source as any)?.doi, // ✅ garante DOI no objeto final para dedupe
-      titulo: enriched.titulo || source.titulo,
-      autores: enriched.autores || source.autores,
-      link: doiHref || enriched.link || source.link,
-    };
-
+  ...source,
+  titulo: enriched.titulo || source.titulo,
+  autores: enriched.autores || source.autores,
+  ano: (enriched as any).ano ?? (source as any).ano,
+  doi: (enriched as any).doi ?? (source as any).doi,
+  link: doiHref || enriched.link || source.link,
+};
+    
     // cache write (protegido)
     try {
       localStorage.setItem(cacheKey, JSON.stringify(finalSource));
@@ -389,9 +390,9 @@ console.log(
   "DEBUG RECOMMENDED (flat):",
   (dedupedRecommended as any[]).map((s) => ({
     titulo: s?.titulo,
+    autores: s?.autores,
     ano: s?.ano,
     doi: s?.doi,
-    autores: s?.autores,
     link: s?.link,
   }))
 );
