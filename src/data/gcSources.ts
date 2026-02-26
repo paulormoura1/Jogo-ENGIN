@@ -39,8 +39,9 @@ export const GC_SOURCES: EGCSource[] = [
     autores: "Angeloni, M. T.; Fernandes, R. B.",
     ano: 2020,
     instituicao: "Universidade Federal de Santa Catarina",
-    tipo: "UFSC",
-    link: "https://repositorio.ufsc.br/",
+   tipo: "UFSC",
+   doi: "",
+   link: "https://repositorio.ufsc.br/",
     palavrasChave: [
       "gestão do conhecimento",
       "GC",
