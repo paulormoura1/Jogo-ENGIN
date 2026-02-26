@@ -294,7 +294,21 @@ const enrichedRecommendedMapped = await Promise.all(
       title: source.titulo,
     });
 
-    if (!enriched) return source;
+    if (!enriched) {
+  const titleQ = encodeURIComponent(source.titulo || "");
+  const ufscSearch = `https://repositorio.ufsc.br/simple-search?query=${titleQ}`;
+
+  // se o link local for genérico, troca por busca específica UFSC
+  const linkIsGeneric =
+    !source.link ||
+    source.link === "https://repositorio.ufsc.br/" ||
+    source.link === "https://repositorio.ufsc.br";
+
+  return {
+    ...source,
+    link: linkIsGeneric ? ufscSearch : source.link,
+  };
+}
 
     const doi = enriched.doi?.trim();
     const doiHref = doi ? `https://doi.org/${doi}` : "";
