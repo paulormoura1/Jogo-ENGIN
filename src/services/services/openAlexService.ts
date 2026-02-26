@@ -79,13 +79,24 @@ export async function enrichWithOpenAlex(params: { doi?: string; title?: string 
   }
 }
     
-    return {
-      titulo: work.display_name,
-      ano: work.publication_year,
-      doi: work.doi?.replace("https://doi.org/", ""),
-      autores: work.authorships?.map((a: any) => a.author.display_name).join(", "),
-      link: work.doi || work.primary_location?.landing_page_url,
-    };
+   const doiOnly =
+  (work.doi?.replace(/^https?:\/\/doi\.org\//i, "")?.trim() as string) || "";
+
+const doiHref = doiOnly ? `https://doi.org/${doiOnly}` : "";
+
+const autores = (work.authorships || [])
+  .map((a: any) => a?.author?.display_name)
+  .filter(Boolean)
+  .join(", ");
+
+return {
+  titulo: work.display_name || work.title || "",
+  ano: work.publication_year,
+  doi: doiOnly,
+  autores,
+  // Prioridade acadêmica de link
+  link: doiHref || work.primary_location?.landing_page_url || work.id,
+};
   } catch (err) {
     console.error("Erro OpenAlex:", err);
     return null;
