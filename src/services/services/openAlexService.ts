@@ -89,13 +89,20 @@ const autores = (work.authorships || [])
   .filter(Boolean)
   .join(", ");
 
+const doiClean = work.doi?.replace("https://doi.org/", "");
+
+const landing =
+  work.primary_location?.landing_page_url ||
+  work.primary_location?.source?.homepage_url ||
+  "";
+
 return {
-  titulo: work.display_name || work.title || "",
+  titulo: work.display_name,
   ano: work.publication_year,
-  doi: doiOnly,
-  autores,
-  // Prioridade acadêmica de link
-  link: doiHref || work.primary_location?.landing_page_url || work.id,
+  doi: doiClean,
+  autores: work.authorships?.map((a: any) => a.author.display_name).join(", "),
+  // prioridade: DOI -> landing -> OpenAlex work id (nunca quebra)
+  link: work.doi || landing || work.id,
 };
   } catch (err) {
     console.error("Erro OpenAlex:", err);
