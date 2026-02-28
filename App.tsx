@@ -1,3 +1,4 @@
+import { enrichSourceUFSCFirst } from "./src/services/sourcesService";
 import { enrichWithOpenAlex }from "./src/services/openAlexService"
 import React, { useState, useEffect } from 'react';
 import { GamePhase, ResearchArea, GameState, Challenge, ActionRecord }from './src/tipos';
@@ -375,7 +376,11 @@ const dedupeByDoi = <T extends { doi?: string }>(items: T[]) => {
   return out;
 };
 
-const dedupedRecommended = dedupeByDoi(enrichedRecommendedMapped as any[]);
+const ufscRecommendedMapped = await Promise.all(
+  (feedbackData.recommendedSources ?? []).map(enrichSourceUFSCFirst)
+);
+
+const dedupedRecommended = dedupeByDoi(ufscRecommendedMapped as any[]);
   
 combinedExplanation =
 (feedbackData?.explanation ?? "").trim() || combinedExplanation || emergencyExplanation;
