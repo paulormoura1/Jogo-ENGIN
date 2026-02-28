@@ -1,4 +1,4 @@
-// src/services/scientificSearchService.ts 
+import { scientificSearch } from "./scientificSearchService";
 
 export type SourceType = "ufsc" | "external" | "mixed" | "none";
 
