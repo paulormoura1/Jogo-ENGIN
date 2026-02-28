@@ -1,4 +1,4 @@
-import { enrichWithOpenAlex }from "./services/openAlexService.ts"
+import { enrichWithOpenAlex }from "./src/services/openAlexService"
 import React, { useState, useEffect } from 'react';
 import { GamePhase, ResearchArea, GameState, Challenge, ActionRecord }from './src/tipos';
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from './constants';
