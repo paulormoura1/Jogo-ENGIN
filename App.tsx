@@ -208,24 +208,49 @@ try {
 }
 
 const normalizeSourceItem = (s: any) => {
-  const tituloBase = s?.titulo ?? "Referência";
-  const ano = typeof s?.ano === "number" ? s.ano : undefined;
-  const titulo = ano ? `${tituloBase} (${ano})` : tituloBase;
+  const tituloBase = String(s?.titulo ?? s?.title ?? "Referência");
+  const anoNum = typeof s?.ano === "number" ? s.ano : undefined;
+  const titulo = anoNum ? `${tituloBase} (${anoNum})` : tituloBase;
 
-  let link = s?.link ?? "https://repositorio.ufsc.br/";
+  // autores: pode vir string, array, null
+  const autoresRaw = s?.autores ?? s?.authors;
+  const autores =
+    Array.isArray(autoresRaw)
+      ? autoresRaw.filter(Boolean).join(", ")
+      : typeof autoresRaw === "string"
+        ? autoresRaw
+        : "Autor(es) não informado(s)";
 
-  // ✅ Garante que o link seja absoluto
-  if (link && !link.startsWith("http")) {
-    link = `https://${link.replace(/^\/+/, "")}`;
+  // link: pode vir string, vazio, undefined
+  let linkRaw = s?.link;
+  linkRaw = typeof linkRaw === "string" ? linkRaw.trim() : "";
+
+  // Se veio DOI em campo separado, prioriza
+  const doiRaw = typeof s?.doi === "string" ? s.doi.trim() : "";
+  const doi = doiRaw.replace(/^https?:\/\/doi\.org\//i, "").trim();
+  if (doi) linkRaw = `https://doi.org/${doi}`;
+
+  // Se o link contém doi.org, normaliza para doi.org/<doi>
+  if (!doi && linkRaw && /doi\.org\//i.test(linkRaw)) {
+    const part = linkRaw.split(/doi\.org\//i)[1]?.trim();
+    if (part) linkRaw = `https://doi.org/${part}`;
   }
+
+  // Se link for relativo (ex.: repositorio.ufsc.br/handle/...), torna absoluto
+  if (linkRaw && !/^https?:\/\//i.test(linkRaw)) {
+    linkRaw = `https://${linkRaw.replace(/^\/+/, "")}`;
+  }
+
+  // fallback final: evita vazio
+  if (!linkRaw) linkRaw = "https://repositorio.ufsc.br/";
 
   return {
     titulo,
-    autores: s?.autores ?? "Autor(es) não informado(s)",
-    link,
+    autores,
+    link: linkRaw,
+    ano: anoNum,
   };
 };
-
 let usedMapped: any[] = [];
 let recommendedMapped: any[] = [];
 
