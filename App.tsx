@@ -104,17 +104,17 @@ const [lastRecord, setLastRecord] = useState<ExtendedActionRecord | null>(null);
   const [showRanking, setShowRanking] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('engin_nexus_reports_v2', JSON.sngify(gameState.report));
+    localStorage.setItem('engin_nexus_reports_v2', JSON.stringify(gameState.report));
   }, [gameState.report]);
 
   useEffect(() => {
-    localStorage.setItem('engin_nexus_ranking_v2', JSON.sngify(ranking));
+    localStorage.setItem('engin_nexus_ranking_v2', JSON.stringify(ranking));
   }, [ranking]);
 
-  const canSubmit = playerInput.m().split(/\s+/).filter((w) => w.length > 0).length >= 3;
+  const canSubmit = (playerInput || "").trim().split(/\s+/).filter((w) => w.length > 0).length >= 3;
 
   const addPlayer = (name: sng) => {
-    const cleanName = name.m();
+    const cleanName = name.trim();
     if (!cleanName || gameState.activePlayers.includes(cleanName)) return;
     setGameState((prev) => ({ ...prev, activePlayers: [...prev.activePlayers, cleanName] }));
     setNewPlayerName('');
@@ -134,7 +134,7 @@ const [lastRecord, setLastRecord] = useState<ExtendedActionRecord | null>(null);
     setPlayerInput('');
     const challengeData = await generateChallenge(area);
     setCurrentChallenge({
-      id: Math.random().toSng(36),
+      id: Math.random().toString(36),
       title: challengeData.title,
       description: challengeData.description,
       requiredArea: area,
@@ -300,10 +300,10 @@ const pointsEarned =
     : 10;
     
 const buildCacheKey = (source: { doi?: sng; titulo: sng }) => {
-  const doi = source?.doi?.toLowerCase().m();
+  const doi = source?.doi?.toLowerCase().trim();
   if (doi) return `doi:${doi}`;
 
-  const title = (source?.titulo ?? "").toLowerCase().m();
+  const title = (source?.titulo ?? "").toLowerCase().trim();
   return `title:${title}`;
 };
     
@@ -341,7 +341,7 @@ const enrichedRecommendedMapped = await Promise.all(
   };
 }
 
-    const doi = enriched.doi?.m();
+    const doi = enriched.doi?.trim();
     const doiHref = doi ? `https://doi.org/${doi}` : "";
 
     const finalSource = {
@@ -355,7 +355,7 @@ const enrichedRecommendedMapped = await Promise.all(
     
     // cache write (protegido)
     try {
-      localStorage.setItem(cacheKey, JSON.sngify(finalSource));
+      localStorage.setItem(cacheKey, JSON.stringify(finalSource));
     } catch {
       // ignora erros de cache
     }
