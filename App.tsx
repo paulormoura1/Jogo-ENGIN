@@ -1,10 +1,9 @@
-import { enrichSourceUFSCFirst } from "./src/services/sourcesService";
-import { enrichWithOpenAlex }from "./src/services/openAlexService"
-import React, { useState, useEffect } from 'react';
-import { GamePhase, ResearchArea, GameState, Challenge, ActionRecord }from './src/tipos';
-import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from './constants';
-import { generateChallenge } from './geminiService';
-import { getSourcesByArea } from "./src/services/sourcesService";
+import React, { useEffect, useState } from "react";
+import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from "./constants";
+import { generateChallenge } from "./geminiService";
+import { ActionRecord, Challenge, GamePhase, GameState, ResearchArea } from "./src/tipos";
+import { enrichSourceUFSCFirst, getSourcesByArea } from "./src/services/sourcesService";
+import { enrichWithOpenAlex } from "./src/services/openAlexService";
 
 interface ExtendedActionRecord extends ActionRecord {
   references?: string[];
@@ -17,51 +16,52 @@ interface RankingEntry {
   area: ResearchArea;
   points: number;
 }
+
 const evaluateProposalWithSources = (proposal: string, area: ResearchArea) => {
   const sources = getSourcesByArea(area);
-  const text = proposal.toLowerCase();
+  const text = (proposal || "").toLowerCase();
 
   const perSource = sources.map((s) => {
     const keywords = s.palavrasChave || [];
-    const hits = keywords.filter((k) => text.includes(k.toLowerCase())).length;
+    const hits = keywords.filter((k: string) => text.includes(String(k).toLowerCase())).length;
     const coverage = keywords.length ? hits / keywords.length : 0;
 
-    return {
-      source: s,
-      hits,
-      coverage,
-    };
+    return { source: s, hits, coverage };
   });
 
   const totalHits = perSource.reduce((sum, s) => sum + s.hits, 0);
-
-  // score simples e previsível
   const score = Math.min(100, totalHits * 10);
 
-  const usedSources = perSource
-    .filter((x) => x.coverage >= 0.4)
-    .map((x) => x.source);
+  const usedSources = perSource.filter((x) => x.coverage >= 0.4).map((x) => x.source);
+  const recommendedSources = perSource.filter((x) => x.coverage < 0.4).map((x) => x.source);
 
-  const recommendedSources = perSource
-    .filter((x) => x.coverage < 0.4)
-    .map((x) => x.source);
-
-  // ✅ REGRA PEDAGÓGICA: erro também ensina (AGORA no lugar correto)
+  // ✅ REGRA PEDAGÓGICA: erro também ensina
   if (usedSources.length === 0 && recommendedSources.length === 0) {
     const fallbackSources = sources.slice(0, 3);
     recommendedSources.push(...fallbackSources);
   }
 
-  return {
-    score,
-    usedSources,
-    recommendedSources,
-  };
+  return { score, usedSources, recommendedSources };
 };
+
+function withTimeout<T>(promise: Promise<T>, ms: number, timeoutMsg = "Timeout na análise da IA") {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(timeoutMsg)), ms);
+    promise
+      .then((res) => {
+        clearTimeout(timer);
+        resolve(res);
+      })
+      .catch((err) => {
+        clearTimeout(timer);
+        reject(err);
+      });
+  });
+}
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState & { report: ExtendedActionRecord[] }>(() => {
-    const savedReport = localStorage.getItem('engin_nexus_reports_v2');
+    const savedReport = localStorage.getItem("engin_nexus_reports_v2");
     const initialReport = savedReport ? JSON.parse(savedReport) : [];
 
     return {
@@ -75,54 +75,56 @@ const App: React.FC = () => {
         [ResearchArea.UCR]: 100,
       },
       activePlayers: [],
-      history: ['Nexus Online.', 'Memória Coletiva Sincronizada.'],
+      history: ["Nexus Online.", "Memória Coletiva Sincronizada."],
       report: initialReport,
     };
   });
 
   const [ranking, setRanking] = useState<RankingEntry[]>(() => {
-    const savedRanking = localStorage.getItem('engin_nexus_ranking_v2');
+    const savedRanking = localStorage.getItem("engin_nexus_ranking_v2");
     return savedRanking ? JSON.parse(savedRanking) : [];
   });
 
   const [currentChallenge, setCurrentChallenge] = useState<Challenge | null>(null);
-  const [playerInput, setPlayerInput] = useState('');
+  const [playerInput, setPlayerInput] = useState("");
   const [loading, setLoading] = useState(false);
-const [lastRecord, setLastRecord] = useState<ExtendedActionRecord | null>(null);
-  
+  const [lastRecord, setLastRecord] = useState<ExtendedActionRecord | null>(null);
+
   const [feedback, setFeedback] = useState<{
-    verdict: sng;
-    explanation: sng;
-    references?: sng[];
-    sourceType?: sng;
+    verdict: string;
+    explanation: string;
+    references?: string[];
+    sourceType?: string;
     stabilityDelta?: number;
     innovationDelta?: number;
+    usedSources?: any[];
+    recommendedSources?: any[];
   } | null>(null);
 
-  const [newPlayerName, setNewPlayerName] = useState('');
+  const [newPlayerName, setNewPlayerName] = useState("");
   const [showDatabase, setShowDatabase] = useState(false);
   const [showRanking, setShowRanking] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('engin_nexus_reports_v2', JSON.sngify(gameState.report));
+    localStorage.setItem("engin_nexus_reports_v2", JSON.stringify(gameState.report));
   }, [gameState.report]);
 
   useEffect(() => {
-    localStorage.setItem('engin_nexus_ranking_v2', JSON.sngify(ranking));
+    localStorage.setItem("engin_nexus_ranking_v2", JSON.stringify(ranking));
   }, [ranking]);
 
-  const canSubmit = playerInput.m().split(/\s+/).filter((w) => w.length > 0).length >= 3;
+  const canSubmit = (playerInput || "").trim().split(/\s+/).filter((w) => w.length > 0).length >= 3;
 
-  const addPlayer = (name: sng) => {
-    const cleanName = name.m();
+  const addPlayer = (name: string) => {
+    const cleanName = (name || "").trim();
     if (!cleanName || gameState.activePlayers.includes(cleanName)) return;
     setGameState((prev) => ({ ...prev, activePlayers: [...prev.activePlayers, cleanName] }));
-    setNewPlayerName('');
+    setNewPlayerName("");
   };
 
   const startGame = () => {
     if (gameState.activePlayers.length < 1) {
-      alert('Identifique o Especialista.');
+      alert("Identifique o Especialista.");
       return;
     }
     setGameState((prev) => ({ ...prev, phase: GamePhase.CORE_GAME }));
@@ -131,351 +133,312 @@ const [lastRecord, setLastRecord] = useState<ExtendedActionRecord | null>(null);
   const handleAreaSelect = async (area: ResearchArea) => {
     setLoading(true);
     setFeedback(null);
-    setPlayerInput('');
+    setPlayerInput("");
+
     const challengeData = await generateChallenge(area);
     setCurrentChallenge({
-      id: Math.random().toSng(36),
+      id: Math.random().toString(36),
       title: challengeData.title,
       description: challengeData.description,
       requiredArea: area,
     });
+
     setLoading(false);
   };
 
-function withTimeout<T>(
-  promise: Promise<T>,
-  ms: number,
-  timeoutMsg = "Timeout na análise da IA"
-) {
-  return new Promise<T>((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error(timeoutMsg)), ms);
+  const normalizeSourceItem = (s: any) => {
+    const tituloBase = String(s?.titulo ?? s?.title ?? "Referência");
+    const anoNum = typeof s?.ano === "number" ? s.ano : undefined;
+    const titulo = anoNum ? `${tituloBase} (${anoNum})` : tituloBase;
 
-    promise
-      .then((res) => {
-        clearTimeout(timer);
-        resolve(res);
-      })
-      .catch((err) => {
-        clearTimeout(timer);
-        reject(err);
-      });
-  });
-}
-
-const submitAction = async () => {
-  console.log("[CLICK] submitAction disparou. playerInput =", playerInput);
-  if (!currentChallenge || !canSubmit || loading) return;
-  
- const emergencyExplanation =
-    "Falha temporária ao avaliar sua proposta. Tente novamente em instantes.";
-  let combinedExplanation = "";
-
-  setLoading(true);
-
-  try {
-    
- // 1️⃣ Tenta Gemini
-  let feedbackData: any = null;
-
-  try {
-  feedbackData = await withTimeout(
-    Promise.resolve(
-      getGeminiFeedback(
-        currentChallenge.description,
-        gameState,
-        playerInput,
-        gameState.activePlayers,
-        currentChallenge.requiredArea
-      )
-    ),
-    45000
-  );
-} catch (e) {
-  console.warn("Gemini falhou (429/503/etc), usando fallback local:", e);
-  feedbackData = null;
-}
-
-// 2️⃣ Avaliação local (blindada)
-const area = currentChallenge.requiredArea;
-
-let localEval: any = { usedSources: [], recommendedSources: [] };
-
-try {
-  localEval = evaluateProposalWithSources(playerInput, area) ?? localEval;
-} catch (e) {
-  console.error("[LOCAL_EVAL] evaluateProposalWithSources falhou:", e);
-  localEval = { usedSources: [], recommendedSources: [] };
-}
-
-const normalizeSourceItem = (s: any) => {
-  const tituloBase = String(s?.titulo ?? s?.title ?? "Referência");
-  const anoNum = typeof s?.ano === "number" ? s.ano : undefined;
-  const titulo = anoNum ? `${tituloBase} (${anoNum})` : tituloBase;
-
-  // autores: pode vir string, array, null
-  const autoresRaw = s?.autores ?? s?.authors;
-  const autores =
-    Array.isArray(autoresRaw)
+    const autoresRaw = s?.autores ?? s?.authors;
+    const autores = Array.isArray(autoresRaw)
       ? autoresRaw.filter(Boolean).join(", ")
       : typeof autoresRaw === "string"
         ? autoresRaw
         : "Autor(es) não informado(s)";
 
-  // link: pode vir string, vazio, undefined
-  let linkRaw = s?.link;
-  linkRaw = typeof linkRaw === "string" ? linkRaw.trim() : "";
+    let linkRaw = typeof s?.link === "string" ? s.link.trim() : "";
 
-  // Se veio DOI em campo separado, prioriza
-  const doiRaw = typeof s?.doi === "string" ? s.doi.trim() : "";
-  const doi = doiRaw.replace(/^https?:\/\/doi\.org\//i, "").trim();
-  if (doi) linkRaw = `https://doi.org/${doi}`;
+    const doiRaw = typeof s?.doi === "string" ? s.doi.trim() : "";
+    const doi = doiRaw.replace(/^https?:\/\/doi\.org\//i, "").trim();
+    if (doi) linkRaw = `https://doi.org/${doi}`;
 
-  // Se o link contém doi.org, normaliza para doi.org/<doi>
-  if (!doi && linkRaw && /doi\.org\//i.test(linkRaw)) {
-    const part = linkRaw.split(/doi\.org\//i)[1]?.trim();
-    if (part) linkRaw = `https://doi.org/${part}`;
-  }
+    if (!doi && linkRaw && /doi\.org\//i.test(linkRaw)) {
+      const part = linkRaw.split(/doi\.org\//i)[1]?.trim();
+      if (part) linkRaw = `https://doi.org/${part}`;
+    }
 
-  // Se link for relativo (ex.: repositorio.ufsc.br/handle/...), torna absoluto
-  if (linkRaw && !/^https?:\/\//i.test(linkRaw)) {
-    linkRaw = `https://${linkRaw.replace(/^\/+/, "")}`;
-  }
+    if (linkRaw && !/^https?:\/\//i.test(linkRaw)) {
+      linkRaw = `https://${linkRaw.replace(/^\/+/, "")}`;
+    }
 
-  // fallback final: evita vazio
-  if (!linkRaw) linkRaw = "https://repositorio.ufsc.br/";
+    if (!linkRaw) linkRaw = "https://repositorio.ufsc.br/";
 
-  return {
-    titulo,
-    autores,
-    link: linkRaw,
-    ano: anoNum,
+    return { titulo, autores, link: linkRaw, ano: anoNum, doi: doi || undefined };
   };
-};
-let usedMapped: any[] = [];
-let recommendedMapped: any[] = [];
 
-try {
-  usedMapped = (await Promise.all(
-    (localEval.usedSources ?? []).map(enrichSourceUFSCFirst)
-  )).map(normalizeSourceItem);
+  const dedupeByDoi = <T extends { doi?: string }>(items: T[]) => {
+    const seen = new Map<string, T>();
+    const out: T[] = [];
 
-  recommendedMapped = (await Promise.all(
-    (localEval.recommendedSources ?? []).map(enrichSourceUFSCFirst)
-  )).map(normalizeSourceItem);
-} catch (e) {
-  console.error("[LOCAL_MAP] falhou ao mapear fontes:", e);
-  usedMapped = [];
-  recommendedMapped = [];
-}
+    for (const item of items) {
+      const doi = typeof item?.doi === "string" ? item.doi.toLowerCase().trim() : "";
 
-// 4️⃣ Fallback pedagógico (sempre mostrar referências)
-if (usedMapped.length === 0 && recommendedMapped.length === 0) {
-  const areaSources = getSourcesByArea(area);
-  recommendedMapped = areaSources.slice(0, 3).map(normalizeSourceItem);
-}
+      if (!doi) {
+        out.push(item);
+        continue;
+      }
 
-// 5️⃣ Se Gemini falhou, gera feedback científico local
-if (!feedbackData) {
-  const topRefs = (usedMapped.length ? usedMapped : recommendedMapped).slice(0, 3);
+      const existing = seen.get(doi);
+      if (!existing) {
+        seen.set(doi, item);
+        out.push(item);
+      } else {
+        const merged = {
+          ...item,
+          ...existing,
+          titulo: (existing as any).titulo || (item as any).titulo,
+          autores: (existing as any).autores || (item as any).autores,
+          link: (existing as any).link || (item as any).link,
+          ano: (existing as any).ano ?? (item as any).ano,
+          doi,
+        } as T;
 
-  const refsText = topRefs
-    .map((r) => `- ${r.autores}: ${r.titulo}`)
-    .join("\n");
+        seen.set(doi, merged);
+        const idx = out.indexOf(existing);
+        if (idx >= 0) out[idx] = merged;
+      }
+    }
 
-  feedbackData = {
-    verdict: "CORRETA",
-    explanation:
-      `Proposta recebida com sucesso: "${playerInput}"\n\n` +
-      `Base científica do eixo:\n${refsText}`,
-    pointsEarned: 10,
-    references: topRefs.map((r) => `${r.autores} — ${r.titulo}`),
-    sourceType: "LOCAL_FALLBACK",
+    return out;
   };
-}
 
-// 6️⃣ Pontuação
-const pointsEarned =
-  typeof feedbackData.pointsEarned === "number"
-    ? feedbackData.pointsEarned
-    : 10;
-    
-const buildCacheKey = (source: { doi?: sng; titulo: sng }) => {
-  const doi = source?.doi?.toLowerCase().m();
-  if (doi) return `doi:${doi}`;
+  const buildCacheKey = (source: { doi?: string; titulo: string }) => {
+    const doi = (source?.doi ?? "").toLowerCase().trim();
+    if (doi) return `doi:${doi}`;
+    const title = (source?.titulo ?? "").toLowerCase().trim();
+    return `title:${title}`;
+  };
 
-  const title = (source?.titulo ?? "").toLowerCase().m();
-  return `title:${title}`;
-};
-    
-// 7️⃣ Explicação combinada
-const enrichedRecommendedMapped = await Promise.all(
-  recommendedMapped.map(async (source) => {
-    const cacheKey = `openalex:${buildCacheKey(source as any)}`;
+  const submitAction = async () => {
+    console.log("[CLICK] submitAction disparou. playerInput =", playerInput);
+    if (!currentChallenge || !canSubmit || loading) return;
 
-    // cache read (protegido)
+    const emergencyExplanation = "Falha temporária ao avaliar sua proposta. Tente novamente em instantes.";
+    let combinedExplanation = "";
+
+    setLoading(true);
+
+    // ✅ safeMapped sempre existe (para emergency fallback)
+    const safeMapped = (() => {
+      try {
+        const areaSources = getSourcesByArea(currentChallenge.requiredArea) || [];
+        return areaSources.slice(0, 3).map(normalizeSourceItem);
+      } catch {
+        return [
+          { autores: "UFSC/EGC", titulo: "Repositório UFSC (busca)", link: "https://repositorio.ufsc.br/" },
+        ];
+      }
+    })();
+
     try {
-      const cached = localStorage.getItem(cacheKey);
-      if (cached) return JSON.parse(cached);
-    } catch {
-      // ignora erros de cache
+      // 1️⃣ Tenta Gemini
+      let feedbackData: any = null;
+
+      try {
+        feedbackData = await withTimeout(
+          Promise.resolve(
+            getGeminiFeedback(
+              currentChallenge.description,
+              gameState,
+              playerInput,
+              gameState.activePlayers,
+              currentChallenge.requiredArea
+            )
+          ),
+          45000
+        );
+      } catch (e) {
+        console.warn("Gemini falhou (429/503/etc), usando fallback local:", e);
+        feedbackData = null;
+      }
+
+      // 2️⃣ Avaliação local (blindada)
+      const area = currentChallenge.requiredArea;
+
+      let localEval: any = { usedSources: [], recommendedSources: [] };
+      try {
+        localEval = evaluateProposalWithSources(playerInput, area) ?? localEval;
+      } catch (e) {
+        console.error("[LOCAL_EVAL] evaluateProposalWithSources falhou:", e);
+        localEval = { usedSources: [], recommendedSources: [] };
+      }
+
+      // 3️⃣ UFSC-FIRST nos itens locais
+      let usedMapped: any[] = [];
+      let recommendedMapped: any[] = [];
+
+      try {
+        usedMapped = (await Promise.all((localEval.usedSources ?? []).map(enrichSourceUFSCFirst))).map(normalizeSourceItem);
+
+        recommendedMapped = (await Promise.all((localEval.recommendedSources ?? []).map(enrichSourceUFSCFirst))).map(
+          normalizeSourceItem
+        );
+      } catch (e) {
+        console.error("[LOCAL_MAP] falhou ao mapear fontes:", e);
+        usedMapped = [];
+        recommendedMapped = [];
+      }
+
+      // 4️⃣ Fallback pedagógico (sempre mostrar referências)
+      if (usedMapped.length === 0 && recommendedMapped.length === 0) {
+        const areaSources = getSourcesByArea(area);
+        recommendedMapped = (areaSources || []).slice(0, 3).map(normalizeSourceItem);
+      }
+
+      // 5️⃣ Se Gemini falhou, gera feedback científico local
+      if (!feedbackData) {
+        const topRefs = (usedMapped.length ? usedMapped : recommendedMapped).slice(0, 3);
+        const refsText = topRefs.map((r) => `- ${r.autores}: ${r.titulo}`).join("\n");
+
+        feedbackData = {
+          verdict: "CORRETA",
+          explanation:
+            `Proposta recebida com sucesso: "${playerInput}"\n\n` + `Base científica do eixo:\n${refsText}`,
+          pointsEarned: 10,
+          references: topRefs.map((r) => `${r.autores} — ${r.titulo}`),
+          sourceType: "LOCAL_FALLBACK",
+        };
+      }
+
+      // 6️⃣ Pontuação
+      const pointsEarned: number = typeof feedbackData.pointsEarned === "number" ? feedbackData.pointsEarned : 10;
+
+      // 7️⃣ Enriquecimento OpenAlex (somente RECOMENDADAS do fluxo LOCAL UFSC-FIRST)
+      const enrichedRecommendedMapped = await Promise.all(
+        (recommendedMapped || []).map(async (source) => {
+          const cacheKey = `openalex:${buildCacheKey(source as any)}`;
+
+          try {
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) return JSON.parse(cached);
+          } catch {
+            // ignora
+          }
+
+          let enriched: any = null;
+          try {
+            enriched = await enrichWithOpenAlex({
+              doi: (source as any)?.doi,
+              title: source.titulo,
+            });
+          } catch (e) {
+            enriched = null;
+          }
+
+          // ✅ UFSC-first: se não enriquecer, ao menos garantir "busca específica" UFSC (não link genérico)
+          if (!enriched) {
+            const titleQ = encodeURIComponent(source.titulo || "");
+            const ufscSearch = `https://repositorio.ufsc.br/simple-search?query=${titleQ}`;
+            const linkIsGeneric =
+              !source.link ||
+              source.link === "https://repositorio.ufsc.br/" ||
+              source.link === "https://repositorio.ufsc.br";
+
+            return { ...source, link: linkIsGeneric ? ufscSearch : source.link };
+          }
+
+          const doi = typeof enriched.doi === "string" ? enriched.doi.trim() : "";
+          const doiHref = doi ? `https://doi.org/${doi.replace(/^https?:\/\/doi\.org\//i, "")}` : "";
+
+          const finalSource = {
+            ...source,
+            titulo: enriched.titulo || source.titulo,
+            autores: enriched.autores || source.autores,
+            ano: (enriched as any).ano ?? (source as any).ano,
+            doi: (enriched as any).doi ?? (source as any).doi,
+            link: doiHref || enriched.link || source.link,
+          };
+
+          try {
+            localStorage.setItem(cacheKey, JSON.stringify(finalSource));
+          } catch {
+            // ignora
+          }
+
+          return finalSource;
+        })
+      );
+
+      // 8️⃣ Dedup final (APENAS UMA VEZ) -> este é o que vai para UI
+      const dedupedRecommended = dedupeByDoi(enrichedRecommendedMapped as any[]);
+
+      console.log("UFSC-FIRST + OpenAlex recommended (best-effort):", dedupedRecommended?.slice?.(0, 3));
+
+      // 9️⃣ Explicação combinada
+      combinedExplanation = String(feedbackData?.explanation ?? "").trim() || combinedExplanation || emergencyExplanation;
+
+      const record: ExtendedActionRecord = {
+        area: currentChallenge.requiredArea,
+        title: currentChallenge.title,
+        proposal: playerInput,
+        verdict: feedbackData.verdict,
+        explanation: combinedExplanation,
+        executors: [...gameState.activePlayers],
+        references: feedbackData.references ?? [],
+        sourceType: feedbackData.sourceType ?? "local",
+        pointsEarned,
+        usedSources: usedMapped,
+        recommendedSources: dedupedRecommended,
+        timestamp: new Date().toLocaleString("pt-BR"),
+      };
+
+      setLastRecord(record);
+
+      console.log("ANTES do setFeedback", {
+        hasRec: recommendedMapped.length,
+        hasUsed: usedMapped.length,
+      });
+
+      console.log(
+        "DEBUG RECOMMENDED (flat):",
+        (dedupedRecommended as any[]).map((s) => ({
+          titulo: s?.titulo,
+          autores: s?.autores,
+          ano: s?.ano,
+          doi: s?.doi,
+          link: s?.link,
+        }))
+      );
+
+      setFeedback({
+        verdict: feedbackData.verdict,
+        explanation: combinedExplanation,
+        pointsEarned,
+        references: feedbackData.references ?? [],
+        sourceType: feedbackData.sourceType ?? "local",
+        usedSources: usedMapped,
+        recommendedSources: dedupedRecommended,
+      });
+
+      console.log("DEPOIS do setFeedback");
+    } catch (err) {
+      console.error("submitAction error:", err);
+
+      setFeedback({
+        verdict: "ANALISE_INDISPONIVEL",
+        explanation: emergencyExplanation,
+        pointsEarned: 0,
+        references: safeMapped.map((r: any) => `${r.autores} — ${r.titulo}`),
+        sourceType: "EMERGENCY_FALLBACK",
+        usedSources: [],
+        recommendedSources: safeMapped,
+      });
+    } finally {
+      setLoading(false);
     }
-
-    const enriched = await enrichWithOpenAlex({
-      doi: (source as any)?.doi,
-      title: source.titulo,
-    });
-
-    if (!enriched) {
-  const titleQ = encodeURIComponent(source.titulo || "");
-  const ufscSearch = `https://repositorio.ufsc.br/simple-search?query=${titleQ}`;
-
-  // se o link local for genérico, troca por busca específica UFSC
-  const linkIsGeneric =
-    !source.link ||
-    source.link === "https://repositorio.ufsc.br/" ||
-    source.link === "https://repositorio.ufsc.br";
-
-  return {
-    ...source,
-    link: linkIsGeneric ? ufscSearch : source.link,
   };
-}
-
-    const doi = enriched.doi?.m();
-    const doiHref = doi ? `https://doi.org/${doi}` : "";
-
-    const finalSource = {
-  ...source,
-  titulo: enriched.titulo || source.titulo,
-  autores: enriched.autores || source.autores,
-  ano: (enriched as any).ano ?? (source as any).ano,
-  doi: (enriched as any).doi ?? (source as any).doi,
-  link: doiHref || enriched.link || source.link,
-};
-    
-    // cache write (protegido)
-    try {
-      localStorage.setItem(cacheKey, JSON.sngify(finalSource));
-    } catch {
-      // ignora erros de cache
-    }
-
-    return finalSource;
-  })
-);
-
-// ✅ Deduplicação por DOI (mantém ordem e preenche campos faltantes quando necessário)
-const dedupeByDoi = <T extends { doi?: string }>(items: T[]) => {
-  const seen = new Map<string, T>();
-  const out: T[] = [];
-
-  for (const item of items) {
-    const doi = item?.doi?.toLowerCase().trim();
-
-    // Sem DOI -> mantém como está (não deduplica)
-    if (!doi) {
-      out.push(item);
-      continue;
-    }
-
-    const existing = seen.get(doi);
-    if (!existing) {
-      seen.set(doi, item);
-      out.push(item);
-    } else {
-      // merge suave: se o existente estiver faltando campos, completa com o novo
-      const merged = {
-        ...item,
-        ...existing,
-        titulo: (existing as any).titulo || (item as any).titulo,
-        autores: (existing as any).autores || (item as any).autores,
-        link: (existing as any).link || (item as any).link,
-        ano: (existing as any).ano ?? (item as any).ano,
-        doi,
-      } as T;
-
-      // atualiza no map
-      seen.set(doi, merged);
-
-      // substitui na lista mantendo ordem (primeira ocorrência permanece na posição)
-      const idx = out.indexOf(existing);
-      if (idx >= 0) out[idx] = merged;
-    }
-  }
-
-  return out;
-};
-
-const ufscRecommendedMapped = await Promise.all(
-  (feedbackData.recommendedSources ?? []).map(enrichSourceUFSCFirst)
-);
-
-const dedupedRecommended = dedupeByDoi(ufscRecommendedMapped as any[]);
-console.log("UFSC-FIRST recommended (best-effort):", dedupedRecommended?.slice?.(0, 3));
-  
-combinedExplanation =
-(feedbackData?.explanation ?? "").trim() || combinedExplanation || emergencyExplanation;
-const record: ExtendedActionRecord = {
-  area: currentChallenge.requiredArea,
-  title: currentChallenge.title,
-  proposal: playerInput,
-  verdict: feedbackData.verdict,
-  explanation: combinedExplanation,
-  executors: [...gameState.activePlayers],
-  references: feedbackData.references ?? [],
-  sourceType: feedbackData.sourceType ?? "local",
-  pointsEarned,
-  usedSources: usedMapped,
-  recommendedSources: dedupedRecommended, // ✅ aplica dedupe aqui
-  timestamp: new Date().toLocaleString("pt-BR"),
-};
-
-setLastRecord(record);
-
-console.log("ANTES do setFeedback", {
-  hasRec: recommendedMapped.length,
-  hasUsed: usedMapped.length,
-});
-console.log(
-  "DEBUG RECOMMENDED (flat):",
-  (dedupedRecommended as any[]).map((s) => ({
-    titulo: s?.titulo,
-    autores: s?.autores,
-    ano: s?.ano,
-    doi: s?.doi,
-    link: s?.link,
-  }))
-);
-  
-setFeedback({
-  verdict: feedbackData.verdict,
-  explanation: combinedExplanation,
-  pointsEarned,
-  references: feedbackData.references ?? [],
-  sourceType: feedbackData.sourceType ?? "local",
-  usedSources: usedMapped,
-  recommendedSources: dedupedRecommended,
-});
-
-console.log("DEPOIS do setFeedback");
-} catch (err) {
-  console.error("submitAction error:", err);
-
-  // fallback...
-  setFeedback({
-    verdict: "ANALISE_INDISPONIVEL",
-    explanation: emergencyExplanation,
-    pointsEarned: 0,
-    references: safeMapped.map((r) => `${r.autores} — ${r.titulo}`),
-    sourceType: "EMERGENCY_FALLBACK",
-    usedSources: [],
-    recommendedSources: safeMapped,
-  });
-
-} finally {
-  setLoading(false); // ✅ ESSENCIAL
-}
-};
 
   const buildQuery = (s: any) => {
     const titulo = (s?.titulo ?? "").toString().trim();
@@ -483,18 +446,14 @@ console.log("DEPOIS do setFeedback");
     const doiLike = (s?.doi ?? "").toString().trim();
     const rawLink = (s?.link ?? "").toString().trim();
 
-    const doiLink =
-      rawLink.includes("doi.org/") ? rawLink.split("doi.org/")[1]?.trim() : "";
-
+    const doiLink = rawLink.includes("doi.org/") ? rawLink.split("doi.org/")[1]?.trim() : "";
     const doi = doiLike || doiLink;
 
     const q = [titulo, autores, doi].filter(Boolean).join(" ");
     return q || titulo || autores || rawLink;
   };
 
-  const u = (url: string) => url;
-
- return (
+  return (
     <div className="min-h-screen terminal-bg text-blue-50 p-3 md:p-8 font-inter overflow-x-hidden">
       <header className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 border-b border-blue-900/50 pb-4">
         <div
@@ -508,9 +467,7 @@ console.log("DEPOIS do setFeedback");
             <span className="font-orbitron font-bold text-white text-lg">N</span>
           </div>
           <div className="text-center sm:text-left">
-            <h1 className="font-orbitron text-lg md:text-xl font-bold tracking-widest text-blue-400">
-              NEXUS ENGIN
-            </h1>
+            <h1 className="font-orbitron text-lg md:text-xl font-bold tracking-widest text-blue-400">NEXUS ENGIN</h1>
             <p className="text-sm md:text-base text-slate-200/90 font-mono uppercase">Memória Coletiva UFSC</p>
           </div>
         </div>
@@ -523,7 +480,7 @@ console.log("DEPOIS do setFeedback");
                 setShowRanking(false);
               }}
               className={`px-3 py-1.5 rounded-full border text-[9px] font-orbitron transition-all ${
-                showDatabase ? 'bg-blue-600 text-white' : 'border-blue-900 text-blue-400'
+                showDatabase ? "bg-blue-600 text-white" : "border-blue-900 text-blue-400"
               }`}
             >
               REP ({gameState.report.length})
@@ -535,7 +492,7 @@ console.log("DEPOIS do setFeedback");
                 setShowDatabase(false);
               }}
               className={`p-1.5 rounded-lg border transition-all ${
-                showRanking ? 'bg-yellow-600 border-yellow-400 text-white' : 'bg-slate-900 border-blue-900 text-yellow-500'
+                showRanking ? "bg-yellow-600 border-yellow-400 text-white" : "bg-slate-900 border-blue-900 text-yellow-500"
               }`}
               title="Classificação"
             >
@@ -551,7 +508,7 @@ console.log("DEPOIS do setFeedback");
           </div>
 
           <div className="flex gap-3 md:gap-6 border-l border-blue-900/50 pl-4 shrink-0">
-            <StatBar label="ESTAB" value={gameState.stability} color={gameState.stability < 30 ? 'bg-red-500' : 'bg-green-500'} />
+            <StatBar label="ESTAB" value={gameState.stability} color={gameState.stability < 30 ? "bg-red-500" : "bg-green-500"} />
             <StatBar label="INOVA" value={gameState.innovation} color="bg-blue-400" />
           </div>
         </div>
@@ -572,14 +529,17 @@ console.log("DEPOIS do setFeedback");
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-yellow-900/10">
-                  {ranking.sort((a, b) => b.points - a.points).map((r, i) => (
-                    <tr key={i} className="hover:bg-yellow-500/5">
-                      <td className="p-3 text-yellow-600 font-bold">{i + 1}</td>
-                      <td className="p-3 text-white font-bold truncate max-w-[80px] md:max-w-none">{r.playerName}</td>
-                      <td className="p-3 text-blue-300 truncate max-w-[100px] md:max-w-none">{r.area}</td>
-                      <td className="p-3 text-right text-yellow-400 font-bold">{r.points}</td>
-                    </tr>
-                  ))}
+                  {ranking
+                    .slice()
+                    .sort((a, b) => b.points - a.points)
+                    .map((r, i) => (
+                      <tr key={i} className="hover:bg-yellow-500/5">
+                        <td className="p-3 text-yellow-600 font-bold">{i + 1}</td>
+                        <td className="p-3 text-white font-bold truncate max-w-[80px] md:max-w-none">{r.playerName}</td>
+                        <td className="p-3 text-blue-300 truncate max-w-[100px] md:max-w-none">{r.area}</td>
+                        <td className="p-3 text-right text-yellow-400 font-bold">{r.points}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -594,14 +554,14 @@ console.log("DEPOIS do setFeedback");
                 <div
                   key={i}
                   className={`p-4 rounded-xl border bg-slate-900/60 space-y-2 ${
-                    rec.verdict === 'CORRETA' ? 'border-green-500/20' : 'border-red-500/20'
+                    rec.verdict === "CORRETA" ? "border-green-500/20" : "border-red-500/20"
                   }`}
                 >
                   <div className="flex justify-between items-start">
                     <span className="text-[7px] text-blue-400 uppercase font-bold truncate max-w-[70%]">{rec.area}</span>
                     <span
                       className={`text-[7px] px-1.5 py-0.5 rounded font-bold shrink-0 ${
-                        rec.verdict === 'CORRETA' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                        rec.verdict === "CORRETA" ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"
                       }`}
                     >
                       {rec.verdict}
@@ -700,115 +660,106 @@ console.log("DEPOIS do setFeedback");
                       <div className="space-y-5 animate-in slide-in-from-bottom-2">
                         <div
                           className={`p-5 rounded-xl border ${
-                            feedback.verdict === 'CORRETA'
-                              ? 'border-green-500/30 bg-green-500/5'
-                              : 'border-red-500/30 bg-red-500/5'
+                            feedback.verdict === "CORRETA" ? "border-green-500/30 bg-green-500/5" : "border-red-500/30 bg-red-500/5"
                           }`}
                         >
-                          <h4
-                            className={`font-orbitron text-lg mb-3 ${
-                              feedback.verdict === 'CORRETA' ? 'text-green-400' : 'text-red-400'
-                            }`}
-                          >
+                          <h4 className={`font-orbitron text-lg mb-3 ${feedback.verdict === "CORRETA" ? "text-green-400" : "text-red-400"}`}>
                             {feedback.verdict}
                           </h4>
+
                           <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest mb-2">
-  Pontos ganhos nesta rodada:{" "}
-  <span className="text-white font-bold">{lastRecord?.pointsEarned}</span>
-</p>
+                            Pontos ganhos nesta rodada:{" "}
+                            <span className="text-white font-bold">{lastRecord?.pointsEarned}</span>
+                          </p>
+
                           <p className="text-[10px] md:text-xs text-blue-50 leading-relaxed mb-4">{feedback.explanation}</p>
-                       {(lastRecord?.usedSources?.length || 0) > 0 && (
-  <div className="mt-4 space-y-2">
-    <p className="text-[9px] font-orbitron text-green-400 uppercase tracking-widest">
-      Fontes acionadas
-    </p>
-    <ul className="space-y-1 text-[9px] text-blue-100/70">
-      {lastRecord?.usedSources?.slice(0, 3).map((s: any, idx: number) => (
-        <li key={idx} className="leading-snug">
-          <span className="text-white font-bold">{s.autores || "Autor não informado"}</span>{" "}
-          <span className="text-blue-200/80">— {s.titulo}</span>{" "}
-          {s.link ? (
-           <a
-  href={s.link}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="text-yellow-400 underline ml-1 inline-block break-all"
-  onClick={(e) => e.stopPropagation()}
->
-  abrir
-</a>
-          ) : null}
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
 
-{((feedback as any)?.recommendedSources?.length || 0) > 0 && (
-  <div className="mt-4 space-y-2">
-    <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest">
-      Recomendações para evoluir
-    </p>
-    <ul className="space-y-1 text-[9px] text-blue-100/70">
-    {(feedback as any)?.recommendedSources?.slice(0, 3).map((s: any, idx: number) => (
-        <li key={idx} className="leading-snug">
-          <span className="text-white font-bold">{s.autores}</span>{" "}
-          <span className="text-blue-200/80">— {s.titulo}</span>{" "}
-          {(() => {
-  const q = buildQuery(s);
-  const qEnc = encodeURIComponent(q);
+                          {(lastRecord?.usedSources?.length || 0) > 0 && (
+                            <div className="mt-4 space-y-2">
+                              <p className="text-[9px] font-orbitron text-green-400 uppercase tracking-widest">Fontes acionadas</p>
+                              <ul className="space-y-1 text-[9px] text-blue-100/70">
+                                {lastRecord?.usedSources?.slice(0, 3).map((s: any, idx: number) => (
+                                  <li key={idx} className="leading-snug">
+                                    <span className="text-white font-bold">{s.autores || "Autor não informado"}</span>{" "}
+                                    <span className="text-blue-200/80">— {s.titulo}</span>{" "}
+                                    {s.link ? (
+                                      <a
+                                        href={s.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-yellow-400 underline ml-1 inline-block break-all"
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        abrir
+                                      </a>
+                                    ) : null}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
 
-  const raw = (s?.link ?? "").trim();
-  const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
-const doiFromLink =
-  raw.includes("doi.org/") ? raw.split("doi.org/")[1]?.trim() : "";
+                          {((feedback as any)?.recommendedSources?.length || 0) > 0 && (
+                            <div className="mt-4 space-y-2">
+                              <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest">Recomendações para evoluir</p>
+                              <ul className="space-y-1 text-[9px] text-blue-100/70">
+                                {(feedback as any)?.recommendedSources?.slice(0, 3).map((s: any, idx: number) => (
+                                  <li key={idx} className="leading-snug">
+                                    <span className="text-white font-bold">{s.autores}</span>{" "}
+                                    <span className="text-blue-200/80">— {s.titulo}</span>{" "}
+                                    {(() => {
+                                      const q = buildQuery(s);
+                                      const qEnc = encodeURIComponent(q);
 
-const doiHref = doiFromLink ? `https://doi.org/${doiFromLink}` : "";
-          
-  const links = [
-  { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
-  { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
+                                      const raw = (s?.link ?? "").trim();
+                                      const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
 
-  { label: "UFSC/EGC", href: `https://www.google.com/search?q=${encodeURIComponent(`site:repositorio.ufsc.br ${q}`)}` },
-{ label: "Scopus", href: `https://www.google.com/search?q=${encodeURIComponent(`Scopus ${q}`)}` },
-];
-  return (
-    <div className="mt-1">
-     {!!(doiHref || mainHref) && (
-  <a
-    href={doiHref || mainHref}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-yellow-400 underline ml-1 inline-block break-all"
-    onClick={(e) => e.stopPropagation()}
-  >
-    Abrir artigo
-  </a>
-)}
+                                      const doiFromLink = raw.includes("doi.org/") ? raw.split("doi.org/")[1]?.trim() : "";
+                                      const doiHref = doiFromLink ? `https://doi.org/${doiFromLink}` : "";
 
-      <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
-        {links.map((l) => (
-          <a
-            key={l.label}
-            href={l.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[9px] text-cyan-300 underline"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {l.label}
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-})()}
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
+                                      const links = [
+                                        { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
+                                        { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
+                                        { label: "UFSC/EGC", href: `https://www.google.com/search?q=${encodeURIComponent(`site:repositorio.ufsc.br ${q}`)}` },
+                                        { label: "Scopus", href: `https://www.google.com/search?q=${encodeURIComponent(`Scopus ${q}`)}` },
+                                      ];
 
+                                      return (
+                                        <div className="mt-1">
+                                          {!!(doiHref || mainHref) && (
+                                            <a
+                                              href={doiHref || mainHref}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              className="text-yellow-400 underline ml-1 inline-block break-all"
+                                              onClick={(e) => e.stopPropagation()}
+                                            >
+                                              Abrir artigo
+                                            </a>
+                                          )}
+
+                                          <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
+                                            {links.map((l) => (
+                                              <a
+                                                key={l.label}
+                                                href={l.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-[9px] text-cyan-300 underline"
+                                                onClick={(e) => e.stopPropagation()}
+                                              >
+                                                {l.label}
+                                              </a>
+                                            ))}
+                                          </div>
+                                        </div>
+                                      );
+                                    })()}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </div>
 
                         <button
@@ -846,11 +797,11 @@ const doiHref = doiFromLink ? `https://doi.org/${doiFromLink}` : "";
                               onClick={submitAction}
                               className={`w-full py-4 md:py-5 font-orbitron text-[10px] rounded-xl tracking-[0.2em] transition-all uppercase shadow-xl ${
                                 canSubmit && !loading
-                                  ? 'bg-green-600 hover:bg-green-500 text-white'
-                                  : 'bg-slate-800 text-slate-600 border border-slate-700'
+                                  ? "bg-green-600 hover:bg-green-500 text-white"
+                                  : "bg-slate-800 text-slate-600 border border-slate-700"
                               }`}
                             >
-                              {loading ? 'ANALISANDO...' : 'Transmitir Proposta'}
+                              {loading ? "ANALISANDO..." : "Transmitir Proposta"}
                             </button>
                           </div>
                         </div>
@@ -875,12 +826,14 @@ const StatBar = ({ label, value, color }: { label: string; value: number; color:
     </div>
   </div>
 );
+
+// placeholder local (seu projeto real deve substituir)
 async function getGeminiFeedback(
-  challengeDescription: string,
-  gameState: any,
+  _challengeDescription: string,
+  _gameState: any,
   playerInput: string,
-  activePlayers: string[],
-  requiredArea: string
+  _activePlayers: string[],
+  _requiredArea: string
 ) {
   return {
     verdict: "CORRETA",
@@ -891,4 +844,4 @@ async function getGeminiFeedback(
   };
 }
 
-export default App;   
+export default App;
