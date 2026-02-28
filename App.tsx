@@ -230,8 +230,12 @@ let usedMapped: any[] = [];
 let recommendedMapped: any[] = [];
 
 try {
-  usedMapped = (localEval.usedSources ?? []).map(normalizeSourceItem);
-  recommendedMapped = (localEval.recommendedSources ?? []).map(normalizeSourceItem);
+usedMapped = await Promise.all(
+  (localEval.usedSources ?? []).map(enrichSourceUFSCFirst)
+);
+ recommendedMapped = await Promise.all(
+  (localEval.recommendedSources ?? []).map(enrichSourceUFSCFirst)
+);
 } catch (e) {
   console.error("[LOCAL_MAP] falhou ao mapear fontes:", e);
   usedMapped = [];
