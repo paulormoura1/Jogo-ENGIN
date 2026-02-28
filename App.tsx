@@ -146,38 +146,52 @@ const App: React.FC = () => {
     setLoading(false);
   };
 
-  const normalizeSourceItem = (s: any) => {
-    const tituloBase = String(s?.titulo ?? s?.title ?? "Referência");
-    const anoNum = typeof s?.ano === "number" ? s.ano : undefined;
-    const titulo = anoNum ? `${tituloBase} (${anoNum})` : tituloBase;
+ const normalizeSourceItem = (s: any) => {
+  const tituloBase = String(s?.titulo ?? s?.title ?? "Referência");
+  const anoNum = typeof s?.ano === "number" ? s.ano : undefined;
+  const titulo = anoNum ? `${tituloBase} (${anoNum})` : tituloBase;
 
-    const autoresRaw = s?.autores ?? s?.authors;
-    const autores = Array.isArray(autoresRaw)
+  // autores
+  const autoresRaw = s?.autores ?? s?.authors;
+  const autores =
+    Array.isArray(autoresRaw)
       ? autoresRaw.filter(Boolean).join(", ")
       : typeof autoresRaw === "string"
         ? autoresRaw
         : "Autor(es) não informado(s)";
 
-    let linkRaw = typeof s?.link === "string" ? s.link.trim() : "";
+  // DOI (normaliza removendo doi.org/)
+  const doiRaw = typeof s?.doi === "string" ? s.doi.trim() : "";
+  const doi = doiRaw ? doiRaw.replace(/^https?:\/\/doi\.org\//i, "").trim() : "";
 
-    const doiRaw = typeof s?.doi === "string" ? s.doi.trim() : "";
-    const doi = doiRaw.replace(/^https?:\/\/doi\.org\//i, "").trim();
-    if (doi) linkRaw = `https://doi.org/${doi}`;
+  // link (prioriza DOI)
+  let linkRaw = typeof s?.link === "string" ? s.link.trim() : "";
 
-    if (!doi && linkRaw && /doi\.org\//i.test(linkRaw)) {
-      const part = linkRaw.split(/doi\.org\//i)[1]?.trim();
-      if (part) linkRaw = `https://doi.org/${part}`;
-    }
+  // se link contém doi.org, extrai DOI
+  if (!doi && linkRaw && /doi\.org\//i.test(linkRaw)) {
+    const part = linkRaw.split(/doi\.org\//i)[1]?.trim();
+    if (part) linkRaw = `https://doi.org/${part}`;
+  }
 
-    if (linkRaw && !/^https?:\/\//i.test(linkRaw)) {
-      linkRaw = `https://${linkRaw.replace(/^\/+/, "")}`;
-    }
+  // se tem DOI, força link DOI
+  if (doi) linkRaw = `https://doi.org/${doi}`;
 
-    if (!linkRaw) linkRaw = "https://repositorio.ufsc.br/";
+  // garante absoluto
+  if (linkRaw && !/^https?:\/\//i.test(linkRaw)) {
+    linkRaw = `https://${linkRaw.replace(/^\/+/, "")}`;
+  }
 
-    return { titulo, autores, link: linkRaw, ano: anoNum, doi: doi || undefined };
+  // fallback
+  if (!linkRaw) linkRaw = "https://repositorio.ufsc.br/";
+
+  return {
+    titulo,
+    autores,
+    ano: anoNum,
+    doi: doi || undefined,
+    link: linkRaw,
   };
-
+};
   const dedupeByDoi = <T extends { doi?: string }>(items: T[]) => {
     const seen = new Map<string, T>();
     const out: T[] = [];
@@ -682,6 +696,11 @@ const App: React.FC = () => {
                                   <li key={idx} className="leading-snug">
                                     <span className="text-white font-bold">{s.autores || "Autor não informado"}</span>{" "}
                                     <span className="text-blue-200/80">— {s.titulo}</span>{" "}
+                                    {s.doi ? (
+                                      <span className="ml-1 text-[9px] text-blue-200/60">
+                                      (DOI: <span className="text-blue-200/80">{s.doi}</span>)
+                                      </span>
+                                      ) : null}
                                     {s.link ? (
                                       <a
                                         href={s.link}
@@ -717,14 +736,24 @@ const App: React.FC = () => {
                                       const doiFromLink = raw.includes("doi.org/") ? raw.split("doi.org/")[1]?.trim() : "";
                                       const doiHref = doiFromLink ? `https://doi.org/${doiFromLink}` : "";
 
-                                      const links = [
-                                        { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
-                                        { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
-                                        { label: "UFSC/EGC", href: `https://www.google.com/search?q=${encodeURIComponent(`site:repositorio.ufsc.br ${q}`)}` },
-                                        { label: "Scopus", href: `https://www.google.com/search?q=${encodeURIComponent(`Scopus ${q}`)}` },
-                                      ];
+                                     const links = [
+                                      { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
+                                      { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
+                                     {
+                                     label: "UFSC/EGC",
+                                    href: `https://repositorio.ufsc.br/simple-search?query=${encodeURIComponent(
+                                    (s?.titulo ?? q).toString()
+                                     )}`,
+                                      },
+   {
+                                 label: "Scopus",
+                                href: `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=TITLE-ABS-KEY%28${encodeURIComponent(
+                                (s?.titulo ?? q).toString()
+                                )}%29`,
+                               },
+                               ];
 
-                                      return (
+                                return (
                                         <div className="mt-1">
                                           {!!(doiHref || mainHref) && (
                                             <a
