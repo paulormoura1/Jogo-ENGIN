@@ -1,4 +1,4 @@
-import { enrichWithOpenAlex } from "./services/openAlexService";
+import { enrichWithOpenAlex }from "./services/openAlexService.ts"
 import React, { useState, useEffect } from 'react';
 import { GamePhase, ResearchArea, GameState, Challenge, ActionRecord }from './src/tipos';
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from './constants';
@@ -447,10 +447,10 @@ console.log("DEPOIS do setFeedback");
     const doiLike = (s?.doi ?? "").toString().trim();
     const rawLink = (s?.link ?? "").toString().trim();
 
-    const doiFromLink =
+    const doiLink =
       rawLink.includes("doi.org/") ? rawLink.split("doi.org/")[1]?.trim() : "";
 
-    const doi = doiLike || doiFromLink;
+    const doi = doiLike || doiLink;
 
     const q = [titulo, autores, doi].filter(Boolean).join(" ");
     return q || titulo || autores || rawLink;
@@ -637,7 +637,7 @@ console.log("DEPOIS do setFeedback");
               )}
 
               {gameState.phase === GamePhase.CORE_GAME && !currentChallenge && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 animate-in fade-in slide-in-from-bottom-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 animate-in fade-in slide-in--bottom-4">
                   {Object.values(ResearchArea).map((area) => (
                     <button
                       key={area}
