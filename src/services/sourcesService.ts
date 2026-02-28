@@ -1,6 +1,32 @@
+import { scientificSearch } from "./scientificSearchService";
 import { ResearchArea } from "../../types";
 import { EGC_SOURCES } from "../data/egcSources";
 import { GC_SOURCES } from "../data/gcSources";
+
+async function enrichSourceUFSCFirst(source: any) {
+  const title = source?.titulo ?? source?.title ?? "";
+  const year = typeof source?.ano === "number" ? source.ano : undefined;
+
+  if (!title) return source;
+
+  const res = await scientificSearch({ title, year });
+
+  // Se não achou nada confiável, mantém como está (sem inventar link genérico)
+  if (!res?.best?.link) return source;
+
+  const best = res.best;
+
+  return {
+    ...source,
+    // mantém o seu padrão de campos
+    titulo: best.title || source.titulo,
+    autores: (best.authors && best.authors.length ? best.authors : source.autores) || source.autores,
+    ano: best.year ?? source.ano,
+    link: best.link || source.link,
+    // opcional (se quiser inspecionar no debug)
+    sourceType: res.sourceType,
+  };
+}
 
 export type AnySource =
   | (typeof EGC_SOURCES)[number]
