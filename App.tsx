@@ -381,6 +381,7 @@ const ufscRecommendedMapped = await Promise.all(
 );
 
 const dedupedRecommended = dedupeByDoi(ufscRecommendedMapped as any[]);
+console.log("UFSC-FIRST recommended (best-effort):", dedupedRecommended?.slice?.(0, 3));
   
 combinedExplanation =
 (feedbackData?.explanation ?? "").trim() || combinedExplanation || emergencyExplanation;
