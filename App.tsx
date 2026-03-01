@@ -175,7 +175,14 @@ const App: React.FC = () => {
 
   // se tem DOI, força link DOI
   if (doi) linkRaw = `https://doi.org/${doi}`;
+// ✅ captura DOI também se vier no link (doi.org/...)
+const doiFromLink =
+  !doi && linkRaw && /doi\.org\//i.test(linkRaw)
+    ? linkRaw.split(/doi\.org\//i)[1]?.trim()
+    : "";
 
+const doiFinal = (doi || doiFromLink || "").trim();
+   
   // garante absoluto
   if (linkRaw && !/^https?:\/\//i.test(linkRaw)) {
     linkRaw = `https://${linkRaw.replace(/^\/+/, "")}`;
@@ -185,12 +192,12 @@ const App: React.FC = () => {
   if (!linkRaw) linkRaw = "https://repositorio.ufsc.br/";
 
   return {
-    titulo,
-    autores,
-    ano: anoNum,
-    doi: doi || undefined,
-    link: linkRaw,
-  };
+  titulo,
+  autores,
+  link: linkRaw,
+  ano: anoNum,
+  doi: doiFinal || undefined, // ✅ agora o objeto tem DOI
+};
 };
   const dedupeByDoi = <T extends { doi?: string }>(items: T[]) => {
     const seen = new Map<string, T>();
