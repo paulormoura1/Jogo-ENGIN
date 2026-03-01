@@ -395,7 +395,23 @@ const doiFinal = (doi || doiFromLink || "").trim();
       // 8️⃣ Dedup final (APENAS UMA VEZ) -> este é o que vai para UI
       const dedupedRecommended = dedupeByDoi(enrichedRecommendedMapped as any[]);
 
-      console.log("UFSC-FIRST + OpenAlex recommended (best-effort):", dedupedRecommended?.slice?.(0, 3));
+     console.log("UFSC-FIRST + OpenAlex recommended (best-effort):", dedupedRecommended?.slice?.(0, 3));
+
+console.log(
+  "DEBUG DEDUP FULL:",
+  (dedupedRecommended || []).map((s: any) => ({
+    titulo: s?.titulo,
+    doi: s?.doi,
+    link: s?.link,
+  }))
+);
+
+console.log(
+  "DEBUG DOI COUNT:",
+  (dedupedRecommended || []).filter((s: any) => !!s?.doi).length,
+  "/",
+  (dedupedRecommended || []).length
+);
 
       // 9️⃣ Explicação combinada
       combinedExplanation = String(feedbackData?.explanation ?? "").trim() || combinedExplanation || emergencyExplanation;
