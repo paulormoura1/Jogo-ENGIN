@@ -777,8 +777,7 @@ console.log(
                                },
                                ];
                                 const finalHref = doiHref || mainHref;
-                                return (
-                                       return (
+                               return (
                                  <div className="mt-1">
 
                                 {!!doiText && (
