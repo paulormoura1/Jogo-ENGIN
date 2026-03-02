@@ -756,11 +756,13 @@ console.log(
                                   const raw = (s?.link ?? "").trim();
                                  const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
 
-                                const doiText = (raw.includes("doi.org/") ? raw.split("doi.org/")[1] : "")
-                                 .trim()
-                                .replace(/[)\].,;:]+$/g, "");
-
-                              const doiHref = doiText ? `https://doi.org/${doiText}` : "";
+                               const doiCandidate = String(s?.doi ?? "").trim() || raw;
+                               const doiText = doiCandidate
+                               .replace(/^doi:\s*/i, "")
+                               .replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")
+                                .trim()
+                               .replace(/[)\].,;:]+$/g, "");
+                                const doiHref = doiText.startsWith("10.") ? `https://doi.org/${doiText}` : "";
                                     const safeHref = (u: string) =>
                               u ? encodeURI(u.trim().replace(/[\u0000-\u001F\u007F\s]+/g, "")) : "";
                               const finalHref = safeHref(doiHref || mainHref);
