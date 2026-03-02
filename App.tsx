@@ -787,7 +787,7 @@ console.log(
                href={`https://doi.org/${doiText}`}
                target="_blank"
             rel="noopener noreferrer"
-             className="text-[9px] text-blue-200/80 underline inline-block break-all"
+             className="text-[9px] text-blue-200/80underline block break-all"
                onClick={(e) => e.stopPropagation()}
              >
               DOI: {doiText}
@@ -799,7 +799,7 @@ console.log(
                    href={finalHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                     className="text-yellow-400 underline inline-block break-all"
+                     className="text-yellow-400underline block break-all"
                      onClick={(e) => e.stopPropagation()}
                       >
                      Abrir artigo
