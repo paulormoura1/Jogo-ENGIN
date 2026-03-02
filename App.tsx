@@ -782,11 +782,17 @@ console.log(
 
                       return (
              <div className="mt-1 space-y-1">
-              {!!doiText && (
-             <div className="text-[9px] text-blue-200/80">
+             {!!doiText && (
+                <a
+               href={`https://doi.org/${doiText}`}
+               target="_blank"
+            rel="noopener noreferrer"
+             className="text-[9px] text-blue-200/80 underline inline-block break-all"
+               onClick={(e) => e.stopPropagation()}
+             >
               DOI: {doiText}
-               </div>
-                 )}
+               </a>
+                )}
 
                 {!!finalHref && (
                    <a
