@@ -754,12 +754,9 @@ console.log(
                                       const qEnc = encodeURIComponent(q);
 
                                       const raw = (s?.link ?? "").trim();
-                                      const doiMatch = raw.match(/\b(10\.\d{4,9}\/[^\s]+)\b/i);
-                                      const doiText = doiMatch ? doiMatch[1].replace(/[)\].,;:]+$/g, "") : "";
                                       const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
-
-                                     const doiFromLink = raw.includes("doi.org/") ? raw.split("doi.org/")[1]?.trim() : "";
-                                     const doiHref = doiFromLink ? `https://doi.org/${doiFromLink}` : "";
+                                     const doiText = (raw.includes("doi.org/") ? raw.split("doi.org/")[1] : "").trim().replace(/[)\].,;:]+$/g, "");
+                                      const doiHref = doiText ? `https://doi.org/${doiText}` : "";
                                      const links = [
                                       { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
                                       { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
