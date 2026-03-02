@@ -750,8 +750,8 @@ console.log(
                                     <span className="text-white font-bold">{s.autores}</span>{" "}
                                     <span className="text-blue-200/80">— {s.titulo}</span>{" "}
                                    {(() => {
-                                  const q = buildQuery(s);
-                                  const qEnc = encodeURIComponent(q);
+                                   const q = `${(s?.titulo ?? "").toString()} ${(s?.autores ?? "").toString()}`.trim();
+                                    const qEnc = encodeURIComponent(q);
 
                                   const raw = (s?.link ?? "").trim();
                                  const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
