@@ -784,7 +784,6 @@ console.log(
                                  DOI: {doiText}
                                </div>
                                   )}
-
                               {!!finalHref && (
                               <a
                              href={finalHref}
