@@ -749,69 +749,74 @@ console.log(
                                   <li key={idx} className="leading-snug">
                                     <span className="text-white font-bold">{s.autores}</span>{" "}
                                     <span className="text-blue-200/80">— {s.titulo}</span>{" "}
-                                    {(() => {
-                                      const q = buildQuery(s);
-                                      const qEnc = encodeURIComponent(q);
+                                   {(() => {
+                                  const q = buildQuery(s);
+                                  const qEnc = encodeURIComponent(q);
 
-                                      const raw = (s?.link ?? "").trim();
-                                      const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
-                                     const doiText = (raw.includes("doi.org/") ? raw.split("doi.org/")[1] : "").trim().replace(/[)\].,;:]+$/g, "");
-                                      const doiHref = doiText ? `https://doi.org/${doiText}` : "";
-                                     const links = [
-                                      { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
-                                      { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
-                                     {
-                                     label: "UFSC/EGC",
-                                    href: `https://repositorio.ufsc.br/simple-search?query=${encodeURIComponent(
-                                    (s?.titulo ?? q).toString()
-                                     )}`,
-                                      },
-   {
-                                 label: "Scopus",
-                                href: `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=TITLE-ABS-KEY%28${encodeURIComponent(
-                                (s?.titulo ?? q).toString()
-                                )}%29`,
-                               },
-                               ];
-                                const finalHref = doiHref || mainHref;
-                               return (
-                                 <div className="mt-1">
-                                {!!doiText && (
-                                <div className="text-[9px] text-blue-200/80">
-                                 DOI: {doiText}
-                               </div>
-                                  )}
-                              {!!finalHref && (
-                              <a
-                             href={finalHref}
-                             target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-yellow-400 underline inline-block break-all"
+                                  const raw = (s?.link ?? "").trim();
+                                 const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
+
+                                const doiText = (raw.includes("doi.org/") ? raw.split("doi.org/")[1] : "")
+                                 .trim()
+                                .replace(/[)\].,;:]+$/g, "");
+
+                              const doiHref = doiText ? `https://doi.org/${doiText}` : "";
+                              const finalHref = doiHref || mainHref;
+
+                             const links = [
+                             { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
+                             { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
+                               {
+                           label: "UFSC/EGC",
+                           href: `https://repositorio.ufsc.br/simple-search?query=${encodeURIComponent(
+                            (s?.titulo ?? q).toString()
+                            )}`,
+                             },
+                            {
+                          label: "Scopus",
+                         href: `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=TITLE-ABS-KEY%28${encodeURIComponent(
+                         (s?.titulo ?? q).toString()
+                         )}%29`,
+                         },
+                        ];
+
+                      return (
+             <div className="mt-1 space-y-1">
+              {!!doiText && (
+             <div className="text-[9px] text-blue-200/80">
+              DOI: {doiText}
+               </div>
+                 )}
+
+                {!!finalHref && (
+                   <a
+                   href={finalHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                     className="text-yellow-400 underline inline-block break-all"
+                     onClick={(e) => e.stopPropagation()}
+                      >
+                     Abrir artigo
+                      </a>
+                     )}
+
+                    <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
+                       {links.map((l) => (
+                          <a
+                         key={l.label}
+                         href={l.href}
+                         target="_blank"
+                           rel="noopener noreferrer"
+                            className="text-[9px] text-cyan-300 underline"
                              onClick={(e) => e.stopPropagation()}
-                            >
-                           Abrir artigo
-                           </a>
-                            )}
-                         </div>
-                        );
-                                         
-                                          <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
-                                            {links.map((l) => (
-                                              <a
-                                                key={l.label}
-                                                href={l.href}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-[9px] text-cyan-300 underline"
-                                                onClick={(e) => e.stopPropagation()}
-                                              >
-                                                {l.label}
-                                              </a>
-                                            ))}
-                                          </div>
-                                        </div>
-                                      );
-                                    })()}
+                              >
+                              {l.label}
+                               </a>
+                               ))}
+                                </div>
+                               </div>
+                                 );
+                                 })()}
                                   </li>
                                 ))}
                               </ul>
