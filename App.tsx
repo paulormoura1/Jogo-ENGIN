@@ -756,9 +756,8 @@ console.log(
                                       const raw = (s?.link ?? "").trim();
                                       const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
 
-                                      const doiFromLink = raw.includes("doi.org/") ? raw.split("doi.org/")[1]?.trim() : "";
-                                      const doiHref = doiFromLink ? `https://doi.org/${doiFromLink}` : "";
-
+                                     const doiFromLink = raw.includes("doi.org/") ? raw.split("doi.org/")[1]?.trim() : "";
+                                     const doiHref = doiFromLink ? `https://doi.org/${doiFromLink}` : "";
                                      const links = [
                                       { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
                                       { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
@@ -778,9 +777,9 @@ console.log(
 
                                 return (
                                         <div className="mt-1">
-                                          {!!(doiHref || mainHref) && (
+                                          {!!finalHref && (
                                             <a
-                                              href={doiHref || mainHref}
+                                              href={finalHref}
                                               target="_blank"
                                               rel="noopener noreferrer"
                                               className="text-yellow-400 underline ml-1 inline-block break-all"
@@ -789,7 +788,7 @@ console.log(
                                               Abrir artigo
                                             </a>
                                           )}
-
+                                         
                                           <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
                                             {links.map((l) => (
                                               <a
