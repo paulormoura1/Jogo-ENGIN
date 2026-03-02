@@ -779,7 +779,6 @@ console.log(
                                 const finalHref = doiHref || mainHref;
                                return (
                                  <div className="mt-1">
-
                                 {!!doiText && (
                                 <div className="text-[9px] text-blue-200/80">
                                  DOI: {doiText}
@@ -797,7 +796,6 @@ console.log(
                            Abrir artigo
                            </a>
                             )}
-
                          </div>
                         );
                                          
