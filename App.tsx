@@ -761,25 +761,30 @@ console.log(
                                 .replace(/[)\].,;:]+$/g, "");
 
                               const doiHref = doiText ? `https://doi.org/${doiText}` : "";
-                              const finalHref = doiHref || mainHref;
+                                    const safeHref = (u: string) =>
+                              u ? encodeURI(u.trim().replace(/[\u0000-\u001F\u007F\s]+/g, "")) : "";
+                              const finalHref = safeHref(doiHref || mainHref);
 
-                             const links = [
-                             { label: "Google Acadêmico", href: `https://scholar.google.com/scholar?q=${qEnc}` },
-                             { label: "ERIC", href: `https://eric.ed.gov/?q=${qEnc}` },
-                               {
+                            const links = [
+                           { label: "Google Acadêmico", href: safeHref(`https://scholar.google.com/scholar?q=${qEnc}`) },
+                           { label: "ERIC", href: safeHref(`https://eric.ed.gov/?q=${qEnc}`) },
+                           {
                            label: "UFSC/EGC",
-                           href: `https://repositorio.ufsc.br/simple-search?query=${encodeURIComponent(
-                            (s?.titulo ?? q).toString()
-                            )}`,
+                           href: safeHref(
+                           `https://repositorio.ufsc.br/simple-search?query=${encodeURIComponent(
+                           (s?.titulo ?? q).toString()
+                            )}`
+                            ),
                              },
-                            {
-                          label: "Scopus",
-                         href: `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=TITLE-ABS-KEY%28${encodeURIComponent(
+                             {
+                           label: "Scopus",
+                          href: safeHref(
+                         `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=TITLE-ABS-KEY%28${encodeURIComponent(
                          (s?.titulo ?? q).toString()
-                         )}%29`,
+                          )}%29`
+                          ),
                          },
-                        ];
-
+                         ];
                       return (
              <div className="mt-1 space-y-1">
              {!!doiText && (
