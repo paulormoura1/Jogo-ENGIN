@@ -754,6 +754,8 @@ console.log(
                                       const qEnc = encodeURIComponent(q);
 
                                       const raw = (s?.link ?? "").trim();
+                                      const doiMatch = raw.match(/\b(10\.\d{4,9}\/[^\s]+)\b/i);
+                                      const doiText = doiMatch ? doiMatch[1].replace(/[)\].,;:]+$/g, "") : "";
                                       const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
 
                                      const doiFromLink = raw.includes("doi.org/") ? raw.split("doi.org/")[1]?.trim() : "";
@@ -776,18 +778,29 @@ console.log(
                                ];
                                 const finalHref = doiHref || mainHref;
                                 return (
-                                        <div className="mt-1">
-                                          {!!finalHref && (
-                                            <a
-                                              href={finalHref}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                              className="text-yellow-400 underline ml-1 inline-block break-all"
-                                              onClick={(e) => e.stopPropagation()}
-                                            >
-                                              Abrir artigo
-                                            </a>
-                                          )}
+                                       return (
+                                 <div className="mt-1">
+
+                                {!!doiText && (
+                                <div className="text-[9px] text-blue-200/80">
+                                 DOI: {doiText}
+                               </div>
+                                  )}
+
+                              {!!finalHref && (
+                              <a
+                             href={finalHref}
+                             target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-yellow-400 underline inline-block break-all"
+                             onClick={(e) => e.stopPropagation()}
+                            >
+                           Abrir artigo
+                           </a>
+                            )}
+
+                         </div>
+                        );
                                          
                                           <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
                                             {links.map((l) => (
