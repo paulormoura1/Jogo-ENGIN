@@ -374,13 +374,19 @@ const doiFinal = (doi || doiFromLink || "").trim();
           const doi = typeof enriched.doi === "string" ? enriched.doi.trim() : "";
           const doiHref = doi ? `https://doi.org/${doi.replace(/^https?:\/\/doi\.org\//i, "")}` : "";
              // 🔎 tenta encontrar mapeamento por DOI
-            const mappingByDoi = (enriched as any)?.doi
-            ? articleIndex.find(
-           (item) =>
-          item.doi?.toLowerCase().trim() ===
-          (enriched as any)?.doi?.toLowerCase().trim()
-           )
-          : undefined;
+          const normalizeDoi = (v: any) =>
+           String(v ?? "")
+         .trim()
+        .toLowerCase()
+        .replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")
+        .replace(/^doi:\s*/i, "");
+
+       const doiKey =
+      normalizeDoi((enriched as any)?.doi) || normalizeDoi((source as any)?.doi);
+
+     const mappingByDoi = doiKey
+  ? articleIndex.find((item) => normalizeDoi(item.doi) === doiKey)
+  : undefined;
           
         const finalSource = {
            ...source,
