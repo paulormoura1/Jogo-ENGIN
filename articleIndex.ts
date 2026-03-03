@@ -5,11 +5,11 @@ export type ArticleIndexItem = {
   ufscHandle?: string;
 };
 
-export const articleIndex: ArticleIndexItem[] = [];
-export const articleIndex = [
+export const articleIndex: ArticleIndexItem[] = [
   {
     doi: "10.18616/pidi12",
-    driveUrl: "https://drive.google.com/file/d/SEU_FILE_ID/view",
-    ufscHandle: "https://repositorio.ufsc.br/handle/XXXX/XXXX",
+    // se você ainda não tiver, pode deixar vazio por enquanto:
+    // driveUrl: "https://drive.google.com/file/d/FILE_ID/view",
+    // ufscHandle: "https://repositorio.ufsc.br/handle/XXXX/XXXX",
   },
 ];
