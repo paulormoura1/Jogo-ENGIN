@@ -772,39 +772,40 @@ console.log(
                                   };
                               const finalHref = safeHref(doiHref || mainHref);
 
-                           const titleForQuery = (s?.titulo ?? q).toString();
+                      const titleForQuery = (s?.titulo ?? q).toString();
 
-                        // tenta extrair um link direto do repositório UFSC (handle) quando existir no item
-                        const rawMain = (s as any)?.link || "";
-                        const ufscHandle =
+                    const rawMain = (s as any)?.link || "";
+                     const ufscHandle =
                         typeof rawMain === "string" && rawMain.includes("repositorio.ufsc.br/handle/")
-                       ? rawMain
-                       : "";
+                     ? rawMain
+                      : "";
+
+                     // ✅ link específico por artigo (se existir no item)
+                  const driveItemUrl = (s as any)?.driveUrl || "";
 
                     const links = [
-                     { label: "Google Acadêmico", href: safeHref(`https://scholar.google.com/scholar?q=${qEnc}`) },
+                    { label: "Google Acadêmico", href: safeHref(`https://scholar.google.com/scholar?q=${qEnc}`) },
                      { label: "ERIC", href: safeHref(`https://eric.ed.gov/?q=${qEnc}`) },
 
-                     // UFSC-first: se houver handle direto, usa ele; senão, cai na busca
-                       {
-                     label: ufscHandle ? "UFSC/EGC (direto)" : "UFSC/EGC (busca)",
-                     href: safeHref(
-                     ufscHandle ||
-                     `https://repositorio.ufsc.br/simple-search?query=${encodeURIComponent(titleForQuery)}`
-                      ),
-                      },
+                    // ✅ UFSC só se for DIRETO (handle)
+                  ...(ufscHandle
+                  ? [{ label: "UFSC/EGC (direto)", href: safeHref(ufscHandle) }]
+                  : []),
 
-                   { label: "Drive (complementar)", href: safeHref("https://drive.google.com/drive/folders/1MVCpRyvI5GoLy0UioALp_mWzZK6uHRXn") },
+                 // ✅ Drive só se for link do arquivo/artigo
+                ...(driveItemUrl
+                ? [{ label: "Drive (arquivo)", href: safeHref(driveItemUrl) }]
+               : []),
 
-                  {
-                   label: "Scopus",
-                    href: safeHref(
-                   `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=TITLE-ABS-KEY%28${encodeURIComponent(
-                   titleForQuery
-                     )}%29`
-                      ),
-                      },
-                       ];
+                     {
+                label: "Scopus",
+                  href: safeHref(
+                 `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=TITLE-ABS-KEY%28${encodeURIComponent(
+                 titleForQuery
+                 )}%29`
+                   ),
+                 },
+                   ];
                          return (
                       <div className="mt-1 space-y-1">
                      {/* DOI (canal 1) */}
