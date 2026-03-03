@@ -796,7 +796,13 @@ console.log(
                     const rawMain = (s as any)?.link || "";
                    const ufscHandle = (s as any)?.ufscHandle || "";
               const driveItemUrl = (s as any)?.driveUrl || "";
-
+               console.log("MAP CHECK:", {
+              doiText,
+              finalHref,
+                ufscHandle: (s as any)?.ufscHandle,
+                driveUrl: (s as any)?.driveUrl,
+                    });
+                                    
                const links = [
             { label: "Google Acadêmico", href: safeHref(`https://scholar.google.com/scholar?q=${qEnc}`) },
                   { label: "ERIC", href: safeHref(`https://eric.ed.gov/?q=${qEnc}`) },
