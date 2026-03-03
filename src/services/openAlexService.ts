@@ -48,7 +48,8 @@ export async function enrichWithOpenAlex(params: { doi?: string; title?: string 
     if (doiRaw) {
       const doi = doiRaw
         .replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")
-        .replace(/^doi:\s*/i, "");
+        .replace(/^doi:\s*/i, "")
+        .trim();
 
       // OpenAlex aceita Works por DOI assim:
       // https://api.openalex.org/works/https://doi.org/<DOI>
@@ -69,41 +70,41 @@ export async function enrichWithOpenAlex(params: { doi?: string; title?: string 
     // Quando busca por título: data.results[0] é o work
     const work = data?.id ? data : data?.results?.[0];
     if (!work) return null;
-// ✅ Validação apenas quando NÃO veio por DOI (caminho de busca por título)
+
+    // ✅ Validação apenas quando NÃO veio por DOI (caminho de busca por título)
     if (!params.doi) {
-  const inputTitle = params.title ?? "";
-  const candidateTitle = work?.title ?? work?.display_name ?? "";
+      const inputTitle = params.title ?? "";
+      const candidateTitle = work?.title ?? work?.display_name ?? "";
+      if (!isLikelyTitleMatch(inputTitle, candidateTitle)) return null;
+    }
 
-    if (!isLikelyTitleMatch(inputTitle, candidateTitle)) {
-    return null;
-  }
-}
-    
-   const doiOnly =
-  (work.doi?.replace(/^https?:\/\/doi\.org\//i, "")?.trim() as string) || "";
+    // DOI normalizado (somente o sufixo, sem https://doi.org/)
+    const doiOnly =
+      (work?.doi?.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")?.trim() as string) || "";
 
-const doiHref = doiOnly ? `https://doi.org/${doiOnly}` : "";
+    const doiHref = doiOnly ? `https://doi.org/${doiOnly}` : "";
 
-const autores = (work.authorships || [])
-  .map((a: any) => a?.author?.display_name)
-  .filter(Boolean)
-  .join(", ");
+    const autores = (work?.authorships || [])
+      .map((a: any) => a?.author?.display_name)
+      .filter(Boolean)
+      .join(", ");
 
-const doiClean = work.doi?.replace("https://doi.org/", "");
+    // Landing page (prioridade: primary_location -> best_oa_location -> homepage)
+    const landing =
+      work?.primary_location?.landing_page_url ||
+      work?.best_oa_location?.landing_page_url ||
+      work?.primary_location?.source?.homepage_url ||
+      work?.best_oa_location?.source?.homepage_url ||
+      "";
 
-const landing =
-  work.primary_location?.landing_page_url ||
-  work.primary_location?.source?.homepage_url ||
-  "";
-
-return {
-  titulo: work.display_name,
-  ano: work.publication_year,
-  doi: doiClean,
-  autores: work.authorships?.map((a: any) => a.author.display_name).join(", "),
-  // prioridade: DOI -> landing -> OpenAlex work id (nunca quebra)
-  link: work.doi || landing || work.id,
-};
+    return {
+      titulo: work?.display_name || work?.title || "Referência",
+      ano: work?.publication_year,
+      doi: doiOnly, // ✅ sempre sem prefixo
+      autores: autores || "Autor(es) não informado(s)",
+      // ✅ prioridade oficial: DOI -> landing -> OpenAlex id (nunca quebra)
+      link: doiHref || landing || work?.id,
+    };
   } catch (err) {
     console.error("Erro OpenAlex:", err);
     return null;
