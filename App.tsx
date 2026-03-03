@@ -1,4 +1,4 @@
-import { articleIndex } from "./src/dados/articleIndex";
+import { articleIndex } from "./articleIndex";
 import React, { useEffect, useState } from "react";
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from "./constants";
 import { generateChallenge } from "./geminiService";
