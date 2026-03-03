@@ -4,9 +4,10 @@ export type ArticleIndexItem = {
   driveUrl?: string;
   ufscHandle?: string;
 };
-export const articleIndex: ArticleIndexItem[] = [
+export const articleIndex = [
   {
     doi: "10.11606/d.55.2018.tde-04012018-092030",
-    driveUrl: "https://drive.google.com/drive/folders/1WD3-Rig3herxICf-XiL_Zqzhgnl52Ct3",
+    driveUrl: "https://drive.google.com/SEU_LINK_AQUI",
+    ufscHandle: "https://repositorio.ufsc.br/handle/SEU_HANDLE_AQUI",
   },
 ];
