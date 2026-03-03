@@ -387,7 +387,9 @@ const doiFinal = (doi || doiFromLink || "").trim();
      const mappingByDoi = doiKey
   ? articleIndex.find((item) => normalizeDoi(item.doi) === doiKey)
   : undefined;
-          
+       console.log("DOI KEY (UI):", doiKey);
+       console.log("INDEX SIZE:", articleIndex?.length);
+        console.log("MAPPING FOUND:", mappingByDoi);   
         const finalSource = {
            ...source,
        titulo: enriched.titulo || source.titulo,
