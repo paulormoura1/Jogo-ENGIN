@@ -1,3 +1,4 @@
+import { articleIndex } from "./dados/articleIndex";
 import React, { useEffect, useState } from "react";
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from "./constants";
 import { generateChallenge } from "./geminiService";
@@ -372,7 +373,15 @@ const doiFinal = (doi || doiFromLink || "").trim();
 
           const doi = typeof enriched.doi === "string" ? enriched.doi.trim() : "";
           const doiHref = doi ? `https://doi.org/${doi.replace(/^https?:\/\/doi\.org\//i, "")}` : "";
-
+             // 🔎 tenta encontrar mapeamento por DOI
+            const mappingByDoi = (enriched as any)?.doi
+            ? articleIndex.find(
+           (item) =>
+          item.doi?.toLowerCase().trim() ===
+          (enriched as any)?.doi?.toLowerCase().trim()
+           )
+          : undefined;
+          
         const finalSource = {
            ...source,
        titulo: enriched.titulo || source.titulo,
@@ -381,7 +390,9 @@ const doiFinal = (doi || doiFromLink || "").trim();
              doi: (enriched as any).doi ?? (source as any).doi,
              // 🔒 prioridade absoluta já tratada dentro do enrichWithOpenAlex
                  link: enriched.link || source.link,
-            };
+                 driveUrl: mappingByDoi?.driveUrl,
+                  ufscHandle: mappingByDoi?.ufscHandle,
+                  };
 
           try {
             localStorage.setItem(cacheKey, JSON.stringify(finalSource));
