@@ -764,8 +764,12 @@ console.log(
                                 .trim()
                                .replace(/[)\].,;:]+$/g, "");
                                 const doiHref = doiText.startsWith("10.") ? `https://doi.org/${doiText}` : "";
-                                    const safeHref = (u: string) =>
-                              u ? encodeURI(u.trim().replace(/[\u0000-\u001F\u007F\s]+/g, "")) : "";
+                                  const safeHref = (u: string) => {
+                                  if (!u) return "";
+                                  const cleaned = u.trim();
+                                  if (!/^https?:\/\//i.test(cleaned)) return "";
+                                  return cleaned;
+                                  };
                               const finalHref = safeHref(doiHref || mainHref);
 
                             const links = [
