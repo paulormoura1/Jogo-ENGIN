@@ -7,9 +7,9 @@ export type ArticleIndexItem = {
 
 export const articleIndex: ArticleIndexItem[] = [
   {
-    doi: "10.18616/pidi12",
-    // se você ainda não tiver, pode deixar vazio por enquanto:
-    // driveUrl: "https://drive.google.com/file/d/FILE_ID/view",
+    doi: "10.11606/issn.2318-04012018-092030",
+    // coloque aqui links reais se quiser testar:
+    // driveUrl: "https://drive.google.com/file/d/XXXX/view",
     // ufscHandle: "https://repositorio.ufsc.br/handle/XXXX/XXXX",
   },
 ];
