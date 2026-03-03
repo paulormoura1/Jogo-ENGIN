@@ -786,37 +786,30 @@ console.log(
                       const titleForQuery = (s?.titulo ?? q).toString();
 
                     const rawMain = (s as any)?.link || "";
-                     const ufscHandle =
-                        typeof rawMain === "string" && rawMain.includes("repositorio.ufsc.br/handle/")
-                     ? rawMain
-                      : "";
+                   const ufscHandle = (s as any)?.ufscHandle || "";
+              const driveItemUrl = (s as any)?.driveUrl || "";
 
-                     // ✅ link específico por artigo (se existir no item)
-                  const driveItemUrl = (s as any)?.driveUrl || "";
+               const links = [
+            { label: "Google Acadêmico", href: safeHref(`https://scholar.google.com/scholar?q=${qEnc}`) },
+                  { label: "ERIC", href: safeHref(`https://eric.ed.gov/?q=${qEnc}`) },
 
-                    const links = [
-                    { label: "Google Acadêmico", href: safeHref(`https://scholar.google.com/scholar?q=${qEnc}`) },
-                     { label: "ERIC", href: safeHref(`https://eric.ed.gov/?q=${qEnc}`) },
+                   ...(ufscHandle
+               ? [{ label: "UFSC/EGC (direto)", href: safeHref(ufscHandle) }]
+                 : []),
 
-                    // ✅ UFSC só se for DIRETO (handle)
-                  ...(ufscHandle
-                  ? [{ label: "UFSC/EGC (direto)", href: safeHref(ufscHandle) }]
-                  : []),
+               ...(driveItemUrl
+                    ? [{ label: "Drive (arquivo)", href: safeHref(driveItemUrl) }]
+                   : []),
 
-                 // ✅ Drive só se for link do arquivo/artigo
-                ...(driveItemUrl
-                ? [{ label: "Drive (arquivo)", href: safeHref(driveItemUrl) }]
-               : []),
-
-                     {
-                label: "Scopus",
-                  href: safeHref(
+                {
+               label: "Scopus",
+                 href: safeHref(
                  `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=TITLE-ABS-KEY%28${encodeURIComponent(
-                 titleForQuery
-                 )}%29`
-                   ),
+                  (s?.titulo ?? q).toString()
+                  )}%29`
+                 ),
                  },
-                   ];
+                 ];
                          return (
                       <div className="mt-1 space-y-1">
                      {/* DOI (canal 1) */}
