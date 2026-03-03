@@ -373,14 +373,15 @@ const doiFinal = (doi || doiFromLink || "").trim();
           const doi = typeof enriched.doi === "string" ? enriched.doi.trim() : "";
           const doiHref = doi ? `https://doi.org/${doi.replace(/^https?:\/\/doi\.org\//i, "")}` : "";
 
-          const finalSource = {
-            ...source,
-            titulo: enriched.titulo || source.titulo,
-            autores: enriched.autores || source.autores,
-            ano: (enriched as any).ano ?? (source as any).ano,
-            doi: (enriched as any).doi ?? (source as any).doi,
-            link: doiHref || enriched.link || source.link,
-          };
+        const finalSource = {
+           ...source,
+       titulo: enriched.titulo || source.titulo,
+              autores: enriched.autores || source.autores,
+               ano: (enriched as any).ano ?? (source as any).ano,
+             doi: (enriched as any).doi ?? (source as any).doi,
+             // 🔒 prioridade absoluta já tratada dentro do enrichWithOpenAlex
+                 link: enriched.link || source.link,
+            };
 
           try {
             localStorage.setItem(cacheKey, JSON.stringify(finalSource));
