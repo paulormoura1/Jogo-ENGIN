@@ -788,48 +788,51 @@ console.log(
                           ),
                          },
                          ];
-                      return (
-             <div className="mt-1 space-y-1">
-             {!!doiText && (
-                <a
-               href={`https://doi.org/${doiText}`}
-               target="_blank"
-            rel="noopener noreferrer"
-             className="text-[9px] text-blue-200/80underline block break-all"
-               onClick={(e) => e.stopPropagation()}
-             >
-              DOI: {doiText}
-               </a>
+                         return (
+                      <div className="mt-1 space-y-1">
+                     {/* DOI (canal 1) */}
+                    {!!doiText && (
+                       <a
+                   href={`https://doi.org/${doiText}`}
+                   target="_blank"
+                   rel="noopener noreferrer"
+                  className="text-[9px] text-blue-200/80 underline block break-all"
+                    onClick={(e) => e.stopPropagation()}
+               >
+                DOI: {doiText}
+                 </a>
                 )}
 
-                {!!finalHref && (
-                   <a
-                   href={finalHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                     className="text-yellow-400underline block break-all"
-                     onClick={(e) => e.stopPropagation()}
-                      >
-                     Abrir artigo
-                      </a>
-                     )}
+                 {/* Abrir artigo (mainHref) */}
+                  {!!(doiText || finalHref) && (
+                <a
+                  href={doiText ? `https://doi.org/${doiText}` : finalHref}
+                target="_blank"
+                 rel="noopener noreferrer"
+                   className="text-yellow-400 underline block break-all"
+                      onClick={(e) => e.stopPropagation()}
+                     >
+                      Abrir artigo
+                        </a>
+                        )}
 
-                    <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
-                       {links.map((l) => (
+                       {/* Outras fontes (canal 3) */}
+                        <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
+                        {links.map((l) => (
                           <a
-                         key={l.label}
-                         href={l.href}
-                         target="_blank"
-                           rel="noopener noreferrer"
-                            className="text-[9px] text-cyan-300 underline"
-                             onClick={(e) => e.stopPropagation()}
+                           key={l.label}
+                          href={l.href}
+                           target="_blank"
+                            rel="noopener noreferrer"
+                             className="text-[9px] text-cyan-300 underline"
+                              onClick={(e) => e.stopPropagation()}
                               >
                               {l.label}
                                </a>
-                               ))}
+                                ))}
                                 </div>
-                               </div>
-                                 );
+                                </div>
+                                );
                                  })()}
                                   </li>
                                 ))}
