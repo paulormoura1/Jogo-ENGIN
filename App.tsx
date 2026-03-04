@@ -796,6 +796,7 @@ console.log(
                     const rawMain = (s as any)?.link || "";
                    const ufscHandle = (s as any)?.ufscHandle || "";
               const driveItemUrl = (s as any)?.driveUrl || "";
+              console.log("INDEX DEBUG:", articleIndex?.length, articleIndex?.[0]);
                console.log("MAP CHECK:", {
               doiText,
               finalHref,
