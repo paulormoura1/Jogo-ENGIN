@@ -65,7 +65,7 @@ const perSource = sources.map((s) => {
     ).length;
 
     // pelo menos metade dos conceitos relevantes da palavra-chave
-    return matchedRoots / roots.length >= 0.5;
+   return matchedRoots / roots.length >= 0.75;
   }).length;
 
   const coverage = keywords.length ? hits / keywords.length : 0;
