@@ -166,15 +166,56 @@ export const generateChallenge = async (area: ResearchArea) => {
   const subthemes = SUBTHEMES[area].join(", ");
 
   const instruction = `
-Crie um desafio curto e impactante para a área: "${area}".
-Subtemas: ${subthemes}.
+Crie um desafio curto, realista e impactante para a área: "${area}".
+Subtemas possíveis: ${subthemes}.
 
 REGRAS CRÍTICAS:
-1. Use o TEMPO PRESENTE (Ex: "A empresa sofre...", "Você enfrenta...").
-2. Seja CONCISO (máximo 3 frases). Não seja cansativo.
-3. Apresente uma crise técnica real sem dar a solução.
+1. Use o TEMPO PRESENTE.
+   Exemplos:
+   - "A organização enfrenta..."
+   - "A equipe apresenta..."
+   - "O sistema demonstra..."
+   - "A empresa sofre..."
 
-JSON: { "title": string, "description": string }
+2. Seja CONCISO.
+   O desafio completo deve ter no máximo 4 frases curtas.
+
+3. Apresente uma situação-problema realista relacionada à área e aos subtemas informados.
+
+4. NÃO apresente a solução.
+
+5. A descrição deve obrigatoriamente terminar com uma MISSÃO CLARA para o jogador.
+
+6. Essa missão deve exigir decisão, aplicação ou proposição de solução.
+   Use perguntas como:
+   - "Como especialista, o que você faria para enfrentar essa situação?"
+   - "Que solução você implantaria e como ela seria aplicada?"
+   - "Que estratégia você adotaria para resolver esse problema?"
+   - "Como você estruturaria uma intervenção para melhorar essa situação?"
+   - "Que ações você recomendaria e por quê?"
+
+7. A pergunta final deve estar diretamente relacionada ao problema apresentado e à área "${area}".
+
+8. Evite perguntas genéricas como:
+   - "O que você acha?"
+   - "Qual sua opinião?"
+   - "O que faria?"
+   sem explicar o contexto da decisão.
+
+9. A missão deve estimular o jogador a explicar:
+   - o que faria;
+   - como aplicaria;
+   - e por que essa solução seria adequada.
+
+10. Não use linguagem excessivamente acadêmica ou complexa.
+    O texto deve ser claro, aplicado e compatível com um jogo de tomada de decisão.
+
+Retorne SOMENTE JSON válido neste formato:
+
+{
+  "title": "título curto do desafio",
+  "description": "situação-problema + missão clara para o jogador"
+}
 `;
 
   try {
@@ -183,12 +224,13 @@ JSON: { "title": string, "description": string }
       contents: instruction,
       config: { responseMimeType: "application/json" },
     });
+
     return JSON.parse(response.text || "{}");
   } catch (error) {
     return {
       title: "Crise de Fluxo",
       description:
-        "O sistema detecta perda massiva de capital intelectual agora. Qual sua manobra de EGC?",
+        "A organização enfrenta perda contínua de conhecimento crítico entre equipes e setores. Informações importantes deixam de circular e decisões começam a depender de poucas pessoas. Como especialista em Engenharia e Gestão do Conhecimento, que solução você implantaria, como ela seria aplicada e por que seria adequada para esse problema?",
     };
   }
 };
