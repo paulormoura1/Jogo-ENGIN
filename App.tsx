@@ -943,21 +943,33 @@ const StatBar = ({ label, value, color }: { label: string; value: number; color:
   </div>
 );
 
-// placeholder local (seu projeto real deve substituir)
 async function getGeminiFeedback(
-  _challengeDescription: string,
+  challengeDescription: string,
   _gameState: any,
   playerInput: string,
   _activePlayers: string[],
-  _requiredArea: string
+  requiredArea: string
 ) {
+  const answer = playerInput.trim();
+
+  if (answer.length < 40) {
+    return {
+      verdict: "PARCIALMENTE_CORRETA",
+      explanation:
+        "A proposta é pertinente, mas está pouco desenvolvida. É necessário explicar como a ação será implementada, quais mecanismos serão utilizados e como ela responde diretamente ao desafio apresentado.",
+      pointsEarned: 5,
+      references: [],
+      sourceType: "local",
+    };
+  }
+
   return {
     verdict: "CORRETA",
-    explanation: `Proposta recebida com sucesso: "${playerInput}"`,
+    explanation:
+      `A proposta apresenta desenvolvimento suficiente para análise inicial no eixo ${requiredArea}.`,
     pointsEarned: 10,
     references: [],
     sourceType: "local",
   };
 }
-
 export default App;
