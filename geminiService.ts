@@ -227,10 +227,12 @@ Retorne SOMENTE JSON válido neste formato:
 
     return JSON.parse(response.text || "{}");
   } catch (error) {
-    return {
-      title: "Crise de Fluxo",
-      description:
-        "A organização enfrenta perda contínua de conhecimento crítico entre equipes e setores. Informações importantes deixam de circular e decisões começam a depender de poucas pessoas. Como especialista em Engenharia e Gestão do Conhecimento, que solução você implantaria, como ela seria aplicada e por que seria adequada para esse problema?",
-    };
+   return {
+  title: `Desafio de ${area}`,
+  description:
+    `A organização enfrenta um problema relacionado à área de ${area}. ` +
+    `Os processos atuais apresentam dificuldades que afetam o desempenho organizacional e exigem uma intervenção estruturada. ` +
+    `Como especialista, que solução você implantaria, como ela seria aplicada e por que seria adequada para esse problema?`,
+};
   }
 };
