@@ -41,8 +41,20 @@ const evaluateProposalWithSources = (proposal: string, area: ResearchArea) => {
     const fallbackSources = sources.slice(0, 3);
     recommendedSources.push(...fallbackSources);
   }
+console.log("[LOCAL EVAL DEBUG]", {
+  area,
+  proposal,
+  score,
+  totalHits,
+  perSource: perSource.map((x) => ({
+    titulo: x.source?.titulo,
+    palavrasChave: x.source?.palavrasChave,
+    hits: x.hits,
+    coverage: x.coverage,
+  })),
+});
 
-  return { score, usedSources, recommendedSources };
+return { score, usedSources, recommendedSources };
 };
 
 function withTimeout<T>(promise: Promise<T>, ms: number, timeoutMsg = "Timeout na análise da IA") {
