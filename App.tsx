@@ -296,6 +296,36 @@ const doiFinal = (doi || doiFromLink || "").trim();
         console.error("[LOCAL_EVAL] evaluateProposalWithSources falhou:", e);
         localEval = { usedSources: [], recommendedSources: [] };
       }
+      const localScore = Number(localEval?.score ?? 0);
+
+if (localScore >= 60) {
+  feedbackData = {
+    ...(feedbackData ?? {}),
+    verdict: "CORRETA",
+    explanation:
+      "A proposta apresenta boa aderência aos conceitos e palavras-chave identificados nas fontes científicas selecionadas para esta área.",
+    pointsEarned: 10,
+    sourceType: "local-scientific",
+  };
+} else if (localScore >= 20) {
+  feedbackData = {
+    ...(feedbackData ?? {}),
+    verdict: "PARCIALMENTE_CORRETA",
+    explanation:
+      "A proposta apresenta relação com o tema, mas ainda possui cobertura conceitual limitada em comparação com as fontes científicas da área. É necessário desenvolver melhor os mecanismos, processos ou conceitos envolvidos.",
+    pointsEarned: 5,
+    sourceType: "local-scientific",
+  };
+} else {
+  feedbackData = {
+    ...(feedbackData ?? {}),
+    verdict: "INCORRETA",
+    explanation:
+      "A proposta apresenta baixa aderência aos conceitos identificados nas fontes científicas da área e precisa ser reformulada para responder de maneira mais consistente ao desafio.",
+    pointsEarned: 0,
+    sourceType: "local-scientific",
+  };
+}
 
       // 3️⃣ UFSC-FIRST nos itens locais
       let usedMapped: any[] = [];
