@@ -22,16 +22,65 @@ const evaluateProposalWithSources = (proposal: string, area: ResearchArea) => {
   const sources = getSourcesByArea(area);
   const text = (proposal || "").toLowerCase();
 
-  const perSource = sources.map((s) => {
-    const keywords = s.palavrasChave || [];
-    const hits = keywords.filter((k: string) => text.includes(String(k).toLowerCase())).length;
-    const coverage = keywords.length ? hits / keywords.length : 0;
+ const normalizeConcept = (value: string) =>
+  String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-    return { source: s, hits, coverage };
-  });
+const stopWords = new Set([
+  "a", "o", "as", "os", "de", "da", "do", "das", "dos",
+  "em", "e", "para", "por", "com", "um", "uma"
+]);
 
-  const totalHits = perSource.reduce((sum, s) => sum + s.hits, 0);
-  const score = Math.min(100, totalHits * 10);
+const conceptRoots = (value: string) =>
+  normalizeConcept(value)
+    .split(" ")
+    .filter((word) => word.length >= 4 && !stopWords.has(word))
+    .map((word) => word.slice(0, 5));
+
+const proposalRoots = conceptRoots(proposal);
+
+const perSource = sources.map((s) => {
+  const keywords = s.palavrasChave || [];
+
+  const hits = keywords.filter((keyword: string) => {
+    const keywordNormalized = normalizeConcept(keyword);
+
+    // 1. Correspondência exata continua valendo
+    if (normalizeConcept(proposal).includes(keywordNormalized)) {
+      return true;
+    }
+
+    // 2. Reconhece variações conceituais próximas
+    const roots = conceptRoots(keyword);
+
+    if (roots.length === 0) return false;
+
+    const matchedRoots = roots.filter((root) =>
+      proposalRoots.some((proposalRoot) => proposalRoot === root)
+    ).length;
+
+    // pelo menos metade dos conceitos relevantes da palavra-chave
+    return matchedRoots / roots.length >= 0.5;
+  }).length;
+
+  const coverage = keywords.length ? hits / keywords.length : 0;
+
+  return { source: s, hits, coverage };
+});
+
+const totalHits = perSource.reduce((sum, s) => sum + s.hits, 0);
+
+const bestCoverage =
+  perSource.length > 0
+    ? Math.max(...perSource.map((s) => s.coverage))
+    : 0;
+
+const score = Math.round(bestCoverage * 100);
 
   const usedSources = perSource.filter((x) => x.coverage >= 0.4).map((x) => x.source);
   const recommendedSources = perSource.filter((x) => x.coverage < 0.4).map((x) => x.source);
