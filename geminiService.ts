@@ -149,6 +149,7 @@ INSTRUÇÃO DE BUSCA:
 
     return JSON.parse(response.text || "{}");
   } catch (error) {
+    console.error("ERRO GENERATE CHALLENGE:", error);
     return {
       verdict: "NEGATIVA",
       explanation:
