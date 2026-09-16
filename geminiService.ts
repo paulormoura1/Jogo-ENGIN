@@ -36,6 +36,15 @@ const SUBTHEMES: Record<ResearchArea, string[]> = {
     "Ecossistemas digitais",
   ],
 };
+const FALLBACK_CHALLENGES: Record<
+  ResearchArea,
+  { title: string; description: string }[]
+> = {
+  [ResearchArea.GOVERNANCE_KNOWLEDGE]: [],
+  [ResearchArea.KNOWLEDGE_MGMT]: [],
+  [ResearchArea.INTEGRATION_ENG]: [],
+  [ResearchArea.UCR]: [],
+};
 
 export const getGeminiFeedback = async (
   prompt: string,
