@@ -68,8 +68,8 @@ const perSource = sources.map((s) => {
    return matchedRoots / roots.length >= 0.6;
   }).length;
 
-  const coverage = keywords.length
-  ? hits / Math.min(keywords.length, 10)
+ const coverage = keywords.length
+  ? hits / Math.min(keywords.length, 20)
   : 0;
   return { source: s, hits, coverage };
 });
