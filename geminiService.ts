@@ -106,7 +106,28 @@ const FALLBACK_CHALLENGES: Record<
       "A organização utiliza diferentes sistemas para apoiar suas atividades, mas dados e informações não circulam adequadamente entre eles. Essa fragmentação provoca retrabalho, inconsistências e dificuldades na coordenação entre as áreas. Que estratégia de integração e sincronização você adotaria para conectar esses sistemas e melhorar o fluxo de informação?",
   },
 ],
-  [ResearchArea.UCR]: [],
+ [ResearchArea.UCR]: [
+  {
+    title: "Educação Corporativa Desconectada",
+    description:
+      "A organização oferece ações de capacitação em diferentes unidades, mas os programas funcionam de forma isolada e o conhecimento produzido não circula entre os participantes. A instituição pretende transformar essas iniciativas em uma estrutura integrada de educação corporativa. Como você estruturaria uma Universidade Corporativa em Rede para conectar pessoas, conhecimentos e unidades organizacionais?",
+  },
+  {
+    title: "Trilhas de Aprendizagem Fragmentadas",
+    description:
+      "Os profissionais participam de cursos e capacitações, porém não existe uma trajetória de desenvolvimento articulada às competências necessárias para suas funções. As ações educacionais ocorrem de forma pontual e com pouca continuidade. Como você estruturaria trilhas de aprendizagem em rede para promover o desenvolvimento contínuo dos profissionais?",
+  },
+  {
+    title: "Sustentabilidade da Educação Corporativa",
+    description:
+      "A organização desenvolve diversos programas de aprendizagem, mas encontra dificuldades para manter essas iniciativas ao longo do tempo e demonstrar sua contribuição para os objetivos institucionais. Como especialista, que estratégia você adotaria para fortalecer a sustentabilidade da educação corporativa em rede e como ela seria aplicada?",
+  },
+  {
+    title: "Ecossistema Digital de Aprendizagem",
+    description:
+      "A organização utiliza diferentes plataformas e recursos digitais para capacitação, mas esses ambientes funcionam de forma fragmentada e oferecem poucas oportunidades de interação e compartilhamento de conhecimento. Como você estruturaria um ecossistema digital de aprendizagem capaz de integrar tecnologias, pessoas e conhecimento em rede?",
+  },
+],
 };
 
 export const getGeminiFeedback = async (
