@@ -40,7 +40,28 @@ const FALLBACK_CHALLENGES: Record<
   ResearchArea,
   { title: string; description: string }[]
 > = {
-  [ResearchArea.GOVERNANCE_KNOWLEDGE]: [],
+  [ResearchArea.GOVERNANCE_KNOWLEDGE]: [
+  {
+    title: "Conhecimento sem Governança",
+    description:
+      "A organização possui informações estratégicas distribuídas entre diferentes setores, mas não existem responsabilidades claramente definidas sobre sua gestão e utilização. Decisões importantes são tomadas sem critérios consistentes de acesso, registro e compartilhamento do conhecimento. Como especialista, que estrutura de governança você implantaria, como ela funcionaria e por que seria adequada para essa situação?",
+  },
+  {
+    title: "Baixa Maturidade em Gestão do Conhecimento",
+    description:
+      "A organização desenvolve iniciativas isoladas de gestão do conhecimento, porém não possui mecanismos para avaliar sua maturidade nem acompanhar seus resultados. A direção pretende transformar essas iniciativas em práticas institucionais permanentes. Que estratégia você adotaria para avaliar a maturidade em GC e orientar essa evolução organizacional?",
+  },
+  {
+    title: "Decisões sem Conhecimento Integrado",
+    description:
+      "Gestores de diferentes setores utilizam informações e critérios distintos para tomar decisões, dificultando a coordenação institucional e o aprendizado organizacional. Conhecimentos relevantes existem, mas não chegam de forma estruturada aos responsáveis pelas decisões. Como você estruturaria uma intervenção de governança do conhecimento para melhorar esse processo e por quê?",
+  },
+  {
+    title: "Governança para Inovação",
+    description:
+      "A organização deseja ampliar sua capacidade de inovação, mas ideias, experiências e conhecimentos permanecem dispersos entre equipes e projetos. Não há uma estrutura clara para transformar esse conhecimento em subsídio às decisões estratégicas. Que mecanismos de governança do conhecimento você implantaria para apoiar a inovação e como eles seriam aplicados?",
+  },
+],
   [ResearchArea.KNOWLEDGE_MGMT]: [],
   [ResearchArea.INTEGRATION_ENG]: [],
   [ResearchArea.UCR]: [],
