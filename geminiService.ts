@@ -18,6 +18,27 @@ const SUBTHEMES: Record<ResearchArea, string[]> = {
     "Estruturas de decisão",
   ],
   [ResearchArea.KNOWLEDGE_MGMT]: [
+  {
+    title: "Capital Intelectual em Risco",
+    description:
+      "A organização depende fortemente do conhecimento de profissionais experientes, mas parte desse conhecimento não está registrada nem compartilhada com as equipes. A saída de pessoas-chave começa a comprometer processos e resultados. Como especialista, que solução de gestão do conhecimento você implantaria para preservar e desenvolver esse capital intelectual, como ela funcionaria e por quê?",
+  },
+  {
+    title: "Conhecimento que Não Circula",
+    description:
+      "As equipes acumulam experiências e conhecimentos relevantes durante os projetos, porém esse aprendizado permanece restrito aos grupos que participaram das atividades. Outros setores repetem erros e desenvolvem soluções que já existem internamente. Que estratégia você adotaria para ampliar o compartilhamento e a reutilização do conhecimento na organização?",
+  },
+  {
+    title: "Planejamento sem Colaboração",
+    description:
+      "Os setores realizam seus planejamentos de forma isolada e utilizam pouco o conhecimento produzido por outras equipes. Como consequência, surgem atividades duplicadas, decisões desconectadas e baixa aprendizagem entre as áreas. Como você estruturaria um processo colaborativo de gestão do conhecimento para melhorar esse planejamento?",
+  },
+  {
+    title: "Conhecimento em Processo de Mudança",
+    description:
+      "A organização está implantando novos processos e tecnologias, mas parte dos profissionais mantém práticas anteriores e encontra dificuldades para incorporar novos conhecimentos ao trabalho. A mudança começa a perder consistência entre os setores. Que ações de gestão do conhecimento você adotaria para apoiar essa transformação e por que seriam adequadas?",
+  },
+],
     "Capital intelectual",
     "Framework 8'C",
     "Planejamento colaborativo",
