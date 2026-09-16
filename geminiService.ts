@@ -84,7 +84,28 @@ const FALLBACK_CHALLENGES: Record<
       "A organização está implantando novos processos e tecnologias, mas parte dos profissionais mantém práticas anteriores e encontra dificuldades para incorporar novos conhecimentos ao trabalho. A mudança começa a perder consistência entre os setores. Que ações de gestão do conhecimento você adotaria para apoiar essa transformação e por que seriam adequadas?",
   },
 ],
-  [ResearchArea.INTEGRATION_ENG]: [],
+ [ResearchArea.INTEGRATION_ENG]: [
+  {
+    title: "Setores Desconectados",
+    description:
+      "Diferentes setores da organização executam processos relacionados, mas trabalham de forma isolada e utilizam sistemas que não se comunicam adequadamente. Informações precisam ser registradas mais de uma vez e decisões são prejudicadas pela falta de integração. Como especialista, que solução de integração você implantaria, como ela funcionaria e por que seria adequada?",
+  },
+  {
+    title: "Rede de Aprendizagem Fragmentada",
+    description:
+      "Equipes distribuídas pela organização desenvolvem conhecimentos e soluções relevantes, porém existem poucas conexões entre esses grupos. Experiências permanecem restritas aos setores de origem e oportunidades de aprendizagem conjunta são perdidas. Como você estruturaria uma rede de aprendizagem capaz de integrar essas equipes e seus conhecimentos?",
+  },
+  {
+    title: "Memória Organizacional Dispersa",
+    description:
+      "Conhecimentos importantes sobre projetos, decisões e experiências anteriores estão distribuídos entre documentos, sistemas e profissionais. Quando uma equipe precisa recuperar esse conhecimento, encontra informações fragmentadas ou depende de pessoas específicas. Como você estruturaria um Centro de Memória Viva para integrar, preservar e disponibilizar esse conhecimento?",
+  },
+  {
+    title: "Sistemas sem Sincronização",
+    description:
+      "A organização utiliza diferentes sistemas para apoiar suas atividades, mas dados e informações não circulam adequadamente entre eles. Essa fragmentação provoca retrabalho, inconsistências e dificuldades na coordenação entre as áreas. Que estratégia de integração e sincronização você adotaria para conectar esses sistemas e melhorar o fluxo de informação?",
+  },
+],
   [ResearchArea.UCR]: [],
 };
 
