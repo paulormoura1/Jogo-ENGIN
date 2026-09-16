@@ -163,7 +163,7 @@ INSTRUÇÃO DE BUSCA:
 };
 
 export const generateChallenge = async (area: ResearchArea) => {
- const model = "gemini-2.5-flash";
+ const model = "gemini-3.8-flash";
   const subthemes = SUBTHEMES[area].join(", ");
 
   const instruction = `
