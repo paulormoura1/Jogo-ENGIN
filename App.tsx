@@ -360,7 +360,7 @@ const doiFinal = (doi || doiFromLink || "").trim();
       }
       const localScore = Number(localEval?.score ?? 0);
 
-if (localScore >= 60) {
+if (localScore >= 55) {
   feedbackData = {
     ...(feedbackData ?? {}),
     verdict: "CORRETA",
