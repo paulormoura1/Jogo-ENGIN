@@ -439,6 +439,13 @@ function preferHandleLink(handle: string | null, fallback: string): string {
 
 function titleSimilarity(a: string, b: string): number {
   // Similaridade simples (Jaccard de tokens) — suficiente para ranking inicial.
+  if (
+  a.includes("governanca do conhecimento") &&
+  b.includes("governanca corporativa") &&
+  !b.includes("governanca do conhecimento")
+) {
+  return 0;
+}
   const A = new Set(a.split(" ").filter(t => t.length >= 3));
   const B = new Set(b.split(" ").filter(t => t.length >= 3));
   if (!A.size || !B.size) return 0;
