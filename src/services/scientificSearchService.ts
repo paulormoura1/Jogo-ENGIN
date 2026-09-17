@@ -45,7 +45,7 @@ const DEFAULT_FETCH: Required<FetchOpts> = {
 };
 
 const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 dias
-const CACHE_PREFIX = "nexus_scisearch_v1:";
+const CACHE_PREFIX = "nexus_scisearch_v2:";
 
 // -------------------------
 // Public API
