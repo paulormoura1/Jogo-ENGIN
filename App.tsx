@@ -394,8 +394,11 @@ if (localScore >= 60) {
       let recommendedMapped: any[] = [];
 
       try {
-        usedMapped = (await Promise.all((localEval.usedSources ?? []).map(enrichSourceUFSCFirst))).map(normalizeSourceItem);
-
+        usedMapped = (await Promise.all(
+  (localEval.usedSources ?? []).map((source: any) =>
+    enrichSourceUFSCFirst(source, currentChallenge.description)
+  )
+)).map(normalizeSourceItem);
         recommendedMapped = (await Promise.all((localEval.recommendedSources ?? []).map(enrichSourceUFSCFirst))).map(
           normalizeSourceItem
         );
