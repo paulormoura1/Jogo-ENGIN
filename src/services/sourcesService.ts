@@ -9,7 +9,7 @@ export async function enrichSourceUFSCFirst(source: any) {
 
   if (!title) return source;
 
-  const res = await scientificSearch({ title, year });
+  const res = await scientificSearch({ title });
 
   // Se não achou nada confiável, mantém como está (sem inventar link genérico)
   if (!res?.best?.link) return source;
