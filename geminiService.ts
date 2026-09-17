@@ -324,8 +324,22 @@ Retorne SOMENTE JSON válido neste formato:
   console.error("ERRO GENERATE CHALLENGE:", error);
 
   const challenges = FALLBACK_CHALLENGES[area];
-  const randomIndex = Math.floor(Math.random() * challenges.length);
+
+  const storageKey = `nexus_last_challenge_${area}`;
+  const lastIndexRaw = sessionStorage.getItem(storageKey);
+  const lastIndex =
+    lastIndexRaw !== null ? Number(lastIndexRaw) : -1;
+
+  let randomIndex = Math.floor(Math.random() * challenges.length);
+
+  // Impede que a mesma pergunta apareça duas vezes consecutivas.
+  if (challenges.length > 1) {
+    while (randomIndex === lastIndex) {
+      randomIndex = Math.floor(Math.random() * challenges.length);
+    }
+  }
+
+  sessionStorage.setItem(storageKey, String(randomIndex));
 
   return challenges[randomIndex];
 }
-  };
