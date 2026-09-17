@@ -343,3 +343,4 @@ Retorne SOMENTE JSON válido neste formato:
 
   return challenges[randomIndex];
 }
+};
