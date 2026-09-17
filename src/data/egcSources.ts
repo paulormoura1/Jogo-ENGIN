@@ -18,7 +18,7 @@ export const EGC_SOURCES: EGCSource[] = [
   {
     id: "egc-gov-001",
     area: ResearchArea.GOVERNANCE_KNOWLEDGE,
-    titulo: "Governança do Conhecimento em Organizações Públicas",
+    titulo: "Governança do Conhecimento",
     autores: "Programa EGC/UFSC",
     ano: 2021,
     instituicao: "UFSC",
