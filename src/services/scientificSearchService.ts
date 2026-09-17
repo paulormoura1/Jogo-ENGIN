@@ -261,7 +261,8 @@ const url = `https://api.openalex.org/works?search=${encodeURIComponent(title)}&
 }
 
 async function searchCrossref(title: string): Promise<Evidence[]> {
-  const url = `https://api.crossref.org/works?query.title=${encodeURIComponent(title)}&rows=5`;
+  const minYear = new Date().getFullYear() - 10;
+const url = `https://api.crossref.org/works?query.title=${encodeURIComponent(title)}&filter=from-pub-date:${minYear}-01-01&rows=5`;
   const data = await fetchJson<any>(url);
 
   const items = Array.isArray(data?.message?.items) ? data.message.items : [];
