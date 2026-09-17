@@ -231,7 +231,8 @@ async function searchExternal(normTitle: string, query: SearchQuery, trace: Sear
 }
 
 async function searchOpenAlex(title: string): Promise<Evidence[]> {
-  const url = `https://api.openalex.org/works?search=${encodeURIComponent(title)}&per-page=5`;
+  const minYear = new Date().getFullYear() - 10;
+const url = `https://api.openalex.org/works?search=${encodeURIComponent(title)}&filter=from_publication_date:${minYear}-01-01&per-page=5`;
   const data = await fetchJson<any>(url);
 
   const results = Array.isArray(data?.results) ? data.results : [];
