@@ -9,8 +9,8 @@ export async function enrichSourceUFSCFirst(source: any, challengeContext?: stri
 
   if (!title) return source;
 
-  const searchTitle = challengeContext
-  ? `${title} ${challengeContext}`
+ const searchTitle = challengeContext
+  ? `${title} ${title} ${challengeContext}`
   : title;
 
 const res = await scientificSearch({ title: searchTitle });
