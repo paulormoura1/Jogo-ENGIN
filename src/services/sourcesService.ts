@@ -9,7 +9,11 @@ export async function enrichSourceUFSCFirst(source: any, challengeContext?: stri
 
   if (!title) return source;
 
-  const res = await scientificSearch({ title });
+  const searchTitle = challengeContext
+  ? `${title} ${challengeContext}`
+  : title;
+
+const res = await scientificSearch({ title: searchTitle });
 
   // Se não achou nada confiável, mantém como está (sem inventar link genérico)
   if (!res?.best?.link) return source;
