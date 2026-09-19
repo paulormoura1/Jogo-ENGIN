@@ -705,9 +705,12 @@ if (localScore >= 55) {
     enrichSourceUFSCFirst(source, currentChallenge.description)
   )
 )).map(normalizeSourceItem);
-        recommendedMapped = (await Promise.all((localEval.recommendedSources ?? []).map(enrichSourceUFSCFirst))).map(
-          normalizeSourceItem
-        );
+       recommendedMapped = (await Promise.all(
+  (localEval.recommendedSources ?? []).map((source: any) =>
+    enrichSourceUFSCFirst(source, currentChallenge.description)
+  )
+)).map(normalizeSourceItem);
+        
       } catch (e) {
         console.error("[LOCAL_MAP] falhou ao mapear fontes:", e);
         usedMapped = [];
