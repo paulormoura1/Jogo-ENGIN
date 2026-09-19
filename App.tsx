@@ -167,6 +167,131 @@ const conceptualEquivalences: Record<string, string[]> = {
     "facilitar acesso a informacao",
     "tornar as informacoes disponiveis",
   ],
+    // GESTÃO DO CONHECIMENTO
+
+  "gestao do conhecimento": [
+    "organizar o conhecimento",
+    "gerenciar o conhecimento",
+    "administrar o conhecimento",
+    "usar melhor o conhecimento",
+    "aproveitar o conhecimento da empresa",
+    "organizar o que as pessoas sabem",
+  ],
+
+  "gc": [
+    "gestao do conhecimento",
+    "gerenciar o conhecimento",
+    "organizar o conhecimento",
+    "usar o conhecimento da organizacao",
+  ],
+
+  "capital intelectual": [
+    "conhecimento das pessoas",
+    "conhecimento dos profissionais",
+    "experiencia dos colaboradores",
+    "saber dos funcionarios",
+    "conhecimento da equipe",
+    "valor do conhecimento das pessoas",
+  ],
+
+  "aprendizagem organizacional": [
+    "aprendizado da organizacao",
+    "aprendizado das equipes",
+    "aprender com as experiencias",
+    "aprender com os erros",
+    "aprender com os resultados",
+    "melhorar com o que foi aprendido",
+  ],
+
+  "tomada de decisao": [
+    "processo de decisao",
+    "apoiar decisoes",
+    "melhorar as decisoes",
+    "decidir melhor",
+    "ajudar os gestores a decidir",
+    "usar conhecimento para decidir",
+  ],
+
+  "criacao de conhecimento": [
+    "geracao de conhecimento",
+    "producao de conhecimento",
+    "criar novas ideias",
+    "desenvolver novos conhecimentos",
+    "desenvolver solucoes",
+    "produzir novos aprendizados",
+  ],
+
+  "compartilhamento de conhecimento": [
+    "troca de conhecimento",
+    "disseminacao do conhecimento",
+    "circulacao do conhecimento",
+    "trocar informacoes",
+    "compartilhar experiencias",
+    "passar conhecimento",
+  ],
+
+  "memoria organizacional": [
+    "preservar o conhecimento da organizacao",
+    "guardar o conhecimento da empresa",
+    "manter o conhecimento registrado",
+    "preservar experiencias",
+    "guardar o que foi aprendido",
+    "manter o historico de conhecimento",
+  ],
+
+  "licoes aprendidas": [
+    "aprendizados dos projetos",
+    "registrar o que foi aprendido",
+    "aprender com experiencias anteriores",
+    "registrar erros e acertos",
+    "usar experiencias anteriores",
+    "aproveitar aprendizados anteriores",
+  ],
+
+  "comunidades de pratica": [
+    "grupos de troca de conhecimento",
+    "grupos de aprendizagem",
+    "profissionais trocando experiencias",
+    "reunir pessoas para compartilhar conhecimento",
+    "grupos para compartilhar experiencias",
+    "equipes aprendendo juntas",
+  ],
+
+  "reutilizacao do conhecimento": [
+    "reaproveitar conhecimento",
+    "usar novamente o conhecimento",
+    "reutilizar experiencias",
+    "aproveitar solucoes existentes",
+    "usar o que ja foi aprendido",
+    "evitar fazer novamente o que ja existe",
+  ],
+
+  "conhecimento tacito": [
+    "conhecimento das pessoas",
+    "conhecimento adquirido pela experiencia",
+    "experiencia profissional",
+    "saber pratico",
+    "conhecimento que esta na experiencia",
+    "o que o profissional sabe fazer",
+  ],
+
+  "conhecimento explicito": [
+    "conhecimento documentado",
+    "conhecimento registrado",
+    "informacao documentada",
+    "registrar o conhecimento",
+    "documentar o que as pessoas sabem",
+    "transformar conhecimento em documentos",
+  ],
+
+  "registro do conhecimento": [
+    "documentacao do conhecimento",
+    "registrar experiencias",
+    "documentar experiencias",
+    "guardar informacoes importantes",
+    "registrar o que as pessoas sabem",
+    "documentar o que foi aprendido",
+  ],
 };
 const proposalRoots = conceptRoots(proposal);
 
