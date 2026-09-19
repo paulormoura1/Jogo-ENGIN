@@ -400,6 +400,7 @@ console.log("[LOCAL EVAL DEBUG]", {
   perSource: perSource.map((x) => ({
     titulo: x.source?.titulo,
     palavrasChave: x.source?.palavrasChave,
+    relevantKeywords: x.relevantKeywords,
     hits: x.hits,
     coverage: x.coverage,
   })),
