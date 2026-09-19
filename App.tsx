@@ -18,7 +18,11 @@ interface RankingEntry {
   points: number;
 }
 
-const evaluateProposalWithSources = (proposal: string, area: ResearchArea) => {
+const evaluateProposalWithSources = (
+  proposal: string,
+  area: ResearchArea,
+  challengeDescription: string
+) => {
   const sources = getSourcesByArea(area);
   const text = (proposal || "").toLowerCase();
 
@@ -30,7 +34,9 @@ const evaluateProposalWithSources = (proposal: string, area: ResearchArea) => {
     .replace(/[^\w\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-
+  
+const challengeNormalized = normalizeConcept(challengeDescription);
+  
 const stopWords = new Set([
   "a", "o", "as", "os", "de", "da", "do", "das", "dos",
   "em", "e", "para", "por", "com", "um", "uma"
@@ -166,7 +172,32 @@ const proposalRoots = conceptRoots(proposal);
 
 const perSource = sources.map((s) => {
   const keywords = s.palavrasChave || [];
+const relevantKeywords = keywords.filter((keyword: string) => {
+  const keywordNormalized = normalizeConcept(keyword);
 
+  // Descritor aparece diretamente no desafio
+  if (challengeNormalized.includes(keywordNormalized)) {
+    return true;
+  }
+
+  // Descritor aparece no desafio por equivalência conceitual
+  const equivalents =
+    conceptualEquivalences[keywordNormalized] ?? [];
+
+  const challengeRoots = conceptRoots(challengeDescription);
+
+  return equivalents.some((equivalent) => {
+    const equivalentRoots = conceptRoots(equivalent);
+
+    if (equivalentRoots.length === 0) return false;
+
+    const matchedRoots = equivalentRoots.filter((root) =>
+      challengeRoots.some((challengeRoot) => challengeRoot === root)
+    ).length;
+
+    return matchedRoots / equivalentRoots.length >= 0.6;
+  });
+});
   const hits = keywords.filter((keyword: string) => {
     const keywordNormalized = normalizeConcept(keyword);
 
@@ -208,8 +239,13 @@ if (hasConceptualEquivalent) {
    return matchedRoots / roots.length >= 0.6;
   }).length;
 
- const coverage = keywords.length
-  ? hits / Math.min(keywords.length, 20)
+const coverageBase =
+  relevantKeywords.length > 0
+    ? relevantKeywords.length
+    : Math.min(keywords.length, 20);
+
+const coverage = coverageBase
+  ? Math.min(hits / coverageBase, 1)
   : 0;
   return { source: s, hits, coverage };
 });
@@ -493,7 +529,12 @@ const doiFinal = (doi || doiFromLink || "").trim();
 
       let localEval: any = { usedSources: [], recommendedSources: [] };
       try {
-        localEval = evaluateProposalWithSources(playerInput, area) ?? localEval;
+        localEval =
+  evaluateProposalWithSources(
+    playerInput,
+    area,
+    currentChallenge.description
+  ) ?? localEval;
       } catch (e) {
         console.error("[LOCAL_EVAL] evaluateProposalWithSources falhou:", e);
         localEval = { usedSources: [], recommendedSources: [] };
