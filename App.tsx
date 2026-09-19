@@ -372,7 +372,7 @@ const coverageBase =
 const coverage = coverageBase
   ? Math.min(hits / coverageBase, 1)
   : 0;
-  return { source: s, hits, coverage };
+  return { source: s, hits, coverage, relevantKeywords };
 });
 
 const totalHits = perSource.reduce((sum, s) => sum + s.hits, 0);
