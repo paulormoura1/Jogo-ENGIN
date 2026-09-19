@@ -172,7 +172,7 @@ const proposalRoots = conceptRoots(proposal);
 
 const perSource = sources.map((s) => {
   const keywords = s.palavrasChave || [];
-const relevantKeywords = keywords.filter((keyword: string) => {
+const hits = relevantKeywords.filter((keyword: string) => {
   const keywordNormalized = normalizeConcept(keyword);
 
   // Descritor aparece diretamente no desafio
