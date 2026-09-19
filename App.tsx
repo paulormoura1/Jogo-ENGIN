@@ -41,7 +41,127 @@ const conceptRoots = (value: string) =>
     .split(" ")
     .filter((word) => word.length >= 4 && !stopWords.has(word))
     .map((word) => word.slice(0, 5));
+const conceptualEquivalences: Record<string, string[]> = {
+  "maturidade em gc": [
+    "nivel de maturidade",
+    "estagio de maturidade",
+    "acompanhar a evolucao",
+    "melhorar a gestao",
+    "saber o que precisa melhorar",
+  ],
 
+  "processos de conhecimento": [
+    "processos de gc",
+    "praticas de gestao do conhecimento",
+    "organizar o conhecimento",
+    "organizar as informacoes",
+    "melhorar as praticas",
+  ],
+
+  "mecanismos de governanca": [
+    "mecanismos de decisao",
+    "regras de governanca",
+    "criterios de decisao",
+    "criar regras",
+    "estabelecer criterios",
+    "definir como decidir",
+  ],
+
+  "estruturas de governanca": [
+    "estrutura de decisao",
+    "definicao de papeis",
+    "definicao de responsaveis",
+    "definir responsaveis",
+    "dividir responsabilidades",
+    "criar um grupo responsavel",
+  ],
+
+  "avaliacao e monitoramento": [
+    "avaliacao de resultados",
+    "acompanhamento de resultados",
+    "monitoramento de resultados",
+    "acompanhar resultados",
+    "verificar se funciona",
+    "avaliar o que melhorou",
+  ],
+
+  "compartilhamento do conhecimento": [
+    "troca de conhecimento",
+    "disseminacao do conhecimento",
+    "circulacao do conhecimento",
+    "trocar informacoes",
+    "compartilhar experiencias",
+    "passar conhecimento",
+  ],
+
+  "transferencia do conhecimento": [
+    "transmissao do conhecimento",
+    "repasse de conhecimento",
+    "transferencia de saberes",
+    "ensinar outros",
+    "repassar conhecimento",
+    "passar experiencia",
+  ],
+
+  "criacao do conhecimento": [
+    "geracao de conhecimento",
+    "producao de conhecimento",
+    "criar novas ideias",
+    "desenvolver solucoes",
+    "aprender coisas novas",
+  ],
+
+  "retencao do conhecimento": [
+    "preservacao do conhecimento",
+    "manutencao do conhecimento",
+    "guardar conhecimento",
+    "registrar experiencias",
+    "nao perder o que foi aprendido",
+  ],
+
+  "integracao do conhecimento": [
+    "integracao de conhecimentos",
+    "conexao de conhecimentos",
+    "juntar informacoes",
+    "conectar conhecimentos",
+    "reunir o que cada area sabe",
+  ],
+
+  "politicas de gestao do conhecimento": [
+    "diretrizes de gc",
+    "normas de gestao do conhecimento",
+    "politicas de conhecimento",
+    "criar diretrizes",
+    "estabelecer regras",
+    "definir procedimentos",
+  ],
+
+  "coordenacao": [
+    "articulacao entre areas",
+    "integracao entre areas",
+    "coordenacao entre setores",
+    "integrar setores",
+    "aproximar equipes",
+    "fazer as areas trabalharem juntas",
+  ],
+
+  "responsabilidade e eficiencia": [
+    "definicao de responsabilidades",
+    "atribuicao de responsabilidades",
+    "eficiencia organizacional",
+    "definir quem faz o que",
+    "definir responsaveis",
+    "organizar responsabilidades",
+  ],
+
+  "transparencia": [
+    "clareza das informacoes",
+    "visibilidade das informacoes",
+    "deixar informacoes claras",
+    "facilitar acesso a informacao",
+    "tornar as informacoes disponiveis",
+  ],
+};
 const proposalRoots = conceptRoots(proposal);
 
 const perSource = sources.map((s) => {
@@ -54,8 +174,28 @@ const perSource = sources.map((s) => {
     if (normalizeConcept(proposal).includes(keywordNormalized)) {
       return true;
     }
+// 2. Reconhece equivalências conceituais e linguagem natural
+const equivalents =
+  conceptualEquivalences[keywordNormalized] ?? [];
 
-    // 2. Reconhece variações conceituais próximas
+const proposalNormalized = normalizeConcept(proposal);
+
+const hasConceptualEquivalent = equivalents.some((equivalent) => {
+  const equivalentRoots = conceptRoots(equivalent);
+
+  if (equivalentRoots.length === 0) return false;
+
+  const matchedEquivalentRoots = equivalentRoots.filter((root) =>
+    proposalRoots.some((proposalRoot) => proposalRoot === root)
+  ).length;
+
+  return matchedEquivalentRoots / equivalentRoots.length >= 0.6;
+});
+
+if (hasConceptualEquivalent) {
+  return true;
+}
+    // 3. Reconhece variações conceituais próximas
     const roots = conceptRoots(keyword);
 
     if (roots.length === 0) return false;
