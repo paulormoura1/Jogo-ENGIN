@@ -631,13 +631,15 @@ const relevantKeywords = keywords.filter((keyword: string) => {
     return matchedRoots / equivalentRoots.length >= 0.6;
   });
 });
+  const matchedKeywords: string[] = [];
  const hits = relevantKeywords.filter((keyword: string) => {
     const keywordNormalized = normalizeConcept(keyword);
 
     // 1. Correspondência exata continua valendo
-    if (normalizeConcept(proposal).includes(keywordNormalized)) {
-      return true;
-    }
+   if (normalizeConcept(proposal).includes(keywordNormalized)) {
+  matchedKeywords.push(keyword);
+  return true;
+}
 // 2. Reconhece equivalências conceituais e linguagem natural
 const equivalents =
   conceptualEquivalences[keywordNormalized] ?? [];
