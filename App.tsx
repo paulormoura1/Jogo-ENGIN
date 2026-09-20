@@ -296,6 +296,65 @@ const conceptualEquivalences: Record<string, string[]> = {
     "documentar o que foi aprendido",
   ],
 };
+const gcChallengeEquivalences: Record<string, string[]> = {
+  "aprendizagem organizacional": [
+    "incorporar novos conhecimentos",
+    "incorporacao de novos conhecimentos",
+    "aplicar novos conhecimentos",
+    "adotar novas praticas",
+    "aprender novas praticas",
+    "adaptar novas praticas",
+    "novos processos",
+    "novas tecnologias",
+  ],
+
+  "compartilhamento de conhecimento": [
+    "conhecimento produzido por outras equipes",
+    "conhecimento entre equipes",
+    "conhecimento entre setores",
+    "compartilhar conhecimento",
+    "troca entre equipes",
+    "troca de experiencias",
+    "conhecimento restrito",
+    "conhecimento permanece restrito",
+  ],
+
+  "reutilizacao do conhecimento": [
+    "reutilizar conhecimento",
+    "reaproveitar conhecimento",
+    "solucoes que ja existem",
+    "solucoes existentes",
+    "repetir erros",
+    "atividades duplicadas",
+    "evitar retrabalho",
+  ],
+
+  "licoes aprendidas": [
+    "aprendizado dos projetos",
+    "experiencias dos projetos",
+    "aprender com erros",
+    "repetir erros",
+    "aprendizado acumulado",
+  ],
+
+  "retencao do conhecimento": [
+    "preservar conhecimento",
+    "perda de conhecimento",
+    "saida de profissionais",
+    "saida de especialistas",
+    "conhecimento dos que estao de saida",
+    "manter o conhecimento na organizacao",
+  ],
+
+  "registro do conhecimento": [
+    "registrar conhecimento",
+    "documentar conhecimento",
+    "conhecimento registrado",
+    "banco de dados",
+    "base de conhecimento",
+  ],
+};
+  
 const proposalRoots = conceptRoots(proposal);
 
 const perSource = sources.map((s) => {
