@@ -734,7 +734,10 @@ const relevantKeywords = keywords.filter((keyword: string) => {
     : isIntegrationEngineering &&
         integrationChallengeEquivalences[keywordNormalized]
       ? integrationChallengeEquivalences[keywordNormalized]
-      : conceptualEquivalences[keywordNormalized] ?? [];
+      : isUCR &&
+          ucrChallengeEquivalences[keywordNormalized]
+        ? ucrChallengeEquivalences[keywordNormalized]
+        : conceptualEquivalences[keywordNormalized] ?? [];
   
   const challengeRoots = conceptRoots(challengeDescription);
 
