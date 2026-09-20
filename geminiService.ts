@@ -545,7 +545,137 @@ const FALLBACK_CHALLENGES: Record<
       "A organização utiliza diferentes plataformas e recursos digitais para capacitação, mas esses ambientes funcionam de forma fragmentada e oferecem poucas oportunidades de interação e compartilhamento de conhecimento. Como você estruturaria um ecossistema digital de aprendizagem capaz de integrar tecnologias, pessoas e conhecimento em rede?",
   },
 ],
-};
+  {
+  title: "Capacitação Diferente em Cada Unidade",
+  description:
+    "As unidades da organização oferecem capacitações semelhantes, mas cada uma desenvolve seus próprios conteúdos e métodos. Isso gera duplicidade de esforços e pouca troca de conhecimento entre os profissionais. Como você estruturaria uma aprendizagem em rede para integrar essas iniciativas?",
+},
+{
+  title: "Conhecimento Gerado nos Cursos",
+  description:
+    "Durante as capacitações, os profissionais compartilham experiências e desenvolvem soluções relevantes, mas esse conhecimento deixa de circular quando os cursos terminam. Como você faria esse aprendizado permanecer disponível e contribuir para outras equipes?",
+},
+{
+  title: "Trilhas sem Relação com Competências",
+  description:
+    "A organização oferece muitos cursos, porém os profissionais não conseguem perceber como essas capacitações contribuem para as competências necessárias ao trabalho. Como você reorganizaria as trilhas de aprendizagem para apoiar o desenvolvimento profissional?",
+},
+{
+  title: "Aprendizagem entre Filiais",
+  description:
+    "Filiais da mesma organização enfrentam problemas semelhantes e realizam capacitações próprias, mas quase não compartilham experiências ou materiais entre si. Como você estruturaria uma rede de aprendizagem capaz de conectar essas unidades?",
+},
+{
+  title: "Cursos que Não Geram Continuidade",
+  description:
+    "Os profissionais participam de treinamentos e retornam às atividades, mas poucas oportunidades existem para continuar aprendendo ou trocar experiências sobre a aplicação do conteúdo. Como você transformaria essas ações em um processo contínuo de aprendizagem?",
+},
+{
+  title: "Comunidades Depois da Capacitação",
+  description:
+    "Um programa de formação reúne profissionais de diferentes áreas, mas a interação termina quando as aulas são concluídas. A organização deseja manter a troca de experiências entre os participantes. Que estratégia você adotaria?",
+},
+{
+  title: "Novas Competências para Novos Processos",
+  description:
+    "A organização está implantando novos processos e percebe que diferentes equipes precisam desenvolver competências que ainda não dominam. Como você estruturaria uma estratégia de educação corporativa para apoiar essa transformação?",
+},
+{
+  title: "Aprendizagem Distribuída",
+  description:
+    "Profissionais trabalham em unidades geograficamente distantes e possuem poucas oportunidades de participar conjuntamente das ações de desenvolvimento. Como você estruturaria uma Universidade Corporativa em Rede para ampliar a aprendizagem entre essas unidades?",
+},
+{
+  title: "Cursos Duplicados entre Unidades",
+  description:
+    "Diferentes unidades contratam ou produzem capacitações sobre os mesmos temas sem conhecer as iniciativas das demais. A situação aumenta custos e fragmenta o aprendizado. Como você reorganizaria esse processo em uma estrutura de educação corporativa em rede?",
+},
+{
+  title: "Experiência como Fonte de Aprendizagem",
+  description:
+    "A organização oferece cursos formais, mas aproveita pouco a experiência acumulada pelos próprios profissionais. Muitas soluções importantes são conhecidas apenas pelas equipes que as desenvolveram. Como você incorporaria esse conhecimento ao ambiente de aprendizagem?",
+},
+{
+  title: "Desenvolvimento sem Trajetória",
+  description:
+    "Os profissionais participam de capacitações ao longo dos anos, mas não existe uma sequência clara que oriente sua evolução. Como você estruturaria trajetórias de aprendizagem relacionadas ao desenvolvimento de competências?",
+},
+{
+  title: "Aprendizagem para Novos Profissionais",
+  description:
+    "Novos profissionais ingressam em diferentes unidades e recebem orientações locais, resultando em experiências de aprendizagem muito diferentes. Como você estruturaria uma solução em rede para apoiar seu desenvolvimento desde o ingresso?",
+},
+{
+  title: "Conhecimento entre Áreas",
+  description:
+    "Áreas diferentes possuem conhecimentos que poderiam contribuir para a formação de outros setores, mas as capacitações são organizadas separadamente. Como você criaria oportunidades de aprendizagem e compartilhamento entre essas equipes?",
+},
+{
+  title: "Plataformas de Aprendizagem Isoladas",
+  description:
+    "A organização utiliza diferentes ambientes digitais para cursos, materiais e interação entre profissionais. Os usuários precisam acessar várias plataformas e o conhecimento permanece fragmentado. Como você estruturaria um ecossistema de aprendizagem mais integrado?",
+},
+{
+  title: "Capacitação que Não Chega a Todos",
+  description:
+    "Algumas unidades possuem acesso frequente a programas de desenvolvimento, enquanto outras participam pouco das ações educacionais. Como você utilizaria uma estrutura de aprendizagem em rede para ampliar o acesso e integrar essas unidades?",
+},
+{
+  title: "Competências que Precisam Evoluir",
+  description:
+    "Mudanças no negócio exigem novas competências dos profissionais, mas os programas de capacitação continuam concentrados em conteúdos antigos. Como você reorganizaria a educação corporativa para acompanhar essas novas necessidades?",
+},
+{
+  title: "Aprendizagem sem Compartilhamento",
+  description:
+    "Os profissionais concluem cursos e desenvolvem novos conhecimentos, porém quase não existem espaços para compartilhar o que aprenderam com seus colegas. Como você faria esse aprendizado circular pela organização?",
+},
+{
+  title: "Rede de Especialistas Internos",
+  description:
+    "A organização possui profissionais experientes em diferentes unidades, mas esse conhecimento é pouco aproveitado nas ações de desenvolvimento. Como você conectaria esses especialistas aos demais profissionais por meio de uma rede de aprendizagem?",
+},
+{
+  title: "Trilhas Iguais para Necessidades Diferentes",
+  description:
+    "Profissionais com funções e níveis de experiência diferentes recebem praticamente as mesmas capacitações. Isso reduz o interesse e dificulta o desenvolvimento das competências necessárias. Como você estruturaria trilhas de aprendizagem mais adequadas a essas necessidades?",
+},
+{
+  title: "Aprendizagem em Comunidade",
+  description:
+    "Equipes enfrentam desafios semelhantes, mas procuram soluções separadamente e raramente discutem suas experiências. Como você utilizaria comunidades de prática para fortalecer a aprendizagem em rede?",
+},
+{
+  title: "Conhecimento após a Capacitação",
+  description:
+    "Depois de um programa de formação, alguns profissionais aplicam novas práticas e desenvolvem soluções úteis, mas essas experiências não retornam ao ambiente de aprendizagem. Como você faria esse conhecimento alimentar continuamente a educação corporativa?",
+},
+{
+  title: "Universidade Corporativa em Expansão",
+  description:
+    "A organização está crescendo e novas unidades precisam ser incorporadas aos programas de desenvolvimento. A estrutura atual depende de ações centralizadas e tem dificuldade para acompanhar a expansão. Como você estruturaria uma Universidade Corporativa em Rede para essa nova realidade?",
+},
+{
+  title: "Aprendizagem e Memória Organizacional",
+  description:
+    "A organização produz materiais, experiências e conhecimentos em seus programas de capacitação, mas parte desse conteúdo se perde com o tempo. Como você conectaria aprendizagem e memória organizacional para preservar e reutilizar esse conhecimento?",
+},
+{
+  title: "Desenvolvimento Profissional Contínuo",
+  description:
+    "Os profissionais recebem capacitações em momentos específicos, mas não possuem oportunidades regulares de atualizar conhecimentos e desenvolver novas competências. Como você estruturaria um processo contínuo de desenvolvimento profissional?",
+},
+{
+  title: "Rede de Aprendizagem sem Participação",
+  description:
+    "A organização criou um ambiente para conectar profissionais e compartilhar conhecimentos, mas poucas pessoas participam e as interações diminuem com o tempo. Que estratégia você adotaria para tornar essa rede parte do processo contínuo de aprendizagem?",
+},
+{
+  title: "Ecossistema de Aprendizagem em Expansão",
+  description:
+    "A organização incorpora novas unidades, tecnologias e programas educacionais, mas essas iniciativas começam a funcionar de maneira independente. Como você estruturaria um ecossistema de aprendizagem capaz de conectar pessoas, conhecimentos, tecnologias e unidades?",
+},
+],
 
 export const getGeminiFeedback = async (
   prompt: string,
