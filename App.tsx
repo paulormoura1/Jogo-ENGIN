@@ -645,7 +645,18 @@ const relevantKeywords = keywords.filter((keyword: string) => {
 }
 // 2. Reconhece equivalências conceituais e linguagem natural
 const equivalents =
-  conceptualEquivalences[keywordNormalized] ?? [];
+  isKnowledgeManagement && gcChallengeEquivalences[keywordNormalized]
+    ? [
+        ...(conceptualEquivalences[keywordNormalized] ?? []),
+        ...gcChallengeEquivalences[keywordNormalized],
+      ]
+    : isIntegrationEngineering &&
+        integrationChallengeEquivalences[keywordNormalized]
+      ? [
+          ...(conceptualEquivalences[keywordNormalized] ?? []),
+          ...integrationChallengeEquivalences[keywordNormalized],
+        ]
+      : conceptualEquivalences[keywordNormalized] ?? [];
 
 const proposalNormalized = normalizeConcept(proposal);
 
