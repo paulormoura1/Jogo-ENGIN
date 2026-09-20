@@ -369,8 +369,10 @@ const relevantKeywords = keywords.filter((keyword: string) => {
 
   // Descritor aparece no desafio por equivalência conceitual
   const equivalents =
-    conceptualEquivalences[keywordNormalized] ?? [];
-
+  isKnowledgeManagement && gcChallengeEquivalences[keywordNormalized]
+    ? gcChallengeEquivalences[keywordNormalized]
+    : conceptualEquivalences[keywordNormalized] ?? [];
+  
   const challengeRoots = conceptRoots(challengeDescription);
 
   return equivalents.some((equivalent) => {
