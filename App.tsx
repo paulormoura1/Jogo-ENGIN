@@ -1033,7 +1033,7 @@ if (localScore >= correctThreshold) {
     pointsEarned: 10,
     sourceType: "local-scientific",
   };
-} else if (localScore >= 20) {
+} else if (localScore >= partialThreshold) {
   feedbackData = {
     ...(feedbackData ?? {}),
     verdict: "PARCIALMENTE_CORRETA",
