@@ -42,6 +42,9 @@ const challengeNormalized = normalizeConcept(challengeDescription);
 
   const isIntegrationEngineering =
   area === ResearchArea.INTEGRATION_ENG;
+
+  const isUCR =
+  area === ResearchArea.UCR;
   
 const stopWords = new Set([
   "a", "o", "as", "os", "de", "da", "do", "das", "dos",
