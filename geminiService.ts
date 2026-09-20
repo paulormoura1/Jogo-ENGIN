@@ -225,6 +225,136 @@ const FALLBACK_CHALLENGES: Record<
     description:
       "A organização está implantando novos processos e tecnologias, mas parte dos profissionais mantém práticas anteriores e encontra dificuldades para incorporar novos conhecimentos ao trabalho. A mudança começa a perder consistência entre os setores. Que ações de gestão do conhecimento você adotaria para apoiar essa transformação e por que seriam adequadas?",
   },
+   {
+  title: "Especialista Prestes a Sair",
+  description:
+    "Um pesquisador experiente domina procedimentos essenciais de um laboratório e está próximo de deixar a instituição. Grande parte do que ele sabe foi adquirida pela experiência e não está documentada. Como você evitaria que esse conhecimento fosse perdido e como prepararia a equipe para continuar as atividades?",
+},
+{
+  title: "Projetos Repetem os Mesmos Erros",
+  description:
+    "Um laboratório desenvolve vários projetos ao longo do ano, mas problemas já resolvidos voltam a ocorrer em novas pesquisas. As equipes reconhecem que experiências anteriores poderiam ajudar, porém quase nunca conseguem recuperá-las. Que solução você adotaria para mudar essa situação?",
+},
+{
+  title: "Conhecimento Preso na Experiência",
+  description:
+    "Profissionais experientes resolvem rapidamente problemas técnicos porque acumularam conhecimento ao longo dos anos, mas têm dificuldade para explicar tudo o que fazem aos integrantes mais novos. Como você faria esse conhecimento chegar às demais pessoas da organização?",
+},
+{
+  title: "Documentos que Ninguém Encontra",
+  description:
+    "A organização possui muitos relatórios, manuais e registros de projetos, mas os profissionais gastam tempo procurando informações e frequentemente produzem novamente conteúdos que já existem. Como você organizaria esse conhecimento para facilitar seu uso no trabalho?",
+},
+{
+  title: "Aprendizado Depois do Projeto",
+  description:
+    "Ao concluir seus projetos, as equipes apresentam os resultados, mas raramente discutem o que funcionou, o que deu errado e o que deveria ser feito de forma diferente. Pouco desse aprendizado chega aos projetos seguintes. Como você estruturaria uma solução para aproveitar essas experiências?",
+},
+{
+  title: "Equipes que Resolvem o Mesmo Problema",
+  description:
+    "Duas equipes trabalham separadamente e desenvolvem soluções semelhantes para problemas que já haviam sido resolvidos internamente. Elas só descobrem a duplicidade quando os projetos estão praticamente concluídos. Como você reduziria esse retrabalho utilizando o conhecimento existente na organização?",
+},
+{
+  title: "Laboratório Dependente de Pessoas",
+  description:
+    "Determinadas atividades de um laboratório só podem ser realizadas quando alguns profissionais específicos estão presentes. Os procedimentos existem parcialmente em documentos, mas detalhes importantes permanecem na experiência dessas pessoas. Que estratégia você adotaria para diminuir essa dependência?",
+},
+{
+  title: "Experiências que Não Viram Aprendizado",
+  description:
+    "Uma organização executa muitos projetos e acumula experiências importantes, porém continua tomando decisões sem consultar o que aprendeu anteriormente. Como você transformaria essas experiências em conhecimento que possa apoiar decisões futuras?",
+},
+{
+  title: "Novos Integrantes Começam do Zero",
+  description:
+    "Sempre que novos pesquisadores entram em uma equipe, precisam descobrir informalmente como os processos funcionam, quem possui determinadas informações e quais soluções já foram testadas. Isso aumenta o tempo de adaptação. Como você melhoraria esse processo?",
+},
+{
+  title: "Soluções Esquecidas no Repositório",
+  description:
+    "A instituição registra resultados e soluções desenvolvidas em projetos, mas os profissionais raramente consultam esse material quando enfrentam novos problemas. Como você faria o conhecimento já produzido voltar a ser utilizado pelas equipes?",
+},
+{
+  title: "Conhecimento entre Pesquisadores",
+  description:
+    "Pesquisadores de diferentes projetos possuem experiências que poderiam ajudar uns aos outros, mas quase não existem oportunidades para discutir problemas, práticas e soluções. Que iniciativa você implantaria para estimular essa aprendizagem conjunta e como ela funcionaria?",
+},
+{
+  title: "Conhecimento que Sai com a Equipe",
+  description:
+    "Uma equipe responsável por uma atividade estratégica será substituída nos próximos meses. Os novos profissionais receberão documentos básicos, mas grande parte das decisões e experiências acumuladas nunca foi registrada. Como você prepararia essa transição?",
+},
+{
+  title: "Decisão sem Experiência Acumulada",
+  description:
+    "Gestores precisam decidir como enfrentar um problema que já ocorreu em outros projetos da organização, mas desconhecem as soluções utilizadas anteriormente e seus resultados. Como você utilizaria o conhecimento existente para apoiar essa decisão?",
+},
+{
+  title: "Boas Ideias que Ficam Isoladas",
+  description:
+    "Uma equipe desenvolve práticas eficientes e novas soluções durante suas atividades, mas essas ideias permanecem conhecidas apenas pelos integrantes do próprio grupo. Como você faria esse conhecimento contribuir para outras equipes e projetos?",
+},
+{
+  title: "Conhecimento Prático sem Registro",
+  description:
+    "Técnicos de um laboratório desenvolveram maneiras próprias de executar atividades complexas com eficiência, porém essas práticas não aparecem nos procedimentos oficiais. A instituição teme perder esse conhecimento ao longo do tempo. Como você enfrentaria esse problema?",
+},
+{
+  title: "Base de Conhecimento Desatualizada",
+  description:
+    "A organização possui uma base interna com documentos e orientações, mas parte do conteúdo está desatualizada e os profissionais deixaram de confiar nas informações disponíveis. Como você recuperaria a utilidade desse conhecimento para as equipes?",
+},
+{
+  title: "Aprender com Erros e Acertos",
+  description:
+    "Um projeto importante termina com bons resultados, embora tenha enfrentado diversos problemas durante sua execução. A equipe seguinte iniciará uma atividade semelhante. Como você faria os erros, acertos e soluções do primeiro projeto contribuírem para o próximo?",
+},
+{
+  title: "Conhecimento entre Gerações",
+  description:
+    "Um laboratório reúne pesquisadores experientes e estudantes recém-chegados, mas a troca de conhecimento ocorre apenas quando surgem dúvidas específicas. A coordenação pretende aproveitar melhor essa diversidade de experiências. Que estratégia você adotaria?",
+},
+{
+  title: "Informação Existe, Conhecimento Não é Usado",
+  description:
+    "A organização possui grande quantidade de documentos e dados, mas os profissionais continuam dependendo de colegas mais experientes para resolver problemas cotidianos. Como você transformaria os recursos existentes em conhecimento efetivamente utilizado pelas equipes?",
+},
+{
+  title: "Mudança sem Aprendizagem",
+  description:
+    "Uma instituição altera seus processos depois de identificar falhas importantes, mas alguns meses depois as equipes começam a repetir práticas antigas. Como você faria o aprendizado obtido com a mudança permanecer incorporado ao trabalho?",
+},
+{
+  title: "Conhecimento para Resolver Problemas",
+  description:
+    "Uma equipe enfrenta um problema técnico e começa imediatamente a desenvolver uma nova solução, embora situações semelhantes já tenham ocorrido em outros setores. Como você estruturaria uma forma de localizar e aproveitar esse conhecimento antes de iniciar novamente o trabalho?",
+},
+{
+  title: "Experiência dos Profissionais",
+  description:
+    "Profissionais acumulam conhecimentos importantes ao executar suas atividades diariamente, mas a organização conhece pouco sobre o que cada pessoa sabe e quais conhecimentos são mais relevantes para seus processos. Como você identificaria e aproveitaria melhor esse conhecimento?",
+},
+{
+  title: "Aprendizagem entre Projetos",
+  description:
+    "Projetos de uma mesma instituição são conduzidos por equipes diferentes e raramente trocam experiências durante sua execução. Como consequência, soluções úteis permanecem isoladas e erros semelhantes aparecem em vários projetos. Como você estimularia a aprendizagem entre essas equipes?",
+},
+{
+  title: "Conhecimento Espalhado em Diferentes Lugares",
+  description:
+    "Informações importantes estão distribuídas entre documentos, sistemas, mensagens e arquivos pessoais dos profissionais. Quando alguém precisa resolver um problema, não sabe onde procurar nem se a informação mais atual está disponível. Como você organizaria esse conhecimento?",
+},
+{
+  title: "Equipe Experiente sem Sucessores",
+  description:
+    "Um setor possui profissionais com muitos anos de experiência, mas quase não prepara outros integrantes para assumir suas atividades. A direção percebe que futuras saídas podem comprometer processos importantes. Que estratégia de gestão do conhecimento você adotaria?",
+},
+{
+  title: "Conhecimento que Precisa Virar Prática",
+  description:
+    "Após uma capacitação, os profissionais demonstram compreender novos métodos, mas poucos conseguem incorporá-los às atividades cotidianas. Com o tempo, parte da equipe retorna às práticas anteriores. Como você faria esse novo conhecimento ser aplicado e mantido no trabalho?",
+},
 ],
  [ResearchArea.INTEGRATION_ENG]: [
   {
