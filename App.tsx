@@ -502,7 +502,97 @@ const gcChallengeEquivalences: Record<string, string[]> = {
     "base de conhecimento",
   ],
 };
-  
+const integrationChallengeEquivalences: Record<string, string[]> = {
+  "engenharia da integracao": [
+    "integracao",
+    "conectar sistemas",
+    "conectar setores",
+    "conectar equipes",
+    "integrar conhecimentos",
+  ],
+
+  "integracao organizacional": [
+    "areas isoladas",
+    "setores isolados",
+    "integrar areas",
+    "integrar setores",
+    "conectar equipes",
+    "conexoes entre grupos",
+  ],
+
+  "integracao entre setores": [
+    "entre setores",
+    "entre areas",
+    "coordenacao entre areas",
+    "dados entre setores",
+    "informacoes entre setores",
+    "conhecimento entre setores",
+  ],
+
+  "integracao de processos": [
+    "processos fragmentados",
+    "processos desconectados",
+    "integrar processos",
+    "conectar processos",
+    "retrabalho",
+  ],
+
+  "integracao de sistemas": [
+    "diferentes sistemas",
+    "sistemas desconectados",
+    "sistemas sem sincronizacao",
+    "conectar sistemas",
+    "sincronizar sistemas",
+    "dados entre sistemas",
+  ],
+
+  "processos integrados": [
+    "processos conectados",
+    "processos articulados",
+    "atividades integradas",
+    "reduzir retrabalho",
+  ],
+
+  "sistemas integrados": [
+    "sistemas conectados",
+    "sistemas sincronizados",
+    "sistemas compartilhando dados",
+    "troca de dados",
+  ],
+
+  "interoperabilidade": [
+    "sistemas diferentes",
+    "sistemas conversando",
+    "troca de dados entre sistemas",
+    "compartilhamento de dados",
+    "comunicacao entre sistemas",
+  ],
+
+  "fluxo de informacao": [
+    "fluxo de informacao",
+    "dados e informacoes",
+    "informacoes nao circulam",
+    "informacoes circularem",
+    "circulacao de informacoes",
+    "compartilhar informacoes",
+  ],
+
+  "coordenacao entre equipes": [
+    "coordenacao entre equipes",
+    "coordenacao entre areas",
+    "equipes trabalhando juntas",
+    "integrar equipes",
+    "conexoes entre grupos",
+  ],
+
+  "conexao entre setores": [
+    "conexao entre setores",
+    "conexoes entre grupos",
+    "conectar areas",
+    "conectar setores",
+    "integrar departamentos",
+  ],
+};  
 const proposalRoots = conceptRoots(proposal);
 
 const perSource = sources.map((s) => {
