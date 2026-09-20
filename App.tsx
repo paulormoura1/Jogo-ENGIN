@@ -671,8 +671,14 @@ if (hasConceptualEquivalent) {
       proposalRoots.some((proposalRoot) => proposalRoot === root)
     ).length;
 
-    // pelo menos metade dos conceitos relevantes da palavra-chave
-   return matchedRoots / roots.length >= 0.6;
+   // pelo menos 60% dos conceitos relevantes da palavra-chave
+const hasRootMatch = matchedRoots / roots.length >= 0.6;
+
+if (hasRootMatch) {
+  matchedKeywords.push(keyword);
+}
+
+return hasRootMatch;
   }).length;
 
 const coverageBase =
