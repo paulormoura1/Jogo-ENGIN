@@ -720,6 +720,7 @@ console.log("[LOCAL EVAL DEBUG]", {
     palavrasChave: x.source?.palavrasChave,
     relevantKeywords: x.relevantKeywords,
     hits: x.hits,
+    matchedKeywords: x.matchedKeywords,
     coverage: x.coverage,
   })),
 });
