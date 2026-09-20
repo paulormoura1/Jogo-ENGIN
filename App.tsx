@@ -599,15 +599,7 @@ const integrationChallengeEquivalences: Record<string, string[]> = {
     "integrar departamentos",
   ],
 };  
-    "conexao entre setores": [
-    "conexao entre setores",
-    "conexoes entre grupos",
-    "conectar areas",
-    "conectar setores",
-    "integrar departamentos",
-  ],
-};
-
+  
 const ucrChallengeEquivalences: Record<string, string[]> = {
 };
 
