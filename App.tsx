@@ -1285,7 +1285,7 @@ const doiFinal = (doi || doiFromLink || "").trim();
   },
   [ResearchArea.UCR]: {
     partial: 20,
-    correct: 55,
+    correct: 75,
   },
 };
 
