@@ -36,6 +36,9 @@ const evaluateProposalWithSources = (
     .trim();
   
 const challengeNormalized = normalizeConcept(challengeDescription);
+
+  const isKnowledgeManagement =
+  area === ResearchArea.KNOWLEDGE_MGMT;
   
 const stopWords = new Set([
   "a", "o", "as", "os", "de", "da", "do", "das", "dos",
