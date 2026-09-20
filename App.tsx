@@ -659,6 +659,7 @@ const hasConceptualEquivalent = equivalents.some((equivalent) => {
 });
 
 if (hasConceptualEquivalent) {
+  matchedKeywords.push(keyword);
   return true;
 }
     // 3. Reconhece variações conceituais próximas
