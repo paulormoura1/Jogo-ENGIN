@@ -313,11 +313,26 @@ Retorne SOMENTE JSON válido neste formato:
 `;
 
   try {
-    const response = await ai.models.generateContent({
-      model,
-      contents: instruction,
-      config: { responseMimeType: "application/json" },
-    });
+   let response;
+
+try {
+  response = await ai.models.generateContent({
+    model,
+    contents: instruction,
+    config: { responseMimeType: "application/json" },
+  });
+} catch (primaryError) {
+  console.warn(
+    "Gemini 3.8 Flash indisponível. Tentando modelo alternativo.",
+    primaryError
+  );
+
+  response = await ai.models.generateContent({
+    model: "gemini-3.7-flash",
+    contents: instruction,
+    config: { responseMimeType: "application/json" },
+  });
+}
 
     return JSON.parse(response.text || "{}");
 } catch (error) {
