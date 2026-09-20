@@ -735,7 +735,7 @@ const doiFinal = (doi || doiFromLink || "").trim();
       const correctThreshold =
   area === ResearchArea.KNOWLEDGE_MGMT ? 75 : 55;
 
-if (localScore >= 55) {
+if (localScore >= correctThreshold) {
   feedbackData = {
     ...(feedbackData ?? {}),
     verdict: "CORRETA",
