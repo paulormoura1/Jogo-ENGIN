@@ -609,10 +609,13 @@ const relevantKeywords = keywords.filter((keyword: string) => {
   }
 
   // Descritor aparece no desafio por equivalência conceitual
-  const equivalents =
+ const equivalents =
   isKnowledgeManagement && gcChallengeEquivalences[keywordNormalized]
     ? gcChallengeEquivalences[keywordNormalized]
-    : conceptualEquivalences[keywordNormalized] ?? [];
+    : isIntegrationEngineering &&
+        integrationChallengeEquivalences[keywordNormalized]
+      ? integrationChallengeEquivalences[keywordNormalized]
+      : conceptualEquivalences[keywordNormalized] ?? [];
   
   const challengeRoots = conceptRoots(challengeDescription);
 
