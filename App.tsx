@@ -731,6 +731,9 @@ const doiFinal = (doi || doiFromLink || "").trim();
         localEval = { usedSources: [], recommendedSources: [] };
       }
       const localScore = Number(localEval?.score ?? 0);
+      
+      const correctThreshold =
+  area === ResearchArea.KNOWLEDGE_MGMT ? 75 : 55;
 
 if (localScore >= 55) {
   feedbackData = {
