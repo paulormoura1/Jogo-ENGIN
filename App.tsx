@@ -1014,7 +1014,7 @@ const doiFinal = (doi || doiFromLink || "").trim();
   },
   [ResearchArea.INTEGRATION_ENG]: {
     partial: 20,
-    correct: 55,
+    correct: 75,
   },
   [ResearchArea.UCR]: {
     partial: 20,
