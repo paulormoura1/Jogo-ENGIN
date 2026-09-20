@@ -394,6 +394,7 @@ const score = Math.round(bestCoverage * 100);
   }
 console.log("[LOCAL EVAL DEBUG]", {
   area,
+  challenge: challengeDescription,
   proposal,
   score,
   totalHits,
