@@ -243,6 +243,9 @@ const conceptualEquivalences: Record<string, string[]> = {
     "preservar experiencias",
     "guardar o que foi aprendido",
     "manter o historico de conhecimento",
+        "memorias tacitas e documentais",
+    "agregar memorias",
+    "reunir conhecimentos da organizacao",
   ],
 
   "licoes aprendidas": [
