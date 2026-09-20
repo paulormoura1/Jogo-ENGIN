@@ -673,9 +673,9 @@ const FALLBACK_CHALLENGES: Record<
   title: "Ecossistema de Aprendizagem em Expansão",
   description:
     "A organização incorpora novas unidades, tecnologias e programas educacionais, mas essas iniciativas começam a funcionar de maneira independente. Como você estruturaria um ecossistema de aprendizagem capaz de conectar pessoas, conhecimentos, tecnologias e unidades?",
+ },
 ],
-},
-
+};
 export const getGeminiFeedback = async (
   prompt: string,
   state: GameState,
