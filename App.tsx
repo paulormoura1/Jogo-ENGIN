@@ -323,7 +323,7 @@ const relevantKeywords = keywords.filter((keyword: string) => {
     return matchedRoots / equivalentRoots.length >= 0.6;
   });
 });
-  const hits = keywords.filter((keyword: string) => {
+ const hits = relevantKeywords.filter((keyword: string) => {
     const keywordNormalized = normalizeConcept(keyword);
 
     // 1. Correspondência exata continua valendo
