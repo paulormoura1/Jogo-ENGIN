@@ -1000,9 +1000,30 @@ const doiFinal = (doi || doiFromLink || "").trim();
       }
       const localScore = Number(localEval?.score ?? 0);
       
-      const correctThreshold =
-  area === ResearchArea.KNOWLEDGE_MGMT ? 75 : 55;
+      const areaThresholds: Record<
+  ResearchArea,
+  { partial: number; correct: number }
+> = {
+  [ResearchArea.GOVERNANCE_KNOWLEDGE]: {
+    partial: 20,
+    correct: 55,
+  },
+  [ResearchArea.KNOWLEDGE_MGMT]: {
+    partial: 20,
+    correct: 75,
+  },
+  [ResearchArea.INTEGRATION_ENG]: {
+    partial: 20,
+    correct: 55,
+  },
+  [ResearchArea.UCR]: {
+    partial: 20,
+    correct: 55,
+  },
+};
 
+const { partial: partialThreshold, correct: correctThreshold } =
+  areaThresholds[area];
 if (localScore >= correctThreshold) {
   feedbackData = {
     ...(feedbackData ?? {}),
