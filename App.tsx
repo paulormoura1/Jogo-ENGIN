@@ -452,6 +452,149 @@ const conceptualEquivalences: Record<string, string[]> = {
   "comunicacao entre setores",
   "troca de dados entre setores",
 ],
+  // UNIVERSIDADE CORPORATIVA EM REDE
+
+"universidade corporativa": [
+  "educacao corporativa",
+  "formacao corporativa",
+  "desenvolvimento dos colaboradores",
+  "desenvolvimento profissional",
+  "aprendizagem corporativa",
+  "formacao dos profissionais",
+],
+
+"universidade em rede": [
+  "educacao em rede",
+  "aprendizagem distribuida",
+  "conectar unidades",
+  "integrar unidades",
+  "aprendizagem entre unidades",
+  "formacao em rede",
+],
+
+"educacao corporativa": [
+  "formacao profissional",
+  "capacitacao dos colaboradores",
+  "desenvolvimento profissional",
+  "aprendizagem corporativa",
+  "educacao continuada",
+  "formacao continuada",
+],
+
+"aprendizagem em rede": [
+  "aprendizagem compartilhada",
+  "aprendizagem entre equipes",
+  "aprendizagem entre unidades",
+  "aprender em conjunto",
+  "troca de experiencias",
+  "aprendizagem colaborativa",
+],
+
+"competencias organizacionais": [
+  "competencias da organizacao",
+  "competencias dos profissionais",
+  "desenvolvimento de competencias",
+  "desenvolver competencias",
+  "formacao de competencias",
+],
+
+"inovacao educacional": [
+  "inovacao na aprendizagem",
+  "novas formas de aprender",
+  "novas formas de ensinar",
+  "novas praticas de aprendizagem",
+  "tecnologias para aprendizagem",
+],
+
+"governanca em rede": [
+  "coordenacao em rede",
+  "gestao em rede",
+  "articulacao entre unidades",
+  "coordenacao entre unidades",
+  "gestao compartilhada",
+],
+
+"integracao entre unidades": [
+  "integrar unidades",
+  "conectar unidades",
+  "aproximar unidades",
+  "articular unidades",
+  "troca entre unidades",
+],
+
+"trilhas de aprendizagem": [
+  "trajetorias de aprendizagem",
+  "percurso de aprendizagem",
+  "caminho de aprendizagem",
+  "percurso de desenvolvimento",
+  "caminho de desenvolvimento",
+],
+
+"rede de aprendizagem": [
+  "aprendizagem compartilhada",
+  "equipes aprendendo juntas",
+  "aprendizagem colaborativa",
+  "conectar pessoas para aprender",
+  "troca de conhecimento entre equipes",
+],
+
+"ecossistema de aprendizagem": [
+  "ambiente de aprendizagem",
+  "ambiente integrado de aprendizagem",
+  "rede de aprendizagem",
+  "ambiente colaborativo de aprendizagem",
+  "integracao de recursos de aprendizagem",
+],
+
+"colaboracao entre equipes": [
+  "equipes trabalhando juntas",
+  "trabalho colaborativo",
+  "colaboracao entre grupos",
+  "cooperacao entre equipes",
+  "troca entre equipes",
+],
+
+"desenvolvimento de competencias": [
+  "desenvolver competencias",
+  "melhorar competencias",
+  "formacao de competencias",
+  "aperfeicoar competencias",
+],
+
+"desenvolvimento profissional": [
+  "desenvolver profissionais",
+  "crescimento profissional",
+  "formacao profissional",
+  "aperfeicoamento profissional",
+],
+
+"capacitacao continua": [
+  "capacitacao permanente",
+  "treinamento continuo",
+  "formacao continua",
+  "aperfeicoamento continuo",
+],
+
+"educacao continuada": [
+  "educacao permanente",
+  "aprendizagem continua",
+  "formacao continuada",
+  "aprendizagem permanente",
+],
+
+"trajetorias de aprendizagem": [
+  "percurso de aprendizagem",
+  "caminho de aprendizagem",
+  "trilhas de aprendizagem",
+  "percurso de desenvolvimento",
+],
+
+"desenvolvimento continuo": [
+  "aprendizagem continua",
+  "desenvolvimento permanente",
+  "aperfeicoamento continuo",
+  "melhoria continua das competencias",
+],
 };
 const gcChallengeEquivalences: Record<string, string[]> = {
   "aprendizagem organizacional": [
