@@ -775,8 +775,13 @@ const equivalents =
           ...(conceptualEquivalences[keywordNormalized] ?? []),
           ...integrationChallengeEquivalences[keywordNormalized],
         ]
-      : conceptualEquivalences[keywordNormalized] ?? [];
-
+      : isUCR &&
+          ucrChallengeEquivalences[keywordNormalized]
+        ? [
+            ...(conceptualEquivalences[keywordNormalized] ?? []),
+            ...ucrChallengeEquivalences[keywordNormalized],
+          ]
+        : conceptualEquivalences[keywordNormalized] ?? [];
 const proposalNormalized = normalizeConcept(proposal);
 
 const hasConceptualEquivalent = equivalents.some((equivalent) => {
