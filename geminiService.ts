@@ -544,7 +544,6 @@ const FALLBACK_CHALLENGES: Record<
     description:
       "A organização utiliza diferentes plataformas e recursos digitais para capacitação, mas esses ambientes funcionam de forma fragmentada e oferecem poucas oportunidades de interação e compartilhamento de conhecimento. Como você estruturaria um ecossistema digital de aprendizagem capaz de integrar tecnologias, pessoas e conhecimento em rede?",
   },
-],
   {
   title: "Capacitação Diferente em Cada Unidade",
   description:
