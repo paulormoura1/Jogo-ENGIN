@@ -295,6 +295,154 @@ const conceptualEquivalences: Record<string, string[]> = {
     "registrar o que as pessoas sabem",
     "documentar o que foi aprendido",
   ],
+  // ENGENHARIA DA INTEGRAÇÃO
+
+"engenharia da integracao": [
+  "integrar sistemas",
+  "integrar processos",
+  "integrar setores",
+  "conectar sistemas",
+  "conectar areas",
+  "fazer sistemas trabalharem juntos",
+],
+
+"integracao organizacional": [
+  "integrar a organizacao",
+  "integrar diferentes areas",
+  "conectar setores",
+  "aproximar setores",
+  "fazer as areas trabalharem juntas",
+  "unir diferentes areas",
+],
+
+"integracao entre setores": [
+  "conectar setores",
+  "integrar setores",
+  "ligar setores",
+  "informacoes circularem entre setores",
+  "dados circularem entre setores",
+  "troca de informacoes entre setores",
+],
+
+"integracao de processos": [
+  "conectar processos",
+  "integrar os processos",
+  "unificar processos",
+  "articular processos",
+  "processos trabalhando juntos",
+  "conectar atividades",
+],
+
+"integracao de sistemas": [
+  "conectar sistemas",
+  "integrar os sistemas",
+  "unificar sistemas",
+  "sistemas conectados",
+  "sistemas trabalhando juntos",
+  "troca de dados entre sistemas",
+],
+
+"processos integrados": [
+  "processos conectados",
+  "processos trabalhando juntos",
+  "atividades integradas",
+  "conectar os processos",
+  "unificar atividades",
+  "fluxo integrado de processos",
+],
+
+"sistemas integrados": [
+  "sistemas conectados",
+  "sistemas sincronizados",
+  "conectar os sistemas",
+  "sincronizar sistemas",
+  "sistemas compartilhando dados",
+  "sistemas trocando informacoes",
+],
+
+"sistemas complexos": [
+  "sistemas interligados",
+  "sistemas conectados",
+  "varios sistemas relacionados",
+  "diferentes sistemas trabalhando juntos",
+  "conjunto de sistemas",
+],
+
+"ecossistemas de inovacao": [
+  "ambiente de inovacao",
+  "rede de inovacao",
+  "organizacoes trabalhando juntas para inovar",
+  "integracao para inovacao",
+  "colaboracao para inovacao",
+],
+
+"modelagem sistemica": [
+  "visao do sistema como um todo",
+  "analisar o conjunto",
+  "entender as relacoes entre as partes",
+  "mapear as conexoes",
+  "mapear os processos",
+  "visualizar como as partes se relacionam",
+],
+
+"arquitetura organizacional": [
+  "estrutura da organizacao",
+  "organizacao das areas",
+  "estrutura entre setores",
+  "organizar como as areas se conectam",
+  "organizar os setores",
+],
+
+"arquitetura de integracao": [
+  "estrutura para integrar sistemas",
+  "forma de conectar sistemas",
+  "estrutura de integracao",
+  "modelo para integrar sistemas",
+  "organizar a conexao entre sistemas",
+],
+
+"interoperabilidade": [
+  "sistemas conversando entre si",
+  "sistemas trocando dados",
+  "sistemas compartilhando informacoes",
+  "comunicacao entre sistemas",
+  "permitir troca de dados entre sistemas",
+  "fazer sistemas diferentes se comunicarem",
+],
+
+"fluxo de informacao": [
+  "circulacao da informacao",
+  "circulacao de informacoes",
+  "informacoes circularem",
+  "troca de informacoes",
+  "compartilhar informacoes",
+  "informacao chegar aos setores",
+],
+
+"conhecimento critico": [
+  "conhecimento importante",
+  "informacao critica",
+  "conhecimento essencial",
+  "informacoes importantes",
+  "conhecimento necessario para os processos",
+],
+
+"coordenacao entre equipes": [
+  "articulacao entre equipes",
+  "integrar equipes",
+  "equipes trabalhando juntas",
+  "aproximar equipes",
+  "coordenar o trabalho das equipes",
+],
+
+"conexao entre setores": [
+  "ligar setores",
+  "conectar as areas",
+  "aproximar setores",
+  "integrar departamentos",
+  "comunicacao entre setores",
+  "troca de dados entre setores",
+],
 };
 const gcChallengeEquivalences: Record<string, string[]> = {
   "aprendizagem organizacional": [
