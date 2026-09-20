@@ -61,6 +61,136 @@ const FALLBACK_CHALLENGES: Record<
     description:
       "A organização deseja ampliar sua capacidade de inovação, mas ideias, experiências e conhecimentos permanecem dispersos entre equipes e projetos. Não há uma estrutura clara para transformar esse conhecimento em subsídio às decisões estratégicas. Que mecanismos de governança do conhecimento você implantaria para apoiar a inovação e como eles seriam aplicados?",
   },
+    {
+  title: "Conhecimento Crítico no Laboratório",
+  description:
+    "Um laboratório de pesquisa depende da experiência de poucos pesquisadores para executar procedimentos essenciais. Parte desse conhecimento nunca foi formalmente registrada e dois desses profissionais deixarão o projeto nos próximos meses. Como você estruturaria uma intervenção para reduzir esse risco e garantir a continuidade das atividades?",
+},
+{
+  title: "Resultados que Ninguém Acompanha",
+  description:
+    "Um laboratório implantou diversas iniciativas para melhorar a circulação e o uso do conhecimento, mas não possui critérios para verificar se essas ações estão produzindo resultados. A coordenação precisa decidir quais iniciativas devem continuar ou ser revistas. Como você estruturaria esse acompanhamento e como utilizaria seus resultados?",
+},
+{
+  title: "Informação Restrita entre Pesquisadores",
+  description:
+    "Diferentes equipes de um centro de pesquisa produzem dados e aprendizados relevantes, porém cada grupo mantém suas informações internamente. Outros pesquisadores frequentemente descobrem tarde demais que determinado conhecimento já existia. Que intervenção você adotaria para modificar essa situação e como ela funcionaria?",
+},
+{
+  title: "Decisões sem Responsáveis Definidos",
+  description:
+    "Em um projeto multidisciplinar, decisões relacionadas ao uso, registro e disponibilização de conhecimentos são tomadas informalmente. Quando surgem problemas, não está claro quem deveria decidir ou responder por eles. Como você reorganizaria esse processo e por que sua proposta seria adequada?",
+},
+{
+  title: "Pesquisa sem Memória",
+  description:
+    "Um laboratório conclui vários projetos todos os anos, mas os aprendizados, dificuldades e soluções desenvolvidos pelas equipes raramente permanecem disponíveis após o encerramento das pesquisas. Novos projetos acabam enfrentando problemas semelhantes. Como você enfrentaria essa situação?",
+},
+{
+  title: "Conhecimento entre Laboratórios",
+  description:
+    "Dois laboratórios da mesma universidade pesquisam temas complementares, mas trabalham de forma independente e quase não utilizam os conhecimentos produzidos um pelo outro. A universidade pretende aproximar essas equipes sem retirar sua autonomia científica. Que estratégia você adotaria e como ela funcionaria?",
+},
+{
+  title: "Acesso Desigual à Informação",
+  description:
+    "Em uma instituição, algumas equipes têm acesso rápido a informações importantes para suas atividades, enquanto outras dependem de contatos pessoais para obtê-las. Essa diferença começa a prejudicar decisões e projetos conjuntos. Como você estruturaria uma intervenção para tornar esse processo mais adequado?",
+},
+{
+  title: "Conhecimento sem Diretrizes",
+  description:
+    "Uma universidade possui diversas iniciativas para registrar, compartilhar e utilizar conhecimentos, porém cada unidade estabelece suas próprias práticas. A ausência de orientações institucionais provoca diferenças significativas entre setores. Como você organizaria essa situação sem eliminar a autonomia das unidades?",
+},
+{
+  title: "Experiência que Sai com o Pesquisador",
+  description:
+    "Um pesquisador responsável por técnicas essenciais de um laboratório está encerrando seu vínculo com a instituição. Outros integrantes conhecem apenas partes dos procedimentos que ele executa. Que estratégia você adotaria antes de sua saída e como garantiria que esse conhecimento continuasse disponível?",
+},
+{
+  title: "Setores que Não Conversam",
+  description:
+    "Uma universidade possui setores que produzem conhecimentos relevantes para os mesmos projetos, mas cada unidade trabalha com prioridades e rotinas próprias. Essa fragmentação dificulta ações conjuntas e provoca retrabalho. Como você estruturaria uma intervenção para melhorar a atuação entre essas áreas?",
+},
+{
+  title: "Conhecimento para Decidir",
+  description:
+    "A direção de um centro de pesquisa precisa decidir quais projetos receberão novos recursos, mas as informações sobre resultados, competências das equipes e conhecimentos produzidos estão dispersas. Como você organizaria esse processo para apoiar decisões mais consistentes?",
+},
+{
+  title: "Boas Práticas que Não se Espalham",
+  description:
+    "Uma equipe desenvolveu uma forma mais eficiente de executar determinada atividade e obteve bons resultados, mas outras unidades continuam utilizando procedimentos antigos porque desconhecem essa experiência. Como você faria esse aprendizado alcançar e ser utilizado pelas demais equipes?",
+},
+{
+  title: "Crescimento sem Coordenação",
+  description:
+    "Um laboratório cresceu rapidamente e passou a reunir pesquisadores, bolsistas e técnicos em diferentes projetos. Com o aumento da equipe, informações importantes deixaram de circular adequadamente e responsabilidades começaram a se sobrepor. Como você reorganizaria essa dinâmica?",
+},
+{
+  title: "Conhecimento para Novos Integrantes",
+  description:
+    "Novos pesquisadores ingressam frequentemente em um grupo de pesquisa, mas dependem dos integrantes mais antigos para compreender procedimentos, decisões anteriores e práticas do laboratório. Quando essas pessoas não estão disponíveis, a aprendizagem fica comprometida. Como você estruturaria uma solução para esse problema?",
+},
+{
+  title: "Projetos Repetindo os Mesmos Erros",
+  description:
+    "Equipes de pesquisa registram relatórios ao final dos projetos, mas dificuldades e soluções encontradas durante a execução raramente são consideradas nas iniciativas seguintes. Como você estruturaria um processo para que essas experiências contribuíssem efetivamente para novos projetos?",
+},
+{
+  title: "Parceria sem Fluxo de Conhecimento",
+  description:
+    "Uma universidade e uma organização parceira desenvolvem conjuntamente um projeto de inovação, porém os conhecimentos produzidos permanecem concentrados nas equipes que os originaram. Isso começa a dificultar decisões conjuntas. Que estrutura você adotaria para melhorar essa relação?",
+},
+{
+  title: "Muitas Informações, Pouca Clareza",
+  description:
+    "Um centro de pesquisa produz grande quantidade de documentos, relatórios e dados, mas pesquisadores e gestores têm dificuldade para identificar quais informações são relevantes e quem é responsável por mantê-las atualizadas. Como você organizaria esse ambiente?",
+},
+{
+  title: "Inovação Dependente de Poucas Pessoas",
+  description:
+    "As principais ideias de inovação de uma organização surgem de um pequeno grupo de especialistas. Quando esses profissionais não participam dos projetos, as equipes encontram dificuldade para avançar. Como você reduziria essa dependência preservando e ampliando a capacidade de inovação?",
+},
+{
+  title: "Práticas Diferentes entre Unidades",
+  description:
+    "Diferentes unidades de uma instituição registram e compartilham conhecimento de maneiras distintas. Algumas possuem práticas consolidadas, enquanto outras dependem quase exclusivamente de comunicação informal. Como você conduziria uma evolução institucional sem impor uma solução única a todas as unidades?",
+},
+{
+  title: "Conhecimento sem Critério de Acesso",
+  description:
+    "Uma organização ampliou seus repositórios internos, mas não definiu claramente quais informações devem ser abertas, restritas ou disponibilizadas a determinados grupos. A situação gera tanto dificuldade de acesso quanto preocupação com informações sensíveis. Como você estruturaria esse processo?",
+},
+{
+  title: "Aprendizado Perdido entre Projetos",
+  description:
+    "Pesquisadores participam sucessivamente de diferentes projetos e acumulam experiências importantes, porém esse aprendizado permanece associado às pessoas e raramente é incorporado às práticas do laboratório. Que intervenção você proporia para transformar essas experiências em conhecimento útil para a organização?",
+},
+{
+  title: "Decisão Estratégica Fragmentada",
+  description:
+    "Gestores responsáveis por uma decisão estratégica recebem informações produzidas por diferentes áreas, mas os dados chegam em formatos, momentos e níveis de detalhamento distintos. Isso dificulta a construção de uma visão comum do problema. Como você estruturaria esse processo?",
+},
+{
+  title: "Conhecimento sem Dono",
+  description:
+    "Um centro de inovação possui bases, documentos e práticas de compartilhamento, mas ninguém sabe claramente quem deve manter determinados conteúdos atualizados, validar informações ou decidir sobre sua utilização. Como você resolveria essa indefinição?",
+},
+{
+  title: "Integração de Conhecimento Multidisciplinar",
+  description:
+    "Um projeto reúne pesquisadores de diferentes áreas científicas. Cada equipe domina uma parte importante do problema, mas utiliza conceitos, métodos e informações próprios, dificultando a construção de soluções conjuntas. Como você estruturaria a integração desses conhecimentos?",
+},
+{
+  title: "Transparência em Projeto Institucional",
+  description:
+    "Um grande projeto institucional envolve diferentes equipes, mas decisões e alterações importantes nem sempre são conhecidas por todos os participantes. Isso provoca dúvidas, retrabalho e interpretações diferentes sobre as prioridades do projeto. Como você melhoraria essa situação?",
+},
+{
+  title: "Governança Após o Encerramento do Projeto",
+  description:
+    "Um projeto de pesquisa de longa duração está chegando ao fim e produziu dados, métodos, decisões, experiências e conhecimentos relevantes. A instituição pretende preservar esse patrimônio para futuras pesquisas, mas ainda não definiu responsabilidades nem procedimentos para sua continuidade. Que estratégia você adotaria?",
+},
 ],
  [ResearchArea.KNOWLEDGE_MGMT]: [
   {
