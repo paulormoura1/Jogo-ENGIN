@@ -10,13 +10,24 @@ if (!apiKey) {
 
 const ai = new GoogleGenAI({ apiKey });
 
-const SUBTHEMES: Record<ResearchArea, string[]> = {
-  [ResearchArea.GOVERNANCE_KNOWLEDGE]: [
-    "Auditoria do conhecimento",
-    "Governança para inovação",
-    "Maturidade em GC",
-    "Estruturas de decisão",
-  ],
+[ResearchArea.GOVERNANCE_KNOWLEDGE]: [
+  "Auditoria do conhecimento",
+  "Governança para inovação",
+  "Maturidade em GC",
+  "Processos de conhecimento",
+  "Mecanismos de governança",
+  "Estruturas de governança",
+  "Avaliação e monitoramento",
+  "Compartilhamento do conhecimento",
+  "Transferência do conhecimento",
+  "Criação do conhecimento",
+  "Retenção do conhecimento",
+  "Integração do conhecimento",
+  "Políticas de gestão do conhecimento",
+  "Coordenação entre áreas",
+  "Responsabilidade e eficiência",
+  "Transparência",
+],
 [ResearchArea.KNOWLEDGE_MGMT]: [
   "Capital intelectual",
   "Framework 8'C",
