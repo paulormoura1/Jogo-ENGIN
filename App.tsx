@@ -601,6 +601,115 @@ const integrationChallengeEquivalences: Record<string, string[]> = {
 };  
   
 const ucrChallengeEquivalences: Record<string, string[]> = {
+  "universidade corporativa": [
+    "universidade corporativa",
+    "educacao corporativa",
+    "desenvolvimento dos colaboradores",
+    "formacao dos profissionais",
+  ],
+
+  "universidade em rede": [
+    "universidade em rede",
+    "aprendizagem entre unidades",
+    "conectar unidades",
+    "integrar unidades",
+    "aprendizagem distribuida",
+  ],
+
+  "educacao corporativa": [
+    "educacao corporativa",
+    "formacao profissional",
+    "capacitacao dos colaboradores",
+    "desenvolvimento profissional",
+    "educacao continuada",
+  ],
+
+  "aprendizagem em rede": [
+    "aprendizagem entre equipes",
+    "aprendizagem entre unidades",
+    "aprender em conjunto",
+    "troca de experiencias",
+    "rede de aprendizagem",
+  ],
+
+  "competencias organizacionais": [
+    "desenvolver competencias",
+    "competencias dos profissionais",
+    "competencias da organizacao",
+    "desenvolvimento de competencias",
+  ],
+
+  "integracao entre unidades": [
+    "integrar unidades",
+    "conectar unidades",
+    "aproximar unidades",
+    "articulacao entre unidades",
+    "troca entre unidades",
+  ],
+
+  "trilhas de aprendizagem": [
+    "trilhas de aprendizagem",
+    "trajetorias de aprendizagem",
+    "percurso de aprendizagem",
+    "caminho de desenvolvimento",
+  ],
+
+  "rede de aprendizagem": [
+    "rede de aprendizagem",
+    "equipes aprendendo juntas",
+    "aprendizagem compartilhada",
+    "conectar pessoas para aprender",
+    "troca de conhecimento entre equipes",
+  ],
+
+  "ecossistema de aprendizagem": [
+    "ecossistema de aprendizagem",
+    "ambiente de aprendizagem",
+    "rede de desenvolvimento",
+    "ambiente integrado de aprendizagem",
+  ],
+
+  "desenvolvimento de competencias": [
+    "desenvolver competencias",
+    "desenvolvimento das competencias",
+    "melhorar competencias",
+    "formacao de competencias",
+  ],
+
+  "desenvolvimento profissional": [
+    "desenvolver profissionais",
+    "desenvolvimento dos profissionais",
+    "crescimento profissional",
+    "formacao profissional",
+  ],
+
+  "capacitacao continua": [
+    "capacitacao continua",
+    "capacitacao permanente",
+    "treinamento continuo",
+    "formacao continua",
+  ],
+
+  "educacao continuada": [
+    "educacao continuada",
+    "educacao permanente",
+    "aprendizagem continua",
+    "formacao continuada",
+  ],
+
+  "trajetorias de aprendizagem": [
+    "trajetorias de aprendizagem",
+    "percurso de aprendizagem",
+    "caminho de aprendizagem",
+    "trilhas de aprendizagem",
+  ],
+
+  "desenvolvimento continuo": [
+    "desenvolvimento continuo",
+    "aprendizagem continua",
+    "desenvolvimento permanente",
+    "melhoria continua das competencias",
+  ],
 };
 
 const proposalRoots = conceptRoots(proposal);
