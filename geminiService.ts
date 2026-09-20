@@ -368,27 +368,136 @@ const FALLBACK_CHALLENGES: Record<
     "Após uma capacitação, os profissionais demonstram compreender novos métodos, mas poucos conseguem incorporá-los às atividades cotidianas. Com o tempo, parte da equipe retorna às práticas anteriores. Como você faria esse novo conhecimento ser aplicado e mantido no trabalho?",
 },
 ],
- [ResearchArea.INTEGRATION_ENG]: [
-  {
-    title: "Setores Desconectados",
-    description:
-      "Diferentes setores da organização executam processos relacionados, mas trabalham de forma isolada e utilizam sistemas que não se comunicam adequadamente. Informações precisam ser registradas mais de uma vez e decisões são prejudicadas pela falta de integração. Como especialista, que solução de integração você implantaria, como ela funcionaria e por que seria adequada?",
-  },
-  {
-    title: "Rede de Aprendizagem Fragmentada",
-    description:
-      "Equipes distribuídas pela organização desenvolvem conhecimentos e soluções relevantes, porém existem poucas conexões entre esses grupos. Experiências permanecem restritas aos setores de origem e oportunidades de aprendizagem conjunta são perdidas. Como você estruturaria uma rede de aprendizagem capaz de integrar essas equipes e seus conhecimentos?",
-  },
-  {
-    title: "Memória Organizacional Dispersa",
-    description:
-      "Conhecimentos importantes sobre projetos, decisões e experiências anteriores estão distribuídos entre documentos, sistemas e profissionais. Quando uma equipe precisa recuperar esse conhecimento, encontra informações fragmentadas ou depende de pessoas específicas. Como você estruturaria um Centro de Memória Viva para integrar, preservar e disponibilizar esse conhecimento?",
-  },
-  {
-    title: "Sistemas sem Sincronização",
-    description:
-      "A organização utiliza diferentes sistemas para apoiar suas atividades, mas dados e informações não circulam adequadamente entre eles. Essa fragmentação provoca retrabalho, inconsistências e dificuldades na coordenação entre as áreas. Que estratégia de integração e sincronização você adotaria para conectar esses sistemas e melhorar o fluxo de informação?",
-  },
+{
+  title: "Dados Duplicados entre Setores",
+  description:
+    "Dois setores utilizam sistemas diferentes para registrar informações sobre o mesmo processo. Os dados precisam ser digitados novamente e frequentemente apresentam diferenças entre uma área e outra. Como você estruturaria uma solução para conectar esses ambientes e reduzir as inconsistências?",
+},
+{
+  title: "Processos que Não se Conectam",
+  description:
+    "Um processo institucional passa por diferentes setores, mas cada área executa sua parte de forma independente. Informações se perdem nas transições e algumas atividades acabam sendo repetidas. Como você integraria esse processo para melhorar o trabalho entre as áreas?",
+},
+{
+  title: "Sistemas que Não Conversam",
+  description:
+    "Um laboratório utiliza diferentes sistemas para controlar projetos, equipamentos e resultados de pesquisa. As informações permanecem separadas e os pesquisadores precisam consultar vários ambientes para acompanhar uma atividade. Que solução você adotaria para melhorar essa integração?",
+},
+{
+  title: "Informação Presa em um Setor",
+  description:
+    "Uma equipe produz informações importantes para outras áreas, mas os dados permanecem em seu próprio sistema e chegam aos demais setores somente quando alguém os solicita. Isso atrasa processos e decisões. Como você faria essas informações circularem de forma integrada?",
+},
+{
+  title: "Integração de Laboratórios",
+  description:
+    "Laboratórios da mesma instituição utilizam estruturas e sistemas próprios, embora participem de projetos conjuntos. A falta de conexão dificulta o acompanhamento das atividades e a utilização compartilhada das informações. Como você estruturaria a integração entre esses laboratórios?",
+},
+{
+  title: "Projeto Multidisciplinar Fragmentado",
+  description:
+    "Um projeto reúne pesquisadores de diferentes áreas, mas cada equipe trabalha com seus próprios dados, ferramentas e rotinas. A coordenação tem dificuldade para construir uma visão integrada do projeto. Que intervenção você adotaria para conectar essas atividades?",
+},
+{
+  title: "Fluxo de Informação Interrompido",
+  description:
+    "As informações necessárias para concluir um processo passam por várias equipes, porém não existe um fluxo integrado entre elas. Parte dos dados chega atrasada ou precisa ser solicitada novamente. Como você reorganizaria esse fluxo?",
+},
+{
+  title: "Sistemas com Dados Diferentes",
+  description:
+    "Dois sistemas institucionais apresentam informações diferentes sobre os mesmos processos. Os profissionais não sabem qual registro está atualizado e precisam realizar conferências manuais. Como você enfrentaria esse problema de integração?",
+},
+{
+  title: "Equipes sem Conexão",
+  description:
+    "Diferentes equipes participam de uma mesma atividade institucional, mas possuem pouca comunicação e trabalham como grupos independentes. Essa situação provoca atrasos e decisões desconectadas. Como você estruturaria uma integração mais efetiva entre elas?",
+},
+{
+  title: "Conhecimento entre Sistemas",
+  description:
+    "Informações e conhecimentos importantes estão distribuídos entre diferentes sistemas da organização. Os profissionais conseguem acessar cada ambiente separadamente, mas não possuem uma visão integrada do que existe. Como você conectaria esses recursos?",
+},
+{
+  title: "Integração após Crescimento",
+  description:
+    "Uma organização cresceu rapidamente e cada nova unidade adotou seus próprios sistemas e processos. Com o tempo, tornou-se difícil compartilhar dados e coordenar atividades entre as unidades. Que estratégia de integração você adotaria?",
+},
+{
+  title: "Retrabalho entre Áreas",
+  description:
+    "Setores diferentes realizam etapas relacionadas de um mesmo processo, mas a falta de conexão faz com que informações sejam solicitadas, conferidas e registradas diversas vezes. Como você reduziria esse retrabalho por meio da integração?",
+},
+{
+  title: "Rede de Pesquisa sem Integração",
+  description:
+    "Pesquisadores de diferentes unidades participam de uma rede de pesquisa, porém dados, experiências e resultados permanecem concentrados nos grupos que os produziram. Como você estruturaria um ambiente capaz de conectar essa rede?",
+},
+{
+  title: "Integração de Conhecimentos Especializados",
+  description:
+    "Uma equipe multidisciplinar reúne especialistas que dominam partes diferentes de um problema complexo. Cada grupo apresenta boas soluções dentro de sua área, mas existe dificuldade para conectá-las. Como você promoveria a integração desses conhecimentos?",
+},
+{
+  title: "Processo entre Universidade e Empresa",
+  description:
+    "Uma universidade e uma empresa desenvolvem conjuntamente um projeto de inovação, mas utilizam sistemas e procedimentos diferentes para acompanhar as atividades. Isso dificulta a troca de informações e a coordenação do projeto. Como você estruturaria essa integração?",
+},
+{
+  title: "Decisão sem Visão Integrada",
+  description:
+    "Gestores recebem informações de vários setores para tomar uma decisão, mas os dados chegam separadamente e nem sempre são compatíveis. Como você criaria uma visão integrada capaz de apoiar esse processo decisório?",
+},
+{
+  title: "Sistemas Antigos e Novos",
+  description:
+    "A organização implantou um novo sistema, mas algumas áreas ainda dependem de aplicações antigas que possuem informações importantes. Os ambientes não se comunicam adequadamente. Como você estruturaria a integração entre esses sistemas?",
+},
+{
+  title: "Conhecimento Crítico Fragmentado",
+  description:
+    "Conhecimentos essenciais para um processo estão distribuídos entre diferentes equipes, documentos e sistemas. Nenhuma área consegue visualizar sozinha tudo o que é necessário para executar a atividade. Como você integraria esses conhecimentos?",
+},
+{
+  title: "Comunidades sem Conexão",
+  description:
+    "Diferentes grupos profissionais trocam experiências dentro de suas próprias equipes, mas quase não existe interação entre essas comunidades. Problemas semelhantes são discutidos separadamente. Como você criaria conexões para ampliar a aprendizagem entre esses grupos?",
+},
+{
+  title: "Integração para Inovação",
+  description:
+    "Um ambiente de inovação reúne universidade, empresas e pesquisadores, porém cada participante utiliza processos e informações próprios. A dificuldade de conexão começa a limitar projetos conjuntos. Como você estruturaria a integração desse ecossistema?",
+},
+{
+  title: "Arquitetura Fragmentada",
+  description:
+    "Uma instituição incorporou sistemas ao longo dos anos sem planejar como eles deveriam se relacionar. Atualmente existem informações duplicadas, conexões improvisadas e dificuldades para realizar mudanças. Como você reorganizaria essa estrutura?",
+},
+{
+  title: "Processos Integrados entre Unidades",
+  description:
+    "Unidades diferentes executam o mesmo processo utilizando procedimentos próprios. Quando precisam trabalhar juntas, surgem incompatibilidades, atrasos e retrabalho. Como você estruturaria uma integração que preserve as necessidades das unidades?",
+},
+{
+  title: "Dados que Não Acompanham o Processo",
+  description:
+    "Durante um processo institucional, as atividades avançam entre diferentes setores, mas as informações necessárias nem sempre acompanham essas etapas. Os profissionais precisam buscar dados manualmente. Como você faria informação e processo avançarem de forma integrada?",
+},
+{
+  title: "Integração em Ambiente Complexo",
+  description:
+    "Uma organização possui diversas áreas, tecnologias e equipes interdependentes. Mudanças realizadas em uma parte frequentemente provocam efeitos inesperados em outras. Como você estruturaria uma abordagem para compreender essas relações antes de realizar novas integrações?",
+},
+{
+  title: "Aprendizagem entre Unidades",
+  description:
+    "Unidades distribuídas geograficamente enfrentam problemas semelhantes e desenvolvem soluções próprias, mas existe pouca troca entre elas. Como você estruturaria uma rede que conectasse essas equipes e permitisse utilizar conhecimentos desenvolvidos em diferentes locais?",
+},
+{
+  title: "Integração sem Perder Autonomia",
+  description:
+    "Diferentes setores precisam compartilhar informações e coordenar processos, mas possuem necessidades específicas e receiam perder autonomia com uma solução totalmente centralizada. Como você estruturaria uma integração que conectasse as áreas sem eliminar suas particularidades?",
+},
 ],
  [ResearchArea.UCR]: [
   {
