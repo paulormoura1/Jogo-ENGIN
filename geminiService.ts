@@ -10,6 +10,7 @@ if (!apiKey) {
 
 const ai = new GoogleGenAI({ apiKey });
 
+const SUBTHEMES: Record<ResearchArea, string[]> = {
 [ResearchArea.GOVERNANCE_KNOWLEDGE]: [
   "Auditoria do conhecimento",
   "Governança para inovação",
