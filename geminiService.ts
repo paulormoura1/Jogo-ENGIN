@@ -908,22 +908,40 @@ try {
 
   const challenges = FALLBACK_CHALLENGES[area];
 
-  const storageKey = `nexus_last_challenge_${area}`;
-  const lastIndexRaw = sessionStorage.getItem(storageKey);
-  const lastIndex =
-    lastIndexRaw !== null ? Number(lastIndexRaw) : -1;
+const storageKey = `nexus_used_challenges_${area}`;
 
-  let randomIndex = Math.floor(Math.random() * challenges.length);
+let usedIndexes: number[] = [];
 
-  // Impede que a mesma pergunta apareça duas vezes consecutivas.
-  if (challenges.length > 1) {
-    while (randomIndex === lastIndex) {
-      randomIndex = Math.floor(Math.random() * challenges.length);
-    }
-  }
+try {
+  usedIndexes = JSON.parse(
+    sessionStorage.getItem(storageKey) || "[]"
+  );
+} catch {
+  usedIndexes = [];
+}
 
-  sessionStorage.setItem(storageKey, String(randomIndex));
+// Quando todas as perguntas da área forem utilizadas,
+// inicia um novo ciclo.
+if (usedIndexes.length >= challenges.length) {
+  usedIndexes = [];
+}
 
-  return challenges[randomIndex];
+const availableIndexes = challenges
+  .map((_, index) => index)
+  .filter((index) => !usedIndexes.includes(index));
+
+const randomIndex =
+  availableIndexes[
+    Math.floor(Math.random() * availableIndexes.length)
+  ];
+
+usedIndexes.push(randomIndex);
+
+sessionStorage.setItem(
+  storageKey,
+  JSON.stringify(usedIndexes)
+);
+
+return challenges[randomIndex];
 }
 };
