@@ -85,8 +85,7 @@ function getAllSourcesInternal(): AnySource[] {
  */
 export function getSourcesByArea(area: ResearchArea): AnySource[] {
   const all = getAllSourcesInternal();
-  const filtered = all.filter((s) => s.area === area);
-  return filtered.length > 0 ? filtered : all;
+  return all.filter((s) => s.area === area);
 }
 
 export function searchSources(term: string, area?: ResearchArea): AnySource[] {
