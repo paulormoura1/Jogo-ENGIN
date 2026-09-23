@@ -1327,7 +1327,7 @@ if (localScore >= correctThreshold) {
       try {
         usedMapped = (await Promise.all(
   (localEval.usedSources ?? []).map((source: any) =>
-    enrichSourceUFSCFirst(source, currentChallenge.description)
+   enrichSourceUFSCFirst(source, currentChallenge.description, area)
   )
 )).map(normalizeSourceItem);
        recommendedMapped = (await Promise.all(
