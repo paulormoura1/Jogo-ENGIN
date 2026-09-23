@@ -13,9 +13,12 @@ export async function enrichSourceUFSCFirst(
 
   if (!title) return source;
 
- const searchTitle = challengeContext
-  ? `${title} ${title} ${challengeContext}`
-  : title;
+ const searchTitle =
+  area === ResearchArea.GOVERNANCE_KNOWLEDGE && challengeContext
+    ? `Governança do Conhecimento ${challengeContext}`
+    : challengeContext
+      ? `${title} ${title} ${challengeContext}`
+      : title;
 
 const res = await scientificSearch({ title: searchTitle });
 
