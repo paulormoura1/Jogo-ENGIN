@@ -13,9 +13,9 @@ export async function enrichSourceUFSCFirst(
 
   if (!title) return source;
 
- const searchTitle =
-  area === ResearchArea.GOVERNANCE_KNOWLEDGE && challengeContext
-    ? `Governança do Conhecimento ${challengeContext}`
+const searchTitle =
+  area === ResearchArea.GOVERNANCE_KNOWLEDGE
+    ? title
     : challengeContext
       ? `${title} ${title} ${challengeContext}`
       : title;
