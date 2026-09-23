@@ -3,7 +3,11 @@ import { ResearchArea } from "../../types";
 import { EGC_SOURCES } from "../data/egcSources";
 import { GC_SOURCES } from "../data/gcSources";
 
-export async function enrichSourceUFSCFirst(source: any, challengeContext?: string) {
+export async function enrichSourceUFSCFirst(
+  source: any,
+  challengeContext?: string,
+  area?: ResearchArea
+) {
   const title = source?.titulo ?? source?.title ?? "";
   const year = typeof source?.ano === "number" ? source.ano : undefined;
 
