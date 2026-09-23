@@ -1,5 +1,5 @@
 import { scientificSearch } from "./scientificSearchService";
-import { ResearchArea } from "../../types";
+import { ResearchArea } from "../tipos";
 import { EGC_SOURCES } from "../data/egcSources";
 import { GC_SOURCES } from "../data/gcSources";
 
