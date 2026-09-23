@@ -42,7 +42,10 @@ const searchTitle =
         ? `${title} ${title} ${challengeContext}`
         : title;
 
-const res = await scientificSearch({ title: searchTitle });
+const res = await scientificSearch({
+  title: searchTitle,
+  area,
+});
   // Se não achou nada confiável, mantém como está (sem inventar link genérico)
   if (!res?.best?.link) return source;
 
