@@ -617,6 +617,12 @@ const gcChallengeEquivalences: Record<string, string[]> = {
     "troca de experiencias",
     "conhecimento restrito",
     "conhecimento permanece restrito",
+    "informacoes entre equipes",
+    "informacoes entre setores",
+    "informacoes compartilhadas",
+    "informacoes circularem",
+    "circulacao de informacoes",
+    "compartilhar informacoes",
   ],
 
   "reutilizacao do conhecimento": [
