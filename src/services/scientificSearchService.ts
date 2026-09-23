@@ -1,5 +1,7 @@
 import { scientificSearch } from "./scientificSearchService";
 
+import { ResearchArea } from "../tipos";
+
 export type SourceType = "ufsc" | "external" | "mixed" | "none";
 
 export type SearchQuery = {
