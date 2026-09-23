@@ -9,6 +9,7 @@ export type SearchQuery = {
   year?: number;
   authors?: string[];
   keywords?: string[];
+  area?: ResearchArea;
 };
 
 export type Evidence = {
