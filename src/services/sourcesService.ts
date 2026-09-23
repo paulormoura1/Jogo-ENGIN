@@ -13,13 +13,22 @@ export async function enrichSourceUFSCFirst(
 
   if (!title) return source;
 
+const governanceContext =
+  area === ResearchArea.GOVERNANCE_KNOWLEDGE && challengeContext
+    ? challengeContext
+        .replace(/[?.!,;:]/g, " ")
+        .split(/\s+/)
+        .filter((word) => word.length >= 7)
+        .slice(0, 8)
+        .join(" ")
+    : "";
+
 const searchTitle =
   area === ResearchArea.GOVERNANCE_KNOWLEDGE
-    ? title
+    ? `${title} ${governanceContext}`.trim()
     : challengeContext
       ? `${title} ${title} ${challengeContext}`
       : title;
-
 const res = await scientificSearch({ title: searchTitle });
 
   // Se não achou nada confiável, mantém como está (sem inventar link genérico)
