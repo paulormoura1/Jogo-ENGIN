@@ -23,14 +23,26 @@ const governanceContext =
         .join(" ")
     : "";
 
+const knowledgeManagementContext =
+  area === ResearchArea.KNOWLEDGE_MGMT && challengeContext
+    ? challengeContext
+        .replace(/[?.!,;:]/g, " ")
+        .split(/\s+/)
+        .filter((word) => word.length >= 7)
+        .slice(0, 8)
+        .join(" ")
+    : "";
+
 const searchTitle =
   area === ResearchArea.GOVERNANCE_KNOWLEDGE
     ? `${title} ${governanceContext}`.trim()
-    : challengeContext
-      ? `${title} ${title} ${challengeContext}`
-      : title;
-const res = await scientificSearch({ title: searchTitle });
+    : area === ResearchArea.KNOWLEDGE_MGMT
+      ? `${title} ${knowledgeManagementContext}`.trim()
+      : challengeContext
+        ? `${title} ${title} ${challengeContext}`
+        : title;
 
+const res = await scientificSearch({ title: searchTitle });
   // Se não achou nada confiável, mantém como está (sem inventar link genérico)
   if (!res?.best?.link) return source;
 
