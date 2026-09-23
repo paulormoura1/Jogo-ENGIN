@@ -129,7 +129,11 @@ async function searchUFSC(normTitle: string, query: SearchQuery, trace: SearchTr
 
     for (const h of hits) {
       const confidenceBase = titleSimilarity(normTitle, normalizeTitle(h.title));
-      if (confidenceBase < 0.72) continue;
+
+const minimumSimilarity =
+  query.area === ResearchArea.KNOWLEDGE_MGMT ? 0.55 : 0.72;
+
+if (confidenceBase < minimumSimilarity) continue;
 
       const link = ensureAbsolute(h.link);
       const handle = extractHandle(link);
