@@ -982,6 +982,15 @@ const bestCoverage =
 
 const score = Math.round(bestCoverage * 100);
 
+const normalizedScore =
+  isKnowledgeManagement ||
+  isIntegrationEngineering ||
+  isUCR
+    ? score
+    : score > 0 && score < 20 && totalHits > 0
+      ? 20
+      : score;
+
   const usedSources = perSource.filter((x) => x.coverage >= 0.4).map((x) => x.source);
   const recommendedSources = perSource.filter((x) => x.coverage < 0.4).map((x) => x.source);
 
@@ -1006,7 +1015,7 @@ console.log("[LOCAL EVAL DEBUG]", {
   })),
 });
 
-return { score, usedSources, recommendedSources };
+return { score, normalizedScore, usedSources, recommendedSources };
 };
 
 function withTimeout<T>(promise: Promise<T>, ms: number, timeoutMsg = "Timeout na análise da IA") {
@@ -1265,7 +1274,11 @@ const doiFinal = (doi || doiFromLink || "").trim();
         console.error("[LOCAL_EVAL] evaluateProposalWithSources falhou:", e);
         localEval = { usedSources: [], recommendedSources: [] };
       }
-      const localScore = Number(localEval?.score ?? 0);
+     const localScore = Number(
+  area === ResearchArea.GOVERNANCE_KNOWLEDGE
+    ? localEval?.normalizedScore ?? localEval?.score ?? 0
+    : localEval?.score ?? 0
+);
       
       const areaThresholds: Record<
   ResearchArea,
