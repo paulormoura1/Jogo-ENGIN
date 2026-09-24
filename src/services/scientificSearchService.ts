@@ -98,12 +98,24 @@ export async function scientificSearch(query: SearchQuery): Promise<SearchResult
   const sourceType: SourceType =
     best?.source === "UFSC" ? "ufsc" : best ? (ufscCandidates.length ? "mixed" : "external") : "none";
 
-  const result: SearchResult = {
-    best: best ?? null,
-    candidates: all.sort((a, b) => b.confidence - a.confidence).slice(0, 8),
-    sourceType,
-    trace,
-  };
+  const rankedCandidates = all
+  .map((candidate) => ({
+    ...candidate,
+    confidence: Math.max(
+      candidate.confidence,
+      titleSimilarity(normTitle, normalizeTitle(candidate.title))
+    ),
+  }))
+  .filter((candidate) => candidate.confidence >= 0.55)
+  .sort((a, b) => b.confidence - a.confidence)
+  .slice(0, 8);
+
+const result: SearchResult = {
+  best: best ?? null,
+  candidates: rankedCandidates,
+  sourceType,
+  trace,
+};
 
   cacheWrite(cacheKey, result, CACHE_TTL_MS);
   return result;
