@@ -879,13 +879,22 @@ const relevantKeywords = keywords.filter((keyword: string) => {
   // Descritor aparece no desafio por equivalência conceitual
  const equivalents =
   isKnowledgeManagement && gcChallengeEquivalences[keywordNormalized]
-    ? gcChallengeEquivalences[keywordNormalized]
+    ? [
+        ...(conceptualEquivalences[keywordNormalized] ?? []),
+        ...gcChallengeEquivalences[keywordNormalized],
+      ]
     : isIntegrationEngineering &&
         integrationChallengeEquivalences[keywordNormalized]
-      ? integrationChallengeEquivalences[keywordNormalized]
+      ? [
+          ...(conceptualEquivalences[keywordNormalized] ?? []),
+          ...integrationChallengeEquivalences[keywordNormalized],
+        ]
       : isUCR &&
           ucrChallengeEquivalences[keywordNormalized]
-        ? ucrChallengeEquivalences[keywordNormalized]
+        ? [
+            ...(conceptualEquivalences[keywordNormalized] ?? []),
+            ...ucrChallengeEquivalences[keywordNormalized],
+          ]
         : conceptualEquivalences[keywordNormalized] ?? [];
   
   const challengeRoots = conceptRoots(challengeDescription);
