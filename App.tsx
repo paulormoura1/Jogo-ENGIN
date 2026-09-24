@@ -1417,10 +1417,16 @@ if (localScore >= correctThreshold) {
       }
 
       // 4️⃣ Fallback pedagógico (sempre mostrar referências)
-      if (usedMapped.length === 0 && recommendedMapped.length === 0) {
-        const areaSources = getSourcesByArea(area);
-        recommendedMapped = (areaSources || []).slice(0, 3).map(normalizeSourceItem);
-      }
+      if (
+  usedMapped.length === 0 &&
+  recommendedMapped.length === 0 &&
+  area !== ResearchArea.INTEGRATION_ENG
+) {
+  const areaSources = getSourcesByArea(area);
+  recommendedMapped = (areaSources || [])
+    .slice(0, 3)
+    .map(normalizeSourceItem);
+}
 
       // 5️⃣ Se Gemini falhou, gera feedback científico local
       if (!feedbackData) {
