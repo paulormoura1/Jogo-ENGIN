@@ -808,7 +808,49 @@ INSTRUÇÃO DE BUSCA:
       },
     });
 
-    return JSON.parse(response.text || "{}");
+   const generatedChallenge = JSON.parse(response.text || "{}");
+
+const aiHistoryKey = `nexus_ai_challenges_${area}`;
+
+let aiHistory: string[] = [];
+
+try {
+  aiHistory = JSON.parse(
+    sessionStorage.getItem(aiHistoryKey) || "[]"
+  );
+
+  if (!Array.isArray(aiHistory)) {
+    aiHistory = [];
+  }
+} catch {
+  aiHistory = [];
+}
+
+const challengeSignature = String(
+  generatedChallenge?.description || ""
+)
+  .toLowerCase()
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^\w\s]/g, " ")
+  .replace(/\s+/g, " ")
+  .trim();
+
+if (
+  challengeSignature &&
+  !aiHistory.includes(challengeSignature)
+) {
+  aiHistory.push(challengeSignature);
+
+  sessionStorage.setItem(
+    aiHistoryKey,
+    JSON.stringify(aiHistory.slice(-30))
+  );
+
+  return generatedChallenge;
+}
+
+throw new Error("Desafio Gemini repetido");
   } catch (error) {
     console.error("ERRO GENERATE CHALLENGE:", error);
     return {
