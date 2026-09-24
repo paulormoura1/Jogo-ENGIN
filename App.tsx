@@ -1383,11 +1383,32 @@ if (localScore >= correctThreshold) {
     )
   )).map(normalizeSourceItem);
 }
-       recommendedMapped = (await Promise.all(
-  (localEval.recommendedSources ?? []).map((source: any) =>
-   enrichSourceUFSCFirst(source, currentChallenge.description, area)
-  )
-)).map(normalizeSourceItem);
+      if (area === ResearchArea.INTEGRATION_ENG) {
+  const multipleRecommendedResults = await Promise.all(
+    (localEval.recommendedSources ?? []).map((source: any) =>
+      enrichSourceUFSCFirstMultiple(
+        source,
+        currentChallenge.description,
+        area,
+        3
+      )
+    )
+  );
+
+  recommendedMapped = multipleRecommendedResults
+    .flat()
+    .map(normalizeSourceItem);
+} else {
+  recommendedMapped = (await Promise.all(
+    (localEval.recommendedSources ?? []).map((source: any) =>
+      enrichSourceUFSCFirst(
+        source,
+        currentChallenge.description,
+        area
+      )
+    )
+  )).map(normalizeSourceItem);
+}
         
       } catch (e) {
         console.error("[LOCAL_MAP] falhou ao mapear fontes:", e);
