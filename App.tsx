@@ -1357,11 +1357,32 @@ if (localScore >= correctThreshold) {
       let recommendedMapped: any[] = [];
 
       try {
-        usedMapped = (await Promise.all(
-  (localEval.usedSources ?? []).map((source: any) =>
-   enrichSourceUFSCFirst(source, currentChallenge.description, area)
-  )
-)).map(normalizeSourceItem);
+      if (area === ResearchArea.INTEGRATION_ENG) {
+  const multipleResults = await Promise.all(
+    (localEval.usedSources ?? []).map((source: any) =>
+      enrichSourceUFSCFirstMultiple(
+        source,
+        currentChallenge.description,
+        area,
+        3
+      )
+    )
+  );
+
+  usedMapped = multipleResults
+    .flat()
+    .map(normalizeSourceItem);
+} else {
+  usedMapped = (await Promise.all(
+    (localEval.usedSources ?? []).map((source: any) =>
+      enrichSourceUFSCFirst(
+        source,
+        currentChallenge.description,
+        area
+      )
+    )
+  )).map(normalizeSourceItem);
+}
        recommendedMapped = (await Promise.all(
   (localEval.recommendedSources ?? []).map((source: any) =>
    enrichSourceUFSCFirst(source, currentChallenge.description, area)
