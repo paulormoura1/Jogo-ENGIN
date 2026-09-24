@@ -62,6 +62,56 @@ const res = await scientificSearch({
     sourceType: res.sourceType,
   };
 }
+export async function enrichSourceUFSCFirstMultiple(
+  source: any,
+  challengeContext?: string,
+  area?: ResearchArea,
+  limit: number = 3
+) {
+  const title = source?.titulo ?? source?.title ?? "";
+
+  if (!title) return [];
+
+  const searchTitle =
+    challengeContext
+      ? `${title} ${challengeContext}`.trim()
+      : title;
+
+  const res = await scientificSearch({
+    title: searchTitle,
+    area,
+  });
+
+  const candidates = Array.isArray(res?.candidates)
+    ? res.candidates
+    : [];
+
+  const validCandidates = candidates
+    .filter(
+      (candidate: any) =>
+        candidate?.link &&
+        candidate.link !== "https://repositorio.ufsc.br/" &&
+        candidate.link !== "https://repositorio.ufsc.br"
+    )
+    .slice(0, limit);
+
+  if (validCandidates.length === 0) {
+    return [];
+  }
+
+  return validCandidates.map((candidate: any) => ({
+    ...source,
+    titulo: candidate.title || source.titulo,
+    autores:
+      candidate.authors && candidate.authors.length
+        ? candidate.authors
+        : source.autores,
+    ano: candidate.year ?? source.ano,
+    doi: candidate.doi ?? source.doi,
+    link: candidate.link,
+    sourceType: candidate.source ?? res.sourceType,
+  }));
+}
 
 export type AnySource =
   | (typeof EGC_SOURCES)[number]
