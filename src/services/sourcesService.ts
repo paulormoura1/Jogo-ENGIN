@@ -33,6 +33,16 @@ const knowledgeManagementContext =
         .join(" ")
     : "";
 
+const integrationEngineeringContext =
+  area === ResearchArea.INTEGRATION_ENG && challengeContext
+    ? challengeContext
+        .replace(/[?.!,;:]/g, " ")
+        .split(/\s+/)
+        .filter((word) => word.length >= 7)
+        .slice(0, 8)
+        .join(" ")
+    : "";
+  
 const searchTitle =
   area === ResearchArea.GOVERNANCE_KNOWLEDGE
     ? `${title} ${governanceContext}`.trim()
