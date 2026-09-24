@@ -414,6 +414,8 @@ const FALLBACK_CHALLENGES: Record<
   description:
     "Após uma capacitação, os profissionais demonstram compreender novos métodos, mas poucos conseguem incorporá-los às atividades cotidianas. Com o tempo, parte da equipe retorna às práticas anteriores. Como você faria esse novo conhecimento ser aplicado e mantido no trabalho?",
 },
+],
+[ResearchArea.INTEGRATION_ENG]: [
 {
   title: "Dados Duplicados entre Setores",
   description:
