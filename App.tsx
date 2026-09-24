@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from "./constants";
 import { generateChallenge } from "./geminiService";
 import { ActionRecord, Challenge, GamePhase, GameState, ResearchArea } from "./src/tipos";
-import { enrichSourceUFSCFirst, getSourcesByArea } from "./src/services/sourcesService";
+import { enrichSourceUFSCFirst, enrichSourceUFSCFirstMultiple, getSourcesByArea,} from "./src/services/sourcesService";
 import { enrichWithOpenAlex } from "./src/services/openAlexService";
 
 interface ExtendedActionRecord extends ActionRecord {
