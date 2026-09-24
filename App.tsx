@@ -979,11 +979,11 @@ return hasRootMatch;
 
 const coverageBase =
   relevantKeywords.length > 0
-    ? isKnowledgeManagement
+    ? isKnowledgeManagement || isIntegrationEngineering
       ? Math.min(Math.max(relevantKeywords.length, 3), 5)
       : relevantKeywords.length
     : Math.min(keywords.length, 20);
-
+  
 const coverage = coverageBase
   ? Math.min(hits / coverageBase, 1)
   : 0;
