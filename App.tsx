@@ -1356,23 +1356,7 @@ if (localScore >= correctThreshold) {
       let usedMapped: any[] = [];
       let recommendedMapped: any[] = [];
 
-      try {
-      if (area === ResearchArea.INTEGRATION_ENG) {
-  const multipleResults = await Promise.all(
-    (localEval.usedSources ?? []).map((source: any) =>
-      enrichSourceUFSCFirstMultiple(
-        source,
-        currentChallenge.description,
-        area,
-        3
-      )
-    )
-  );
-
-  usedMapped = multipleResults
-    .flat()
-    .map(normalizeSourceItem);
-} else {
+ try {
   usedMapped = (await Promise.all(
     (localEval.usedSources ?? []).map((source: any) =>
       enrichSourceUFSCFirst(
@@ -1382,23 +1366,7 @@ if (localScore >= correctThreshold) {
       )
     )
   )).map(normalizeSourceItem);
-}
-      if (area === ResearchArea.INTEGRATION_ENG) {
-  const multipleRecommendedResults = await Promise.all(
-    (localEval.recommendedSources ?? []).map((source: any) =>
-      enrichSourceUFSCFirstMultiple(
-        source,
-        currentChallenge.description,
-        area,
-        3
-      )
-    )
-  );
 
-  recommendedMapped = multipleRecommendedResults
-    .flat()
-    .map(normalizeSourceItem);
-} else {
   recommendedMapped = (await Promise.all(
     (localEval.recommendedSources ?? []).map((source: any) =>
       enrichSourceUFSCFirst(
@@ -1408,13 +1376,12 @@ if (localScore >= correctThreshold) {
       )
     )
   )).map(normalizeSourceItem);
+
+} catch (e) {
+  console.error("[LOCAL_MAP] falhou ao mapear fontes:", e);
+  usedMapped = [];
+  recommendedMapped = [];
 }
-        
-      } catch (e) {
-        console.error("[LOCAL_MAP] falhou ao mapear fontes:", e);
-        usedMapped = [];
-        recommendedMapped = [];
-      }
 
       // 4️⃣ Fallback pedagógico (sempre mostrar referências)
       if (
