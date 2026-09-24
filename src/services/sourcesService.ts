@@ -48,9 +48,11 @@ const searchTitle =
     ? `${title} ${governanceContext}`.trim()
     : area === ResearchArea.KNOWLEDGE_MGMT
       ? `${title} ${knowledgeManagementContext}`.trim()
-      : challengeContext
-        ? `${title} ${title} ${challengeContext}`
-        : title;
+      : area === ResearchArea.INTEGRATION_ENG
+        ? `${title} ${integrationEngineeringContext}`.trim()
+        : challengeContext
+          ? `${title} ${title} ${challengeContext}`
+          : title;
 
 const res = await scientificSearch({
   title: searchTitle,
