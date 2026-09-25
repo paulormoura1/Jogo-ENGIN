@@ -1500,6 +1500,22 @@ const scientificCandidatePool = (enrichedRecommendedMapped || [])
       typeof candidate?.confidence === "number" &&
       candidate.confidence >= 0.55
   );
+
+      const mappedScientificCandidates = scientificCandidatePool.map(
+  (candidate: any) => ({
+    titulo: candidate.title,
+    autores:
+      Array.isArray(candidate.authors) && candidate.authors.length > 0
+        ? candidate.authors.join("; ")
+        : "Autor não informado",
+    ano: candidate.year,
+    doi: candidate.doi,
+    link: candidate.link,
+    sourceType: candidate.source,
+    confidence: candidate.confidence,
+    ufscHandle: candidate.ufscHandle,
+  })
+);
       
      console.log("UFSC-FIRST + OpenAlex recommended (best-effort):", dedupedRecommended?.slice?.(0, 3));
 
