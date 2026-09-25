@@ -986,8 +986,13 @@ const coverageBase =
         : relevantKeywords.length
     : Math.min(keywords.length, 20);
   
+const effectiveHits =
+  isIntegrationEngineering
+    ? Math.min(hits, new Set(proposalRoots).size)
+    : hits;
+
 const coverage = coverageBase
-  ? Math.min(hits / coverageBase, 1)
+  ? Math.min(effectiveHits / coverageBase, 1)
   : 0;
   return { source: s, hits, coverage, relevantKeywords, matchedKeywords };
 });
