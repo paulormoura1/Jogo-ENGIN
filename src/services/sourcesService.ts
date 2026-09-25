@@ -64,15 +64,19 @@ const res = await scientificSearch({
   const best = res.best;
 
   return {
-    ...source,
-    // mantém o seu padrão de campos
-    titulo: best.title || source.titulo,
-    autores: (best.authors && best.authors.length ? best.authors : source.autores) || source.autores,
-    ano: best.year ?? source.ano,
-    link: best.link || source.link,
-    // opcional (se quiser inspecionar no debug)
-    sourceType: res.sourceType,
-  };
+  ...source,
+  titulo: best.title || source.titulo,
+  autores:
+    (best.authors && best.authors.length
+      ? best.authors
+      : source.autores) || source.autores,
+  ano: best.year ?? source.ano,
+  link: best.link || source.link,
+  sourceType: res.sourceType,
+
+  // candidatos científicos já encontrados e validados pelo scientificSearch
+  scientificCandidates: res.candidates ?? [],
+};
 }
 export async function enrichSourceUFSCFirstMultiple(
   source: any,
