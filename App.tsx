@@ -1491,6 +1491,16 @@ if (localScore >= correctThreshold) {
       // 8️⃣ Dedup final (APENAS UMA VEZ) -> este é o que vai para UI
       const dedupedRecommended = dedupeByDoi(enrichedRecommendedMapped as any[]);
 
+const scientificCandidatePool = (enrichedRecommendedMapped || [])
+  .flatMap((source: any) => source?.scientificCandidates ?? [])
+  .filter(
+    (candidate: any) =>
+      candidate?.title &&
+      candidate?.link &&
+      typeof candidate?.confidence === "number" &&
+      candidate.confidence >= 0.55
+  );
+      
      console.log("UFSC-FIRST + OpenAlex recommended (best-effort):", dedupedRecommended?.slice?.(0, 3));
 
 console.log(
