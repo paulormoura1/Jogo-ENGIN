@@ -1,0 +1,122 @@
+[
+  {
+    "query": {
+      "area": "Gestão do Conhecimento",
+      "title": "Capital Intelectual em Risco",
+      "challenge": "A organização depende fortemente do conhecimento de profissionais experientes, mas parte desse conhecimento não está registrada nem compartilhada com as equipes. A saída de pessoas-chave começa a comprometer processos e resultados. Como especialista, que solução de gestão do conhecimento você implantaria para preservar e desenvolver esse capital intelectual, como ela funcionaria e por quê?"
+    },
+    "candidate": {
+      "title": "Práticas, técnicas e ferramentas de gestão do conhecimento para a definição de requisitos de software: um estudo de caso no Laboratório Bridge",
+      "authors": [
+        "Martins, Raphael"
+      ],
+      "year": 2017,
+      "abstract": "Os profissionais de Tecnologia da Informação muitas vezes buscam por novas competências e qualificações para atender as metodologias e modelos de desenvolvimento de software. Elaborar um requisito que reflita a necessidade de um cliente e ao mesmo tempo seja claro o suficiente para os desenvolvedores saberem o que precisam fazer, é o objetivo maior dos analistas de requisitos. Porém entender, descrever e gerenciar requisitos em um projeto não é uma tarefa fácil e isso reflete diretamente na qualidade da entrega de um projeto. O manifesto ágil visa um software em amplo funcionamento que agregue valor ao cliente, mas isso requer um mínimo de documentação para o desenvolvimento do software. O conhecimento é um ativo essencial no processo de tomada de decisão das organizações atuais. Desta forma, a gestão do conhecimento vem se tornando cada vez mais uma poderosa ferramenta na retenção do conhecimento das organizações, tendo impacto significativo no processo decisório. Aliado a esse grande desafio de definir requisitos que espelham o real interesse do cliente realizou-se um mapeamento das práticas, técnicas e ferramentas da Gestão do Conhecimento (PTF/GC) que auxiliam na definição de requisitos de software. Realizou-se um estudo de caso no Laboratório Bridge através de questionário e análise de documentos e chegou-se aos seguintes resultados: os colaboradores identificaram algumas práticas, técnicas ou ferramentas de Gestão do Conhecimento que são utilizadas pelo Laboratório Bridge. Além disso, os colaboradores identificaram quais destas práticas, técnicas ou ferramentas representam uma maior contribuição para o processo de engenharia de requisitos.",
+      "link": "https://repositorio.ufsc.br/handle/123456789/182189",
+      "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/182189",
+      "venue": "Repositório Institucional da UFSC",
+      "source": "UFSC",
+      "confidence": 0.75,
+      "documentType": "TCCgrad",
+      "topics": [
+        "retenção do conhecimento",
+        "compartilhamento do conhecimento"
+      ],
+      "semanticValidated": false,
+      "validationMethod": "local",
+      "relevanceReason": "A triagem do resumo identificou os assuntos do desafio: retenção do conhecimento; compartilhamento do conhecimento. A sustentação da proposta precisa de revisão acadêmica.",
+      "evidenceExcerpt": "Desta forma, a gestão do conhecimento vem se tornando cada vez mais uma poderosa ferramenta na retenção do conhecimento das organizações, tendo impacto significativo no processo decisório."
+    }
+  },
+  {
+    "query": {
+      "area": "Gestão do Conhecimento",
+      "title": "Capital Intelectual em Risco",
+      "challenge": "A organização depende fortemente do conhecimento de profissionais experientes, mas parte desse conhecimento não está registrada nem compartilhada com as equipes. A saída de pessoas-chave começa a comprometer processos e resultados. Como especialista, que solução de gestão do conhecimento você implantaria para preservar e desenvolver esse capital intelectual, como ela funcionaria e por quê?"
+    },
+    "candidate": {
+      "title": "An Investigation into the Effect of Knowledge Management on Employee Retention in the Telecom Sector",
+      "authors": [
+        "Nurul Mohammad Zayed",
+        "Friday Ogbu Edeh",
+        "K. M. Anwarul Islam",
+        "Vitalii Serhiiovych Nitsenko",
+        "Tatiana Dubovyk",
+        "Hanna Doroshuk"
+      ],
+      "year": 2022,
+      "doi": "10.3390/admsci12040138",
+      "link": "https://doi.org/10.3390/admsci12040138",
+      "abstract": "Employees in the telecom sector are knowledge workers and, thus, managers, HR professionals, and policymakers in the industry need to retain them through knowledge management policies. It is against this premise that this study investigated the effect of knowledge management on employee retention in the telecom sector. Research design employed in this study is a cross-sectional survey with an accessible population of thirty telecom companies in the southeastern region of Nigeria using a simple random sampling technique. The sample size was determined with the Krejcie and Morgan sample size determination table. A questionnaire was used as an instrument for data collection. Respondents’ profiles were analysed with frequency distribution while the formulated hypotheses were analysed with linear regression. The study found that knowledge management dimensions have a significant effect on the measures of employee retention. The study concludes that knowledge management measured in terms of knowledge acquisition, knowledge storage, and knowledge sharing predicted employee retention that is measured by supervisor support, coworkers support, and flexible working arrangements. One of the implications of this study is that managers of telecom companies should liaise with their board of directors to make funds available that would be used to train employees to acquire relevant knowledge that is needed in the telecom industry.",
+      "venue": "Administrative Sciences",
+      "source": "OpenAlex",
+      "confidence": 0.75,
+      "documentType": "Artigo",
+      "topics": [
+        "retenção do conhecimento",
+        "compartilhamento do conhecimento"
+      ],
+      "semanticValidated": false,
+      "validationMethod": "local",
+      "relevanceReason": "A triagem do resumo identificou os assuntos do desafio: retenção do conhecimento; compartilhamento do conhecimento. A sustentação da proposta precisa de revisão acadêmica.",
+      "evidenceExcerpt": "The study concludes that knowledge management measured in terms of knowledge acquisition, knowledge storage, and knowledge sharing predicted employee retention that is measured by supervisor support, coworkers support, and flexible working arrangements."
+    }
+  },
+  {
+    "query": {
+      "area": "Engenharia da Integração",
+      "title": "Dados Duplicados entre Setores",
+      "challenge": "Dois setores utilizam sistemas diferentes para registrar informações sobre o mesmo processo. Os dados precisam ser digitados novamente e frequentemente apresentam diferenças entre uma área e outra. Como você estruturaria uma solução para conectar esses ambientes e reduzir as inconsistências?"
+    },
+    "candidate": {
+      "title": "An MIS course integrating information technology and organizational issues",
+      "authors": [
+        "Michael H. Zack"
+      ],
+      "year": 1998,
+      "doi": "10.1145/298752.298760",
+      "link": "https://doi.org/10.1145/298752.298760",
+      "abstract": "Integrating technologies and applications to provide better access to, and sharing of, corporate data and to coordinate enterprise-wide tasks and processes is a critical means to adding business value through information technology. Consequently, potential employers seek information systems professionals whose skills focus on the integration of information technologies, information resources, and business strategy. However, these companies also perceive that universities are not providing graduates the necessary integration skills.This paper describes a course, Business Systems Integration, that addresses the gap between the information systems integration skills that employers desire and those that universities teach. The course approaches information systems integration from three perspectives: 1) integrating information technologies, 2) integrating the content of the MIS curriculum, and 3) integrating organizations via cross-functional business processes. Attaining a practical level of knowledge about systems integration requires a sufficiently complex, real-world environment; thus the course relies on an extensive organizational simulation as the primary pedagogical method. That simulation is described in this paper.",
+      "venue": "ACM SIGMIS Database the DATABASE for Advances in Information Systems",
+      "source": "OpenAlex",
+      "confidence": 0.75,
+      "documentType": "Artigo",
+      "topics": [
+        "acesso à informação"
+      ],
+      "semanticValidated": false,
+      "validationMethod": "local",
+      "relevanceReason": "A triagem do resumo identificou os assuntos do desafio: acesso à informação. A sustentação da proposta precisa de revisão acadêmica.",
+      "evidenceExcerpt": "Integrating technologies and applications to provide better access to, and sharing of, corporate data and to coordinate enterprise-wide tasks and processes is a critical means to adding business value through information technology."
+    }
+  },
+  {
+    "query": {
+      "area": "Engenharia da Integração",
+      "title": "Dados Duplicados entre Setores",
+      "challenge": "Dois setores utilizam sistemas diferentes para registrar informações sobre o mesmo processo. Os dados precisam ser digitados novamente e frequentemente apresentam diferenças entre uma área e outra. Como você estruturaria uma solução para conectar esses ambientes e reduzir as inconsistências?"
+    },
+    "candidate": {
+      "title": "An introduction to the economy of the knowledge society",
+      "authors": [
+        "Paul A. David",
+        "Dominique Foray"
+      ],
+      "year": 2002,
+      "doi": "10.1111/1468-2451.00355",
+      "link": "https://doi.org/10.1111/1468-2451.00355",
+      "abstract": "This introductory article reviews the main themes relating to the development of new knowledge-based economies. After placing their emergence in historical perspective and proposing a theoretical framework which distinguishes knowledge from information, the authors characterize the specific nature of such economies. They go on to deal with some of the major issues concerning the new skills and abilities required for integration into the knowledge-based economy; the new geography that is taking shape (where physical distance ceases to be such an influential constraint); the conditions governing access to both information and knowledge, not least for developing countries; the uneven development of scientific, technological (including organizational) knowledge across different sectors of activity; problems concerning intellectual property rights and the privatization of knowledge; and the issues of trust, memory and the fragmentation of knowledge.",
+      "venue": "International Social Science Journal",
+      "source": "OpenAlex",
+      "confidence": 0.75,
+      "documentType": "Artigo",
+      "topics": [
+        "acesso à informação"
+      ],
+      "semanticValidated": false,
+      "validationMethod": "local",
+      "relevanceReason": "A triagem do resumo identificou os assuntos do desafio: acesso à informação. A sustentação da proposta precisa de revisão acadêmica.",
+      "evidenceExcerpt": "They go on to deal with some of the major issues concerning the new skills and abilities required for integration into the knowledge-based economy; the new geography that is taking shape (where physical distance ceases to be such an influential constraint); the conditions governing access to both information and knowledge, not least for developing "
+    }
+  }
+]

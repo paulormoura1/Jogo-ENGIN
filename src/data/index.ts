@@ -1,2 +1,2 @@
 export * from "./egcSources";
-export * from "./gcSources";
+export { GC_SOURCES } from "./gcSources";
