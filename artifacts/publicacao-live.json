@@ -1,0 +1,676 @@
+{
+  "date": "2026-10-09T19:35:22.583Z",
+  "staticMode": true,
+  "modelRequests": 0,
+  "results": [
+    {
+      "area": "Governança do Conhecimento",
+      "challenge": {
+        "title": "Conhecimento sem Governança",
+        "description": "A organização possui informações estratégicas distribuídas entre diferentes setores, mas não existem responsabilidades claramente definidas sobre sua gestão e utilização. Decisões importantes são tomadas sem critérios consistentes de acesso, registro e compartilhamento do conhecimento. Como especialista, que estrutura de governança você implantaria, como ela funcionaria e por que seria adequada para essa situação?"
+      },
+      "durationMs": 1473,
+      "best": {
+        "title": "Proposta de um modelo de governança de dados apoiado na Filosofia Lean para gestão das escalas operacionais da PMMG",
+        "authors": [
+          "Boas, Marcelo Ribeiro Vilas"
+        ],
+        "year": 2024,
+        "abstract": "Como a integração da Filosofia Lean e a Governança de Dados pode ser benéfica para melhorar a eficiência e a qualidade dos processos em um sistema de gestão das escalas de policiamento? Esta é a questão que esta pesquisa busca responder. Parte do princípio de que o atual processo de planejamento operacional, com baixa sistematização de informações, estimula o espelhamento de atividades e a produção de serviços com baixa agregação de valor. O mapeamento do fluxo de valor atual do planejamento operacional pode contribuir para a identificação de desperdícios na linha de produção. Neste contexto, a Governança de Dados conecta-se a Governança do Conhecimento de duas formas: quando se utiliza de dados brutos/aleatórios e extrai novos conhecimentos, ou seja, transformando informações em ativos do conhecimento e quando melhora a utilização dos ativos de conhecimento, ou seja, facilitar a recuperação, uso, compartilhamento e transferência destes, por meio da padronização do acesso a estes ativos de conhecimento. Assim, o objetivo principal desta pesquisa é propor uma solução de governança de dados, baseada nos princípios da filosofia Lean, para gestão das escalas operacionais da Polícia Militar de Minas Gerais. É comum que organizações tenham silos de dados, em que esses são replicados em sistemas diferentes de acordo com os departamentos que utilizam. Esse ponto é comum entre a Governança de Dados e a Governança do Conhecimento. Assim, está latente a necessidade de eliminar esses silos de dados e conhecimento, respectivamente. Uma vez que para o conhecimento ser considerado um ativo de conhecimento, ele deve estar disponível e utilizável por toda a organização. Neste estudo utilizou-se o Design Science Research (DSR) como metodologia para desenvolvimento da pesquisa com o objetivo de produção de artistas e a revisão integrativa de modo a obter o estado atual de pesquisas sobre o tema.",
+        "link": "https://repositorio.ufsc.br/handle/123456789/254924",
+        "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/254924",
+        "venue": "Repositório Institucional da UFSC",
+        "source": "UFSC",
+        "documentType": "Dissertação (Mestrado)",
+        "confidence": 0.65,
+        "topics": [
+          "compartilhamento do conhecimento",
+          "acesso à informação"
+        ],
+        "semanticValidated": false,
+        "validationMethod": "local",
+        "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; acesso à informação.",
+        "evidenceExcerpt": "Neste contexto, a Governança de Dados conecta-se a Governança do Conhecimento de duas formas: quando se utiliza de dados brutos/aleatórios e extrai novos conhecimentos, ou seja, transformando informações em ativos do conhecimento e quando melhora a utilização dos ativos de conhecimento, ou seja, facilitar a recuperação, uso, compartilhamento e tran"
+      },
+      "candidates": [
+        {
+          "title": "Proposta de um modelo de governança de dados apoiado na Filosofia Lean para gestão das escalas operacionais da PMMG",
+          "authors": [
+            "Boas, Marcelo Ribeiro Vilas"
+          ],
+          "year": 2024,
+          "abstract": "Como a integração da Filosofia Lean e a Governança de Dados pode ser benéfica para melhorar a eficiência e a qualidade dos processos em um sistema de gestão das escalas de policiamento? Esta é a questão que esta pesquisa busca responder. Parte do princípio de que o atual processo de planejamento operacional, com baixa sistematização de informações, estimula o espelhamento de atividades e a produção de serviços com baixa agregação de valor. O mapeamento do fluxo de valor atual do planejamento operacional pode contribuir para a identificação de desperdícios na linha de produção. Neste contexto, a Governança de Dados conecta-se a Governança do Conhecimento de duas formas: quando se utiliza de dados brutos/aleatórios e extrai novos conhecimentos, ou seja, transformando informações em ativos do conhecimento e quando melhora a utilização dos ativos de conhecimento, ou seja, facilitar a recuperação, uso, compartilhamento e transferência destes, por meio da padronização do acesso a estes ativos de conhecimento. Assim, o objetivo principal desta pesquisa é propor uma solução de governança de dados, baseada nos princípios da filosofia Lean, para gestão das escalas operacionais da Polícia Militar de Minas Gerais. É comum que organizações tenham silos de dados, em que esses são replicados em sistemas diferentes de acordo com os departamentos que utilizam. Esse ponto é comum entre a Governança de Dados e a Governança do Conhecimento. Assim, está latente a necessidade de eliminar esses silos de dados e conhecimento, respectivamente. Uma vez que para o conhecimento ser considerado um ativo de conhecimento, ele deve estar disponível e utilizável por toda a organização. Neste estudo utilizou-se o Design Science Research (DSR) como metodologia para desenvolvimento da pesquisa com o objetivo de produção de artistas e a revisão integrativa de modo a obter o estado atual de pesquisas sobre o tema.",
+          "link": "https://repositorio.ufsc.br/handle/123456789/254924",
+          "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/254924",
+          "venue": "Repositório Institucional da UFSC",
+          "source": "UFSC",
+          "documentType": "Dissertação (Mestrado)",
+          "confidence": 0.65,
+          "topics": [
+            "compartilhamento do conhecimento",
+            "acesso à informação"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; acesso à informação.",
+          "evidenceExcerpt": "Neste contexto, a Governança de Dados conecta-se a Governança do Conhecimento de duas formas: quando se utiliza de dados brutos/aleatórios e extrai novos conhecimentos, ou seja, transformando informações em ativos do conhecimento e quando melhora a utilização dos ativos de conhecimento, ou seja, facilitar a recuperação, uso, compartilhamento e tran"
+        },
+        {
+          "title": "A pesquisa organizacional como ferramenta para tomada de decisões em organizações do setor público",
+          "authors": [
+            "Trombetta, Sérgio Ricardo"
+          ],
+          "year": 2025,
+          "abstract": "O presente trabalho tem como objetivo propor um conjunto de boas práticas relacionadas à pesquisa organizacional para aprimorar a tomada de decisão no âmbito de organizações do setor público. A metodologia utilizada foi a Design Science Research, fundamentada por uma revisão bibliográfica integrativa sobre governança, gestão do conhecimento, pesquisa organizacional e tomada de decisão. Ainda, foram realizadas entrevistas semiestruturadas com gestores de uma organização pública para diagnosticar o nível de maturidade atual quanto ao uso da pesquisa para tomada de decisões e validar as práticas propostas. As discussões revelam que o setor público enfrenta desafios como burocracia, resistência à mudança e influência política, fatores que dificultam a aplicação efetiva da pesquisa e da gestão do conhecimento nas decisões estratégicas. Observa-se um predominante nível reativo quanto a maturidade relacionada a governança, pesquisa organizacional e tomada de decisão, enquanto a gestão do conhecimento apresenta um nível padronizado. Os resultados indicam a necessidade de maior alinhamento entre as pesquisas e as demandas organizacionais. Com base nestas análises, o estudo recomenda boas práticas que incluem o estabelecimento de um Comitê de Governança do Conhecimento para alinhar a pesquisa aos objetivos estratégicos, a implementação de Comunidades de Práticas para estimular o compartilhamento de insights, e a capacitação de líderes em gestão baseada em evidências. Ainda, fazem parte da prescrição o fomento de parcerias com universidades e centros de pesquisa, a adoção de matrizes de priorização de projetos, a publicação de relatórios de impacto das pesquisas para transparência, a criação de um repositório centralizado de conhecimentos, a realização de pesquisas ágeis com ciclos rápidos de feedback, e o investimento em ferramentas de análise de dados. A avaliação das práticas confirmou sua relevância e aplicabilidade, ressaltando a importância de uma mudança cultural e esforços para aprimorar a administração pública.",
+          "link": "https://repositorio.ufsc.br/handle/123456789/270402",
+          "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/270402",
+          "venue": "Repositório Institucional da UFSC",
+          "source": "UFSC",
+          "documentType": "Dissertação (Doutorado)",
+          "confidence": 0.65,
+          "topics": [
+            "compartilhamento do conhecimento",
+            "tomada de decisão"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; tomada de decisão.",
+          "evidenceExcerpt": "O presente trabalho tem como objetivo propor um conjunto de boas práticas relacionadas à pesquisa organizacional para aprimorar a tomada de decisão no âmbito de organizações do setor público."
+        },
+        {
+          "title": "Knowledge governance mechanisms’ influence on repatriate knowledge sharing",
+          "authors": [
+            "Eemil Yli-Pietilä"
+          ],
+          "year": 2018,
+          "link": "https://www.utupub.fi/handle/11111/6325",
+          "abstract": "This study researches the repatriate knowledge governance in multi-national enterprises in pharmaceutical industry. The purpose of this study is to examine, how different knowledge governance mechanisms influence the repatriate knowledge sharing and which factors deter this knowledge sharing. The study was conducted as qualitative interview research. The theoretical framework is based on the previous literature and empirical studies on knowledge sharing, knowledge governance mechanisms and repatriates. The data for empirical research was conducted in the Finnish subsidiary of a multi-national pharmaceutical enterprise in April 2018. 5 interviewees were chosen: 1 HRM-specialist and 4 repatriates, of which one repatriate was excluded for not filling the criteria on the analyzing phase. The interviews were conducted with a semi-structured method ja and the questions were based on the themes previously discusses in the literature and empirical research. The conducted interviews were transcribed and analyzed by themes. This study confirms that knowledge governance mechanisms of HR influence the repatriates’ motivations and opportunities of knowledge sharing and that knowledge sharing is deterred by certain factors. This study proposes that HR and organization should use several different mechanisms to influence the repatriate knowledge sharing and make these measures coherent by offering them to all of the repatriates. This study suggests that organizations should increase the level of repatriate knowledge sharing training and connect their evaluation and bonus systems to include knowledge sharing also. In addition, organizations should offer IT-based systems, in which the repatriates can share knowledge effectively and also use the repatriates as mentors to allow intra-organizational knowledge sharing. It should also be assured that the repatriates have an opportunity to decrease the physical and mental distance to their former host facility to maintain their networks. It was also found in this study that physical distance, inability to access the knowledge and questioning the repatriate knowledge deterred knowledge sharing. This study proves that repatriate knowledge sharing can be influenced by knowledge governance mechanisms of the HR, if they are applied correctly. To generalize these findings to other fields of industries, though, further research is needed.",
+          "venue": "UTUPub (University of Turku)",
+          "source": "OpenAlex",
+          "confidence": 0.7000000000000001,
+          "documentType": "Tese ou dissertação",
+          "topics": [
+            "compartilhamento do conhecimento",
+            "tomada de decisão",
+            "acesso à informação"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; tomada de decisão; acesso à informação.",
+          "evidenceExcerpt": "It was also found in this study that physical distance, inability to access the knowledge and questioning the repatriate knowledge deterred knowledge sharing."
+        },
+        {
+          "title": "Designing [Knowledge] Systems That Work: Examining conceptual coherence, knowledge governance, and organizational learning routines in a knowledge-intensive education intermediary",
+          "authors": [
+            "Sophia B Roy"
+          ],
+          "year": 2026,
+          "link": "https://dash.harvard.edu/handle/1/42738897",
+          "abstract": "Knowledge-intensive intermediary organizations learn rapidly through fast-moving, politically mediated delivery work, yet often experience challenges when attempting to convert that engagement learning into reusable organizational memory. This capstone examines that conversion challenge within the National Center on Education and the Economy (NCEE), focusing on how a lean Policy team can sustain high-quality state-facing advisory work while building coherent, governed knowledge assets that travel across projects, staff, and time and ultimately create durable value for the organization. Drawing on organizational knowledge creation, knowledge management strategy, transfer constraints, and organizational learning scholarship, this capstone introduces the Knowledge Conversion in a Managed System (KCIAMS) framework to specify the coupled infrastructure required for reuse at speed. Core elements include a clear codification–personalization posture, conceptual coherence anchors, a governance spine, and repeatable learning routines that surface and select what matters. Using a practice-grounded strategic project conducted during a ten-month leader-in-residence period, the work analyzes two pilot streams: (1) a working group used to strengthen policy product lines and (2) a live Michigan engagement producing politically sensitive policy topic briefs under tight timelines and mixed staffing. Evidence drawn from interviews, artifact audits, version histories, and reflection from pilot participants indicates that lightweight entry routines like charters and writing kickoffs reduced ambiguity for rotating contributors and shortened early drafting and revision cycles, while explicit naming/versioning conventions and review gates improved traceability and cross-project legibility. At the same time, adoption and durability were uneven under delivery pressure, constrained by tooling and repository limitations, ambiguous stewardship expectations, and the risks associated with documenting sensitive judgment in shared environments. The capstone concludes with design principles for intermediaries seeking to make engagement learning cumulative: 1) specify a deliberate codification–personalization mix, 2) build low-friction governance and bookend routines into ordinary workflow, and 3) invest leadership attention and enable infrastructure to protect conversion labor as core work.",
+          "venue": "Digital Access to Scholarship at Harvard (DASH) (Harvard University)",
+          "source": "OpenAlex",
+          "confidence": 0.7000000000000001,
+          "documentType": "Tese ou dissertação",
+          "topics": [
+            "compartilhamento do conhecimento",
+            "memória organizacional",
+            "tomada de decisão"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; memória organizacional; tomada de decisão.",
+          "evidenceExcerpt": "At the same time, adoption and durability were uneven under delivery pressure, constrained by tooling and repository limitations, ambiguous stewardship expectations, and the risks associated with documenting sensitive judgment in shared environments."
+        }
+      ],
+      "sourceType": "mixed",
+      "trace": {
+        "steps": [
+          {
+            "step": "ufsc.catalog",
+            "ok": true,
+            "note": "2 obras do catálogo de 03/10/2026"
+          },
+          {
+            "step": "local.abstracts",
+            "ok": true,
+            "note": "2 obras passaram pela triagem dos resumos"
+          },
+          {
+            "step": "Crossref",
+            "ok": false,
+            "note": "Fonte indisponível nesta tentativa"
+          },
+          {
+            "step": "Crossref",
+            "ok": true,
+            "note": "13 obras recuperadas"
+          },
+          {
+            "step": "Crossref",
+            "ok": true,
+            "note": "14 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "10 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "14 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "13 obras recuperadas"
+          },
+          {
+            "step": "local.abstracts",
+            "ok": true,
+            "note": "7 obras passaram pela triagem dos resumos"
+          }
+        ]
+      },
+      "validation": "local",
+      "notice": "Obras da UFSC consultadas no catálogo atualizado em 03/10/2026. Estas leituras foram sugeridas pelo conteúdo dos resumos. A relação com a proposta precisa de revisão: abra as obras e confira se ajudam a responder ao desafio. Parte das fontes externas ficou indisponível; a busca pode estar incompleta."
+    },
+    {
+      "area": "Gestão do Conhecimento",
+      "challenge": {
+        "title": "Capital Intelectual em Risco",
+        "description": "A organização depende fortemente do conhecimento de profissionais experientes, mas parte desse conhecimento não está registrada nem compartilhada com as equipes. A saída de pessoas-chave começa a comprometer processos e resultados. Como especialista, que solução de gestão do conhecimento você implantaria para preservar e desenvolver esse capital intelectual, como ela funcionaria e por quê?"
+      },
+      "durationMs": 1812,
+      "best": {
+        "title": "Gestão do conhecimento na Polícia Militar de Santa Catarina: retenção do conhecimento nas transições de comando",
+        "authors": [
+          "SIlva, Fred Hilton Gonçalves da"
+        ],
+        "year": 2026,
+        "abstract": "Esta pesquisa analisa a retenção do conhecimento nas transições de comando da Polícia Militar de Santa Catarina (PMSC), considerando os aspectos decorrentes da perda de conhecimentos críticos em um contexto marcado por alta rotatividade de gestores e complexidade operacional. Fundamentado nos referenciais da Gestão do Conhecimento, da aprendizagem organizacional e da administração pública, o estudo adota uma abordagem qualitativa, de paradigma funcionalista, combinando revisão integrativa da literatura, análise documental de normativos e instrumentos institucionais da PMSC e aplicação de questionário a oficiais que vivenciaram processos de passagem de comando. A análise dos dados evidencia lacunas na formalização dos processos de transição, baixa sistematização de práticas de transferência de conhecimento tácito e assimetrias entre o que é previsto nos documentos institucionais e o que é efetivamente praticado pelos gestores. Como principal resultado, propõem-se diretrizes para a retenção do conhecimento em transições de comando na PMSC, estruturadas em fases, práticas e instrumentos que articulam mecanismos formais e informais de socialização, registro, compartilhamento e acompanhamento pós-transição, com potencial de replicação em outras organizações públicas de segurança. Conclui-se que o fortalecimento da gestão do conhecimento nas passagens de comando contribui para a continuidade do serviço, a preservação da memória organizacional e a redução de riscos associados à perda de conhecimento crítico.",
+        "link": "https://repositorio.ufsc.br/handle/123456789/275073",
+        "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/275073",
+        "venue": "Repositório Institucional da UFSC",
+        "source": "UFSC",
+        "documentType": "Dissertação (Mestrado)",
+        "confidence": 0.75,
+        "topics": [
+          "retenção do conhecimento",
+          "compartilhamento do conhecimento"
+        ],
+        "semanticValidated": false,
+        "validationMethod": "local",
+        "relevanceReason": "Assuntos encontrados no resumo: retenção do conhecimento; compartilhamento do conhecimento.",
+        "evidenceExcerpt": "Como principal resultado, propõem-se diretrizes para a retenção do conhecimento em transições de comando na PMSC, estruturadas em fases, práticas e instrumentos que articulam mecanismos formais e informais de socialização, registro, compartilhamento e acompanhamento pós-transição, com potencial de replicação em outras organizações públicas de segur"
+      },
+      "candidates": [
+        {
+          "title": "Gestão do conhecimento na Polícia Militar de Santa Catarina: retenção do conhecimento nas transições de comando",
+          "authors": [
+            "SIlva, Fred Hilton Gonçalves da"
+          ],
+          "year": 2026,
+          "abstract": "Esta pesquisa analisa a retenção do conhecimento nas transições de comando da Polícia Militar de Santa Catarina (PMSC), considerando os aspectos decorrentes da perda de conhecimentos críticos em um contexto marcado por alta rotatividade de gestores e complexidade operacional. Fundamentado nos referenciais da Gestão do Conhecimento, da aprendizagem organizacional e da administração pública, o estudo adota uma abordagem qualitativa, de paradigma funcionalista, combinando revisão integrativa da literatura, análise documental de normativos e instrumentos institucionais da PMSC e aplicação de questionário a oficiais que vivenciaram processos de passagem de comando. A análise dos dados evidencia lacunas na formalização dos processos de transição, baixa sistematização de práticas de transferência de conhecimento tácito e assimetrias entre o que é previsto nos documentos institucionais e o que é efetivamente praticado pelos gestores. Como principal resultado, propõem-se diretrizes para a retenção do conhecimento em transições de comando na PMSC, estruturadas em fases, práticas e instrumentos que articulam mecanismos formais e informais de socialização, registro, compartilhamento e acompanhamento pós-transição, com potencial de replicação em outras organizações públicas de segurança. Conclui-se que o fortalecimento da gestão do conhecimento nas passagens de comando contribui para a continuidade do serviço, a preservação da memória organizacional e a redução de riscos associados à perda de conhecimento crítico.",
+          "link": "https://repositorio.ufsc.br/handle/123456789/275073",
+          "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/275073",
+          "venue": "Repositório Institucional da UFSC",
+          "source": "UFSC",
+          "documentType": "Dissertação (Mestrado)",
+          "confidence": 0.75,
+          "topics": [
+            "retenção do conhecimento",
+            "compartilhamento do conhecimento"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: retenção do conhecimento; compartilhamento do conhecimento.",
+          "evidenceExcerpt": "Como principal resultado, propõem-se diretrizes para a retenção do conhecimento em transições de comando na PMSC, estruturadas em fases, práticas e instrumentos que articulam mecanismos formais e informais de socialização, registro, compartilhamento e acompanhamento pós-transição, com potencial de replicação em outras organizações públicas de segur"
+        },
+        {
+          "title": "Gestão do conhecimento na Assembleia Legislativa do Estado de Santa Catarina à luz do Direito Administrativo e das práticas de gestão pública",
+          "authors": [
+            "Gubert, Laura Celeste Jaeger"
+          ],
+          "year": 2026,
+          "abstract": "A presente dissertação investiga a relação entre a Gestão do Conhecimento e a retenção do saber institucional na Diretoria de Recursos Humanos da Assembleia Legislativa do Estado de Santa Catarina, considerando o contexto de elevada rotatividade funcional, característico das instituições legislativas brasileiras. O problema de pesquisa questionade que modo a adoção sistemática de práticas de Gestão do Conhecimento pode contribuir para salvaguardar o conhecimento institucional, assegurando a continuidade administrativa e a eficiência operacional. O objetivo desta pesquisa consiste em propor práticas institucionais de Gestão do Conhecimento que promovam a transferência, a retenção e a sistematização do saber organizacional. A pesquisa, de natureza qualitativa e aplicada, adota abordagem exploratória e descritiva, utilizando procedimentos de pesquisa bibliográfica e documental, com análise de conteúdo como método interpretativo. Os resultados confirmam que a ausência de mecanismos formais de retenção do conhecimento compromete a continuidade dos processos administrativos, gerando retrabalho, perda de saberes tácitos e fragilização da memória organizacional. A pesquisa evidenciou que a padronização de processos constitui instrumento essencial para mitigar os efeitos da rotatividade, fortalecendo a governança institucional e assegurando conformidade com os princípios constitucionais da legalidade, impessoalidade, eficiência e continuidade do serviço público. Do ponto de vista prático, propõe-se que a manualização padronizada seja articulada aos sistemas utilizados pelos servidores para a comunicação oficial e tramitação de todos os processos, com potencial de replicação em outras casas legislativas. Conclui-se que a Gestão do Conhecimento constitui imperativo estratégico, técnico e jurídico para a administração pública legislativa contemporânea, cuja institucionalização fortalece a capacidade institucional, a legitimidade democrática e a responsabilidade perante a sociedade.",
+          "link": "https://repositorio.ufsc.br/handle/123456789/275488",
+          "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/275488",
+          "venue": "Repositório Institucional da UFSC",
+          "source": "UFSC",
+          "documentType": "Dissertação (Mestrado profissional)",
+          "confidence": 0.75,
+          "topics": [
+            "retenção do conhecimento",
+            "compartilhamento do conhecimento"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: retenção do conhecimento; compartilhamento do conhecimento.",
+          "evidenceExcerpt": "O objetivo desta pesquisa consiste em propor práticas institucionais de Gestão do Conhecimento que promovam a transferência, a retenção e a sistematização do saber organizacional."
+        },
+        {
+          "title": "The role of career and knowledge management in retention",
+          "authors": [
+            "Krisztina Dajnoki",
+            "Réka Szondi",
+            "Roland Filep"
+          ],
+          "year": 2021,
+          "doi": "10.18531/studia.mundi.2021.08.01.65-76",
+          "link": "https://doi.org/10.18531/studia.mundi.2021.08.01.65-76",
+          "abstract": "Rapid response to changing environmental challenges plays a crucial role in maintaining competitiveness. For HR, achieving employee loyalty is one of the essential tasks that can solve the difficulties of the labour shortage. Retaining key workers is a growing problem today while attracting the right talented workforce to the organisation is critical. Employee satisfaction influences the level of loyalty, with the necessary recognition and appreciation of the individual’s work, clear goals and expectations and the existence of a supportive organisational culture. Organisations’ workforce retention capabilities are often linked to managerial attitudes, to the quality and systematic development of HR systems. The purpose of this study is to summarise and support, based on international literature and research, the importance of two key functions, career and knowledge management, for retention. As a result of the research, it is possible to determine the advantage of applying the two critical functions in retention management, and the difficulties and risk factors arising during the process can be defined. If the company does not focus on motivating its employees, it will significantly increase its costs as well as the time and energy invested in recruiting and selecting new employees. In conclusion, in addition to expanding the use of HR functions, successful loyalty increasing techniques include a career plan that supports both individual and organisational goals and an organisational culture that encourages knowledge sharing.",
+          "venue": "Studia Mundi - Economica",
+          "source": "OpenAlex",
+          "confidence": 0.75,
+          "documentType": "Artigo",
+          "topics": [
+            "retenção do conhecimento",
+            "compartilhamento do conhecimento"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: retenção do conhecimento; compartilhamento do conhecimento.",
+          "evidenceExcerpt": "Organisations’ workforce retention capabilities are often linked to managerial attitudes, to the quality and systematic development of HR systems.",
+          "metadataVerified": true
+        },
+        {
+          "title": "Knowledge Management and Retention: A Case of a Water Utility in Finland",
+          "authors": [
+            "Sirpa K. Sandelin"
+          ],
+          "year": 2017,
+          "link": "http://urn.fi/URN:ISBN:978-952-15-3959-6",
+          "abstract": "Knowledge management has been discussed and debated world-wide since the beginning of the 1990s. Over the years, knowledge management has become important due to an increased awareness of the importance of knowledge for an organisation’s prosperity and survival, and due to the increased availability of information technology to store, distribute and generally manage knowledge. The shared opinion globally and in Finland is that water utilities, where most of the larger water utilities are integrated and provide both drinking water and wastewater services, face continuous challenges with the changes of physical and operational environment and with rapidly ageing personnel. Because knowledge management, especially tacit knowledge, is a critical success factor for water utilities when striving for better and more sustainable performance, utilities should manage both explicit and tacit knowledge and transfer them to new generations of employees. This dissertation deals with knowledge management at one Finnish utility. The following research questions are addressed: (i) how do personnel at water utilities interpret the concepts of information, knowledge management and tacit knowledge, and how is knowledge captured and shared; (ii) what information needs do personnel have in performing daily tasks and what acquisition channels do they use; and (iii) what is the role of formal and informal networks in performing daily tasks and gaining new knowledge. The approach of this research is qualitative and contained both longitudinal and cross-sectional time horizons. The personnel of the same water utility were interviewed with a semi-structured questionnaire in 2004 and in 2013. The interviews were analysed by combining qualitative and statistical methods. Multiple sources of evidence on knowledge management practices at water utilities and in organisations was gathered in thematic workshop sessions in 2010 and in 2011. One of the interesting findings was that interpretations of knowledge management had changed from informing people in 2004 to understanding knowledge management as personal, individual property in 2013. The personnel were proud of the knowledge they owned of the water treatment processes. This knowledge was considered technical knowledge, which is critical to the livelihood of the utility. There were many ways to share information and knowledge and a number of reasons were found explaining why knowledge sharing was considered difficult. The most important difficulties mentioned included lack of time, competing priorities, organisatorial barriers, sharing attitudes and atmosphere, a gap between older and younger people, and unwillingness to share. In 2004 tacit knowledge was an unknown concept while in 2013 the concept was quite clear to most of the personnel. Tacit knowledge was highly valued and it was associated with the skills and knowledge gathered over the years working at the same water utility. Tacit knowledge was shared in normal daily work and especially during malfunctions. Information needs and usage at the utility were versatile and depended on the tasks performed by the employees. Almost everyone (over 90%) needed technical information on equipment, and over 60 percent needed knowledge of legislation. This research showed that the personnel used personal files, document collections, the internet and the intranet more often in 2013 than in 2004. The shift from printed material to electronic material has increased over the years. At the same time discussion with closest co-workers kept its importance. The traced networks in trade union and professional association membership of the personnel indicate that assistance for solving professional challenges is not sought from these sources. The most important network was the closest co-workers, concerning the solutions to problems related to daily tasks. The results showed that external networks were large, quite stable and included multiple sectors. The professional networks consisted of task-relevant contacts, and every interviewee had individual contact networks. Knowledge management requires long-term planning and actions. In this research it was clear that the top management should take responsibility for knowledge management at the utility. They should set strategies and approaches for knowledge management actions and ensure time allocations and tools for knowledge sharing. It is important to specify which kind of knowledge is valuable and worth retaining from the information overload. Empirical findings from tacit knowledge, knowledge capturing and sharing, professional networks and knowledge retention at water utilities contributed to the understanding of the importance of knowledge management and knowledge retention. A limitation of this research is that it deals thoroughly with one water utility only. Thus, the results of this study are neither universally applicable nor directly applicable to water utilities of the same size. Yet, the gained results were supported by the evidence from multiple water utilities and water sector organisations. The most important scientific contribution of this dissertation is that knowledge management was explored comprehensively in a sector that has not been studied extensively earlier. The results contribute to the body of scholarly literature in information and knowledge acquiring, creation, sharing and retention of water utilities. The study, among other things, found that a more in-depth study is needed to find out how knowledge management and retention differ at water utilities of different sizes and what effect ownership has on them. More research is also required of the demographic changes at water utilities, especially the effect of new generations on the way water utilities will operate in the future.",
+          "venue": "Tampere University Institutional Repository (Tampere University)",
+          "source": "OpenAlex",
+          "confidence": 0.75,
+          "documentType": "Artigo",
+          "topics": [
+            "retenção do conhecimento",
+            "compartilhamento do conhecimento"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: retenção do conhecimento; compartilhamento do conhecimento.",
+          "evidenceExcerpt": "Empirical findings from tacit knowledge, knowledge capturing and sharing, professional networks and knowledge retention at water utilities contributed to the understanding of the importance of knowledge management and knowledge retention."
+        }
+      ],
+      "sourceType": "mixed",
+      "trace": {
+        "steps": [
+          {
+            "step": "ufsc.catalog",
+            "ok": true,
+            "note": "2 obras do catálogo de 03/10/2026"
+          },
+          {
+            "step": "local.abstracts",
+            "ok": true,
+            "note": "2 obras passaram pela triagem dos resumos"
+          },
+          {
+            "step": "Crossref",
+            "ok": false,
+            "note": "Fonte indisponível nesta tentativa"
+          },
+          {
+            "step": "Crossref",
+            "ok": true,
+            "note": "15 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "12 obras recuperadas"
+          },
+          {
+            "step": "Crossref",
+            "ok": true,
+            "note": "15 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "14 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "15 obras recuperadas"
+          },
+          {
+            "step": "local.abstracts",
+            "ok": true,
+            "note": "5 obras passaram pela triagem dos resumos"
+          },
+          {
+            "step": "doi.metadata",
+            "ok": true,
+            "note": "Autoria conferida no registro DOI"
+          }
+        ]
+      },
+      "validation": "local",
+      "notice": "Obras da UFSC consultadas no catálogo atualizado em 03/10/2026. Estas leituras foram sugeridas pelo conteúdo dos resumos. A relação com a proposta precisa de revisão: abra as obras e confira se ajudam a responder ao desafio. Parte das fontes externas ficou indisponível; a busca pode estar incompleta."
+    },
+    {
+      "area": "Engenharia da Integração",
+      "challenge": {
+        "title": "Dados Duplicados entre Setores",
+        "description": "Dois setores utilizam sistemas diferentes para registrar informações sobre o mesmo processo. Os dados precisam ser digitados novamente e frequentemente apresentam diferenças entre uma área e outra. Como você estruturaria uma solução para conectar esses ambientes e reduzir as inconsistências?"
+      },
+      "durationMs": 1622,
+      "best": {
+        "title": "Concepção, implementação e validação de um enfoque para integração e recuperação de conhecimento distribuído em bases de dados heterogêneas",
+        "authors": [
+          "Cabral, Rodrigo Bittencourt"
+        ],
+        "year": 2012,
+        "abstract": "Com o crescimento da demanda e da composição de Bases de Conhecimento para os mais diversos fins e a sua disponibilização através da rede mundial de computadores, passou-se a observar a necessidade de organizar este conhecimento e também integrá-lo para possibilitar maior acessibilidade e facilidade na sua manutenção e utilização, devido à caracterização da disposição dispersa e o formato heterogêneo das referidas bases. Neste trabalho é proposto um sistema que efetua integração do conhecimento de bases de dados em contexto genérico, utilizando como estudo de caso o atendimento emergencial no CIT - Centro de Informações Toxicológicas de Santa Catarina - além de possibilitar a manutenção e manipulação deste artefato através do agrupamento de técnicas de recuperação de informação, aperfeiçoamento semântico, expansão de consulta, fonética em um único mecanismo. Foram avaliadas - através de uma revisão sistemática da literatura - as melhores opções disponibilizadas por estudos prévios em pesquisas realizadas nestas áreas a fim de encontrar a melhor combinação a ser utilizada no mecanismo, além da análise do produto final em um comparativo feito entre mecanismos previamente utilizados pelos profissionais no atendimento de urgência.",
+        "link": "https://repositorio.ufsc.br/handle/123456789/93835",
+        "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/93835",
+        "venue": "Repositório Institucional da UFSC",
+        "source": "UFSC",
+        "documentType": "Dissertação (Mestrado)",
+        "confidence": 0.75,
+        "topics": [
+          "acesso à informação"
+        ],
+        "semanticValidated": false,
+        "validationMethod": "local",
+        "relevanceReason": "Assuntos encontrados no resumo: acesso à informação.",
+        "evidenceExcerpt": "Com o crescimento da demanda e da composição de Bases de Conhecimento para os mais diversos fins e a sua disponibilização através da rede mundial de computadores, passou-se a observar a necessidade de organizar este conhecimento e também integrá-lo para possibilitar maior acessibilidade e facilidade na sua manutenção e utilização, devido à caracter"
+      },
+      "candidates": [
+        {
+          "title": "Concepção, implementação e validação de um enfoque para integração e recuperação de conhecimento distribuído em bases de dados heterogêneas",
+          "authors": [
+            "Cabral, Rodrigo Bittencourt"
+          ],
+          "year": 2012,
+          "abstract": "Com o crescimento da demanda e da composição de Bases de Conhecimento para os mais diversos fins e a sua disponibilização através da rede mundial de computadores, passou-se a observar a necessidade de organizar este conhecimento e também integrá-lo para possibilitar maior acessibilidade e facilidade na sua manutenção e utilização, devido à caracterização da disposição dispersa e o formato heterogêneo das referidas bases. Neste trabalho é proposto um sistema que efetua integração do conhecimento de bases de dados em contexto genérico, utilizando como estudo de caso o atendimento emergencial no CIT - Centro de Informações Toxicológicas de Santa Catarina - além de possibilitar a manutenção e manipulação deste artefato através do agrupamento de técnicas de recuperação de informação, aperfeiçoamento semântico, expansão de consulta, fonética em um único mecanismo. Foram avaliadas - através de uma revisão sistemática da literatura - as melhores opções disponibilizadas por estudos prévios em pesquisas realizadas nestas áreas a fim de encontrar a melhor combinação a ser utilizada no mecanismo, além da análise do produto final em um comparativo feito entre mecanismos previamente utilizados pelos profissionais no atendimento de urgência.",
+          "link": "https://repositorio.ufsc.br/handle/123456789/93835",
+          "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/93835",
+          "venue": "Repositório Institucional da UFSC",
+          "source": "UFSC",
+          "documentType": "Dissertação (Mestrado)",
+          "confidence": 0.75,
+          "topics": [
+            "acesso à informação"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: acesso à informação.",
+          "evidenceExcerpt": "Com o crescimento da demanda e da composição de Bases de Conhecimento para os mais diversos fins e a sua disponibilização através da rede mundial de computadores, passou-se a observar a necessidade de organizar este conhecimento e também integrá-lo para possibilitar maior acessibilidade e facilidade na sua manutenção e utilização, devido à caracter"
+        },
+        {
+          "title": "Knowledge Integration and Information Technology Project Performance1",
+          "authors": [
+            "Victoria L. Mitchell"
+          ],
+          "year": 2006,
+          "doi": "10.2307/25148759",
+          "link": "https://doi.org/10.2307/25148759",
+          "abstract": "Successful product and process design depends on management’s ability to integrate fragmented pockets of specialized knowledge. This integrative capability has important implications for large-scale information technology projects. This article examines the relationship between timely project completion and two dimensions of management’s integrative capability: access to external knowledge and internal knowledge integration. Measures of these two dimensions are used to predict on-time project completion, where completion is a function of the duration of IT-related project delays. In a longitudinal study of 74 enterprise application integration projects in the medical sector, integrative capability was measured from the point of view of the CIO and a facility IT manager. Accounting for several project controls, our Cox regression results indicate both integrative dimensions significantly mitigate the duration of IT-related project delays, thus promoting timely project completion. The analysis also reveals the importance of taking management structure into consideration when studying IT phenomena in networked organizations.",
+          "venue": "MIS Quarterly",
+          "source": "OpenAlex",
+          "confidence": 0.75,
+          "documentType": "Artigo",
+          "topics": [
+            "acesso à informação"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: acesso à informação.",
+          "evidenceExcerpt": "This article examines the relationship between timely project completion and two dimensions of management’s integrative capability: access to external knowledge and internal knowledge integration.",
+          "metadataVerified": true
+        }
+      ],
+      "sourceType": "mixed",
+      "trace": {
+        "steps": [
+          {
+            "step": "ufsc.catalog",
+            "ok": true,
+            "note": "1 obras do catálogo de 03/10/2026"
+          },
+          {
+            "step": "local.abstracts",
+            "ok": true,
+            "note": "1 obras passaram pela triagem dos resumos"
+          },
+          {
+            "step": "Crossref",
+            "ok": false,
+            "note": "Fonte indisponível nesta tentativa"
+          },
+          {
+            "step": "Crossref",
+            "ok": true,
+            "note": "14 obras recuperadas"
+          },
+          {
+            "step": "Crossref",
+            "ok": true,
+            "note": "14 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "12 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "13 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "15 obras recuperadas"
+          },
+          {
+            "step": "local.abstracts",
+            "ok": true,
+            "note": "1 obras passaram pela triagem dos resumos"
+          },
+          {
+            "step": "doi.metadata",
+            "ok": true,
+            "note": "Autoria conferida no registro DOI"
+          }
+        ]
+      },
+      "validation": "local",
+      "notice": "Obras da UFSC consultadas no catálogo atualizado em 03/10/2026. Estas leituras foram sugeridas pelo conteúdo dos resumos. A relação com a proposta precisa de revisão: abra as obras e confira se ajudam a responder ao desafio. Parte das fontes externas ficou indisponível; a busca pode estar incompleta. Foram encontradas 2 obras relacionadas ao desafio. Outras leituras podem ser necessárias; a quantidade não altera sua nota."
+    },
+    {
+      "area": "Universidade Corporativa em Rede",
+      "challenge": {
+        "title": "Educação Corporativa Desconectada",
+        "description": "A organização oferece ações de capacitação em diferentes unidades, mas os programas funcionam de forma isolada e o conhecimento produzido não circula entre os participantes. A instituição pretende transformar essas iniciativas em uma estrutura integrada de educação corporativa. Como você estruturaria uma Universidade Corporativa em Rede para conectar pessoas, conhecimentos e unidades organizacionais?"
+      },
+      "durationMs": 1329,
+      "best": {
+        "title": "Framework Ponte TAP: gestão da curva de aprendizagem para a efetivação da transferência de aprendizagem para a prática do trabalho",
+        "authors": [
+          "Silva, Talita Caetano"
+        ],
+        "year": 2019,
+        "abstract": "?Como uma Universidade Corporativa em Rede pode gerenciar a curva de aprendizagem, efetivando a transferência de aprendizagem para a prática do trabalho??. Tal problematização provocou o gatilho necessário para constituir o objetivo geral desta tese: propor um Framework para a gestão da curva de aprendizagem efetivando a transferência da aprendizagem para a prática do trabalho. A literatura mapeada sobre o tema e suas interrelações não evidenciam como a aceleração da curva de aprendizagem pode efetivar a aplicabilidade de um conhecimento (conceito da transferência de aprendizagem) após ações de TD&E. Além disso, focam suas ações unilateralmente em treinamento, não avançando para ações de desenvolvimento e educação). Sabe-se que, para gerenciar a curva e possibilitar a transferência, é importante compreender o processo de desempenho competente, o qual abrange condições externas e internas, os próprios CHAs, e as motivações dos colaboradores. Os elementos supracitados traduziram-se nos objetivos específicos deste estudo: a) identificar os elementos constitutivos e agentes envolvidos para se processar o desempenho competente; b) compreender o Modelo de Universidade Corporativa em Rede e seus processos estruturantes; c) identificar ações de aprendizagem que possibilitam a gestão da curva de aprendizagem; d) identificar o processo de avaliação multinível e a sua relação com a efetivação da transferência de aprendizagem para a prática do trabalho; e) validar o framework de gestão da curva de aprendizagem efetivando a transferência da aprendizagem para a prática do trabalho em uma organização brasileira. Para responder à pergunta-chave evidenciada na primeira frase deste resumo, foi necessário debruçar-se sobre as teorias que alicerçam os estágios de evolução de um Sistema de Educação Corporativa, o qual dá à luz o Modelo de Universidade Corporativa em Rede. Este último, o mais recente, contemporâneo e emergente da Sociedade do Conhecimento. Além disso, foi necessário buscar em teorias de ensino e aprendizagem, premissas importantes na educação de alunos profissionais adultos, dando destaque aos conceitos de curva de aprendizagem e transferência de aprendizagem para a prática de trabalho. Ao se deparar com novas funções e responsabilidades, há a necessidade de desenvolver novas competências, habilidades e atitudes (CHAs) para alcançar o desempenho competente na nova tarefa. Essa problemática foi resolvida por meio do Framework Ponte TAP. Isto é, ao desenvolver CHAs, foi preciso gerenciar a amplitude e a profundidade da curva dos profissionais, antes durante e depois das ações educacionais, até que a aprendizagem seja processada a partir da transferência de aprendizagem para a prática do trabalho. O Framework Ponte TAP foi constituído por quatro camadas essenciais para o planejamento, execução e gestão das ações educacionais, a saber: a) desenvolvimento humano e organizacional e o processo ?desempenho competente?; b) Universidade Corporativa em Rede e seus processos estruturantes; c) gestão da curva de aprendizagem por meio de ações de aprendizagem; d) processo de avaliação multinível e a transferência de aprendizagem para a prática do trabalho. O framework foi validado em uma organização brasileira de tecnologia e demonstrou ser efetivo, alcançando resultados que confirmam a aceleração da curva de aprendizagem e efetivação da transferência de aprendizagem para a prática de trabalho. Pode-se destacar três vieses contributivos do framework: a) contribuição teórica, que ficou evidente a partir do diálogo teórico-empírico entre universidade acadêmica e universidade corporativa, com discussões colaborativas, integrando conhecimentos estruturados aos conhecimentos embasados na experiência, o que, segundo David Kolb, resulta no real percurso de desenvolvimento profissional; b) contribuição para a ação, a partir da continuidade do Programa de Integração na organização e também pela rede colaborativa, que se estabeleceu entre mais de 20 stakeholders, os quais atuaram, de forma ativa, em cada uma das camadas de aplicação. Além da própria aceleração da curva de 12 meses para 3 meses; e) e contribuições práticas, uma vez que o framework é compatível com quaisquer análises que envolvam gestão da curva de aprendizagem e transferência de aprendizagem para a prática do trabalho, não sendo único e exclusivo do público e ambiente em que foi aplicado. Além disso, esse framework pode ser aplicado em redes internas e externas de aprendizagem, sendo uma importante ferramenta para profissionais e pesquisadores da área.",
+        "link": "https://repositorio.ufsc.br/handle/123456789/214423",
+        "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/214423",
+        "venue": "Repositório Institucional da UFSC",
+        "source": "UFSC",
+        "documentType": "Tese (Doutorado)",
+        "confidence": 0.75,
+        "topics": [
+          "compartilhamento do conhecimento",
+          "aprendizagem organizacional",
+          "integração do conhecimento"
+        ],
+        "semanticValidated": false,
+        "validationMethod": "local",
+        "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; aprendizagem organizacional; integração do conhecimento.",
+        "evidenceExcerpt": "Como uma Universidade Corporativa em Rede pode gerenciar a curva de aprendizagem, efetivando a transferência de aprendizagem para a prática do trabalho?"
+      },
+      "candidates": [
+        {
+          "title": "Framework Ponte TAP: gestão da curva de aprendizagem para a efetivação da transferência de aprendizagem para a prática do trabalho",
+          "authors": [
+            "Silva, Talita Caetano"
+          ],
+          "year": 2019,
+          "abstract": "?Como uma Universidade Corporativa em Rede pode gerenciar a curva de aprendizagem, efetivando a transferência de aprendizagem para a prática do trabalho??. Tal problematização provocou o gatilho necessário para constituir o objetivo geral desta tese: propor um Framework para a gestão da curva de aprendizagem efetivando a transferência da aprendizagem para a prática do trabalho. A literatura mapeada sobre o tema e suas interrelações não evidenciam como a aceleração da curva de aprendizagem pode efetivar a aplicabilidade de um conhecimento (conceito da transferência de aprendizagem) após ações de TD&E. Além disso, focam suas ações unilateralmente em treinamento, não avançando para ações de desenvolvimento e educação). Sabe-se que, para gerenciar a curva e possibilitar a transferência, é importante compreender o processo de desempenho competente, o qual abrange condições externas e internas, os próprios CHAs, e as motivações dos colaboradores. Os elementos supracitados traduziram-se nos objetivos específicos deste estudo: a) identificar os elementos constitutivos e agentes envolvidos para se processar o desempenho competente; b) compreender o Modelo de Universidade Corporativa em Rede e seus processos estruturantes; c) identificar ações de aprendizagem que possibilitam a gestão da curva de aprendizagem; d) identificar o processo de avaliação multinível e a sua relação com a efetivação da transferência de aprendizagem para a prática do trabalho; e) validar o framework de gestão da curva de aprendizagem efetivando a transferência da aprendizagem para a prática do trabalho em uma organização brasileira. Para responder à pergunta-chave evidenciada na primeira frase deste resumo, foi necessário debruçar-se sobre as teorias que alicerçam os estágios de evolução de um Sistema de Educação Corporativa, o qual dá à luz o Modelo de Universidade Corporativa em Rede. Este último, o mais recente, contemporâneo e emergente da Sociedade do Conhecimento. Além disso, foi necessário buscar em teorias de ensino e aprendizagem, premissas importantes na educação de alunos profissionais adultos, dando destaque aos conceitos de curva de aprendizagem e transferência de aprendizagem para a prática de trabalho. Ao se deparar com novas funções e responsabilidades, há a necessidade de desenvolver novas competências, habilidades e atitudes (CHAs) para alcançar o desempenho competente na nova tarefa. Essa problemática foi resolvida por meio do Framework Ponte TAP. Isto é, ao desenvolver CHAs, foi preciso gerenciar a amplitude e a profundidade da curva dos profissionais, antes durante e depois das ações educacionais, até que a aprendizagem seja processada a partir da transferência de aprendizagem para a prática do trabalho. O Framework Ponte TAP foi constituído por quatro camadas essenciais para o planejamento, execução e gestão das ações educacionais, a saber: a) desenvolvimento humano e organizacional e o processo ?desempenho competente?; b) Universidade Corporativa em Rede e seus processos estruturantes; c) gestão da curva de aprendizagem por meio de ações de aprendizagem; d) processo de avaliação multinível e a transferência de aprendizagem para a prática do trabalho. O framework foi validado em uma organização brasileira de tecnologia e demonstrou ser efetivo, alcançando resultados que confirmam a aceleração da curva de aprendizagem e efetivação da transferência de aprendizagem para a prática de trabalho. Pode-se destacar três vieses contributivos do framework: a) contribuição teórica, que ficou evidente a partir do diálogo teórico-empírico entre universidade acadêmica e universidade corporativa, com discussões colaborativas, integrando conhecimentos estruturados aos conhecimentos embasados na experiência, o que, segundo David Kolb, resulta no real percurso de desenvolvimento profissional; b) contribuição para a ação, a partir da continuidade do Programa de Integração na organização e também pela rede colaborativa, que se estabeleceu entre mais de 20 stakeholders, os quais atuaram, de forma ativa, em cada uma das camadas de aplicação. Além da própria aceleração da curva de 12 meses para 3 meses; e) e contribuições práticas, uma vez que o framework é compatível com quaisquer análises que envolvam gestão da curva de aprendizagem e transferência de aprendizagem para a prática do trabalho, não sendo único e exclusivo do público e ambiente em que foi aplicado. Além disso, esse framework pode ser aplicado em redes internas e externas de aprendizagem, sendo uma importante ferramenta para profissionais e pesquisadores da área.",
+          "link": "https://repositorio.ufsc.br/handle/123456789/214423",
+          "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/214423",
+          "venue": "Repositório Institucional da UFSC",
+          "source": "UFSC",
+          "documentType": "Tese (Doutorado)",
+          "confidence": 0.75,
+          "topics": [
+            "compartilhamento do conhecimento",
+            "aprendizagem organizacional",
+            "integração do conhecimento"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; aprendizagem organizacional; integração do conhecimento.",
+          "evidenceExcerpt": "Como uma Universidade Corporativa em Rede pode gerenciar a curva de aprendizagem, efetivando a transferência de aprendizagem para a prática do trabalho?"
+        },
+        {
+          "title": "Modelo de maturidade do sistema de educação corporativa",
+          "authors": [
+            "Kraemer, Rodrigo"
+          ],
+          "year": 2018,
+          "abstract": "A pressão para o desenvolvimento de pessoas tem se intensificado e as organizações têm investido em atividades de treinamento, desenvolvimento e educação em uma taxa crescente. Unidades organizacionais dedicadas foram criadas e evoluíram de meros departamentos de treinamento para instrumentos de transferência integrada de conhecimento, intercâmbio e inovação, tanto intra quanto entre organizações. As atividades educacionais no contexto organizacional, que chamamos de Sistemas de Educação Corporativa, podem ser configuradas por diferentes visões e apresentar diferentes estágios de evolução. Identificar a maturidade do estágio que se encontra pode auxiliar e orientar os gestores para futuras melhorias. Modelos de maturidade existem para diferentes domínios mas para as atividades educacionais no contexto organizacional, seu desenvolvimento ainda é incipiente. Com o objetivo de elaborar um modelo de avaliação de maturidade do Sistema de Educação Corporativa com foco na visão de aprendizagem em rede, foram analisados alguns modelos e apresentado um framework para a sua construção. Uma análise da literatura propiciou uma descrição de cada estágio   Departamento de Treinamento, E-Learning, Educação Corporativa, Universidade Corporativa, Stakeholder University e Universidade Corporativa em Rede - além da descoberta de três visões distintas, que guiam a implementação e funcionamento dessas unidades   Treinamento, Alinhamento Estratégico e Aprendizagem em Rede. O modelo possui cinco níveis de maturidade - não iniciado, iniciado, em andamento, prontidão e maduro   que permitem classificar a maturidade de cada estágio. Foi desenvolvida uma ferramenta de avaliação autoaplicável e o modelo foi implementado em uma organização. Como contribuição teórica temos a descrição dos estágios e uma nova classificação   as Visões do Sistema de Educação Corporativa. Como contribuição prática, o instrumento disponibilizado permite um diagnóstico simples e rápido.",
+          "link": "https://repositorio.ufsc.br/handle/123456789/190685",
+          "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/190685",
+          "venue": "Repositório Institucional da UFSC",
+          "source": "UFSC",
+          "documentType": "Dissertação (Mestrado)",
+          "confidence": 0.75,
+          "topics": [
+            "compartilhamento do conhecimento",
+            "aprendizagem organizacional",
+            "integração do conhecimento"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; aprendizagem organizacional; integração do conhecimento.",
+          "evidenceExcerpt": "Unidades organizacionais dedicadas foram criadas e evoluíram de meros departamentos de treinamento para instrumentos de transferência integrada de conhecimento, intercâmbio e inovação, tanto intra quanto entre organizações."
+        },
+        {
+          "title": "Modelo de competências do agente integrador de universidade corporativa em rede: estudo de caso de um programa de aprendizagem em rede",
+          "authors": [
+            "Loth, Adriana Falcão"
+          ],
+          "year": 2025,
+          "abstract": "A complexidade do novo cenário mundial impõe desafios complexos que os modelos tradicionais de educação corporativa e as boas práticas de governança corporativa não estão contemplando. Alinhado ao modelo de governança multinível (MultiGov), o modelo universidade corporativa em rede (UCR) surgiu como resposta à demanda das redes de aprendizagem, uma vez que favorece a produção e cocriação do conhecimento de forma sistêmica entre todos os stakeholders que contribuem para o alcance dos resultados organizacionais. Estudos recentes sobre o modelo UCR consideram o papel de um agente integrador como facilitador das conexões de rede de aprendizagem, em uma estrutura que leva em conta as mudanças nas relações entre os atores situados nos mais diferentes níveis. Mesmo com apontamentos na literatura acadêmica, no sentido de que o agente integrador de redes de aprendizagem é indispensável à implementação dos modelos UCR e MultiGov, o seu perfil de competências se configurava como uma lacuna de conhecimento científico. Desta forma, definiu-se a questão desta pesquisa: ?quais competências do agente integrador são essenciais para a implementação de um programa de aprendizagem em rede ao modelo UCR??. Para responder à questão, estabeleceu-se como objetivo geral: propor um modelo de competências do agente integrador de universidade corporativa em rede, com vistas à promoção da eficácia de um programa em rede de aprendizagem. Para tanto, desenvolveu-se uma pesquisa qualitativa predominantemente aplicada, com fins propositivos e com etapas exploratória e descritiva, situada no paradigma interpretativista. Para garantir a consistência metodológica, foram realizados levantamentos bibliográficos, documentais e de campo, observação participante e grupos focais. Como resultados, identificou-se oito competências do agente integrador de redes de aprendizagem, à luz da MultiGov, relacionando as competências do agente integrador para o atendimento das diretrizes da UCR. A verificação de consistência do modelo foi realizada através da análise do Programa Rede de Oportunidades e elaborado a partir da implantação do modelo UCR na organização onde a pesquisa foi aplicada. Verificou-se a utilização e consistência de todas as competências e do modelo como um todo, por meio de grupos focais formados por especialistas acadêmicos e stakeholders intra e interorganizacionais relacionados ao programa. Assim, atingiu-se o objetivo geral, que foi a entrega de um modelo de competências do agente integrador de UCR, por intermédio de uma analogia com o universo das abelhas. Esta pesquisa contribuiu para o avanço do conhecimento situado e científico nos estudos sobre os modelos UCR, MultiGov e ainda para a evolução das universidades corporativas de organizações públicas, oportunizando condições de obtenção de resultados positivos para o bem comum.",
+          "link": "https://repositorio.ufsc.br/handle/123456789/265283",
+          "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/265283",
+          "venue": "Repositório Institucional da UFSC",
+          "source": "UFSC",
+          "documentType": "Tese (Doutorado)",
+          "confidence": 0.6833333333333333,
+          "topics": [
+            "aprendizagem organizacional",
+            "integração do conhecimento"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: aprendizagem organizacional; integração do conhecimento.",
+          "evidenceExcerpt": "Estudos recentes sobre o modelo UCR consideram o papel de um agente integrador como facilitador das conexões de rede de aprendizagem, em uma estrutura que leva em conta as mudanças nas relações entre os atores situados nos mais diferentes níveis."
+        },
+        {
+          "title": "Purpose of the use of technologies in the contemporary models of Corporate University",
+          "authors": [
+            "Solange Maria da Silva",
+            "Gertrudes A. Dandolini",
+            "Patricia De Sá Freire",
+            "João Artur de Souza",
+            "Willian Rochadel",
+            "Aline De Brittos Valdati"
+          ],
+          "year": 2018,
+          "doi": "10.31686/ijier.vol6.iss8.1117",
+          "link": "https://doi.org/10.31686/ijier.vol6.iss8.1117",
+          "abstract": "This paper aims to identify the purpose of the use of technologies in the contemporary models of corporate university: Stakeholder University (SU) and Networked Corporate University (NCU). To accomplish it, we carried out a systematic search in the main electronic bases of scientific documents, categorizing the studies by means of the revised Bloom's Taxonomy. This search enabled to distinguish the purpose of the use of technologies in corporate universities, such as the purpose of integration between different stakeholders in relation to knowledge. The research highlights the Corporate University in addition to an environment of education; but an area of innovation in which the integration of stakeholders, university and organization constitutes an important interaction and sharing networks. By identifying the technological characteristics and tools, it points out new approaches of technological integration in the mediation between stakeholders in order to promote networked learning. That is, to remember, understand, apply, analyze, evaluate, and create (Bloom's Taxonomy), but, especially, to generate value from these relationships. The conclusion is that the distance education technologies, the knowledge media, and the engineering and knowledge management tools arise as enablers of the purpose of creating technologies to generate shared knowledge and stakeholder interaction, according to the models of SU and NCU.",
+          "venue": "International Journal for Innovation Education and Research",
+          "source": "OpenAlex",
+          "confidence": 0.75,
+          "documentType": "Artigo",
+          "topics": [
+            "compartilhamento do conhecimento",
+            "aprendizagem organizacional",
+            "integração do conhecimento"
+          ],
+          "semanticValidated": false,
+          "validationMethod": "local",
+          "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; aprendizagem organizacional; integração do conhecimento.",
+          "evidenceExcerpt": "The research highlights the Corporate University in addition to an environment of education; but an area of innovation in which the integration of stakeholders, university and organization constitutes an important interaction and sharing networks.",
+          "metadataVerified": true
+        }
+      ],
+      "sourceType": "mixed",
+      "trace": {
+        "steps": [
+          {
+            "step": "ufsc.catalog",
+            "ok": true,
+            "note": "3 obras do catálogo de 03/10/2026"
+          },
+          {
+            "step": "local.abstracts",
+            "ok": true,
+            "note": "3 obras passaram pela triagem dos resumos"
+          },
+          {
+            "step": "Crossref",
+            "ok": false,
+            "note": "Fonte indisponível nesta tentativa"
+          },
+          {
+            "step": "Crossref",
+            "ok": true,
+            "note": "14 obras recuperadas"
+          },
+          {
+            "step": "Crossref",
+            "ok": true,
+            "note": "15 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "15 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "15 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "14 obras recuperadas"
+          },
+          {
+            "step": "local.abstracts",
+            "ok": true,
+            "note": "4 obras passaram pela triagem dos resumos"
+          },
+          {
+            "step": "doi.metadata",
+            "ok": true,
+            "note": "Autoria conferida no registro DOI"
+          }
+        ]
+      },
+      "validation": "local",
+      "notice": "Obras da UFSC consultadas no catálogo atualizado em 03/10/2026. Estas leituras foram sugeridas pelo conteúdo dos resumos. A relação com a proposta precisa de revisão: abra as obras e confira se ajudam a responder ao desafio. Parte das fontes externas ficou indisponível; a busca pode estar incompleta."
+    }
+  ]
+}

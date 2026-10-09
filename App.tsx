@@ -1,21 +1,21 @@
-import { articleIndex } from "./articleIndex";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AREA_ICONS, RESEARCH_DESCRIPTIONS } from "./constants";
 import { generateChallenge } from "./geminiService";
 import { ActionRecord, Challenge, GamePhase, GameState, ResearchArea } from "./src/tipos";
-import { enrichSourceUFSCFirst, enrichSourceUFSCFirstMultiple, getSourcesByArea,} from "./src/services/sourcesService";
-import { enrichWithOpenAlex } from "./src/services/openAlexService";
+import { getSourcesByArea } from "./src/services/sourcesService";
+import { scientificSearch, SearchResult } from "./src/services/scientificSearchService";
+import { ReferenceList, DisplayReference } from "./src/components/ReferenceList";
+import { readStoredArray, writeStored } from "./src/services/browserStorage";
+import { addRoundToRanking, RankingEntry } from "./src/services/ranking";
 
 interface ExtendedActionRecord extends ActionRecord {
   references?: string[];
   sourceType?: string;
   timestamp: string;
-}
-
-interface RankingEntry {
-  playerName: string;
-  area: ResearchArea;
-  points: number;
+  pointsEarned: number;
+  usedSources: DisplayReference[];
+  recommendedSources: DisplayReference[];
+  referenceNotice?: string;
 }
 
 const evaluateProposalWithSources = (
@@ -1037,25 +1037,10 @@ console.log("[LOCAL EVAL DEBUG]", {
 return { score, normalizedScore, usedSources, recommendedSources };
 };
 
-function withTimeout<T>(promise: Promise<T>, ms: number, timeoutMsg = "Timeout na análise da IA") {
-  return new Promise<T>((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error(timeoutMsg)), ms);
-    promise
-      .then((res) => {
-        clearTimeout(timer);
-        resolve(res);
-      })
-      .catch((err) => {
-        clearTimeout(timer);
-        reject(err);
-      });
-  });
-}
-
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState & { report: ExtendedActionRecord[] }>(() => {
-    const savedReport = localStorage.getItem("engin_nexus_reports_v2");
-    const initialReport = savedReport ? JSON.parse(savedReport) : [];
+    const initialReport = readStoredArray<ExtendedActionRecord>("engin_nexus_reports_v2", item =>
+      [item.area, item.title, item.proposal, item.verdict, item.explanation].every(value => typeof value === "string"));
 
     return {
       phase: GamePhase.INTRO,
@@ -1074,13 +1059,14 @@ const App: React.FC = () => {
   });
 
   const [ranking, setRanking] = useState<RankingEntry[]>(() => {
-    const savedRanking = localStorage.getItem("engin_nexus_ranking_v2");
-    return savedRanking ? JSON.parse(savedRanking) : [];
+    return readStoredArray<RankingEntry>("engin_nexus_ranking_v2", item =>
+      typeof item.playerName === "string" && typeof item.area === "string" && Number.isFinite(item.points));
   });
 
   const [currentChallenge, setCurrentChallenge] = useState<Challenge | null>(null);
   const [playerInput, setPlayerInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const busy = useRef(false);
   const [lastRecord, setLastRecord] = useState<ExtendedActionRecord | null>(null);
 
   const [feedback, setFeedback] = useState<{
@@ -1090,20 +1076,23 @@ const App: React.FC = () => {
     sourceType?: string;
     stabilityDelta?: number;
     innovationDelta?: number;
-    usedSources?: any[];
-    recommendedSources?: any[];
+    usedSources?: DisplayReference[];
+    recommendedSources?: DisplayReference[];
+    pointsEarned?: number;
+    referenceNotice?: string;
   } | null>(null);
 
   const [newPlayerName, setNewPlayerName] = useState("");
   const [showDatabase, setShowDatabase] = useState(false);
   const [showRanking, setShowRanking] = useState(false);
+  const [storageUnavailable, setStorageUnavailable] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("engin_nexus_reports_v2", JSON.stringify(gameState.report));
+    if (!writeStored("engin_nexus_reports_v2", gameState.report)) setStorageUnavailable(true);
   }, [gameState.report]);
 
   useEffect(() => {
-    localStorage.setItem("engin_nexus_ranking_v2", JSON.stringify(ranking));
+    if (!writeStored("engin_nexus_ranking_v2", ranking)) setStorageUnavailable(true);
   }, [ranking]);
 
   const canSubmit = (playerInput || "").trim().split(/\s+/).filter((w) => w.length > 0).length >= 3;
@@ -1124,6 +1113,8 @@ const App: React.FC = () => {
   };
 
   const handleAreaSelect = async (area: ResearchArea) => {
+    if (busy.current) return;
+    busy.current = true;
     setLoading(true);
     setFeedback(null);
     setPlayerInput("");
@@ -1137,147 +1128,20 @@ const App: React.FC = () => {
     });
 
     setLoading(false);
-  };
-
- const normalizeSourceItem = (s: any) => {
-  const tituloBase = String(s?.titulo ?? s?.title ?? "Referência");
-  const anoNum = typeof s?.ano === "number" ? s.ano : undefined;
-  const titulo = anoNum ? `${tituloBase} (${anoNum})` : tituloBase;
-
-  // autores
-  const autoresRaw = s?.autores ?? s?.authors;
-  const autores =
-    Array.isArray(autoresRaw)
-      ? autoresRaw.filter(Boolean).join(", ")
-      : typeof autoresRaw === "string"
-        ? autoresRaw
-        : "Autor(es) não informado(s)";
-
-  // DOI (normaliza removendo doi.org/)
-  const doiRaw = typeof s?.doi === "string" ? s.doi.trim() : "";
-  const doi = doiRaw ? doiRaw.replace(/^https?:\/\/doi\.org\//i, "").trim() : "";
-
-  // link (prioriza DOI)
-  let linkRaw = typeof s?.link === "string" ? s.link.trim() : "";
-
-  // se link contém doi.org, extrai DOI
-  if (!doi && linkRaw && /doi\.org\//i.test(linkRaw)) {
-    const part = linkRaw.split(/doi\.org\//i)[1]?.trim();
-    if (part) linkRaw = `https://doi.org/${part}`;
-  }
-
-  // se tem DOI, força link DOI
-  if (doi) linkRaw = `https://doi.org/${doi}`;
-// ✅ captura DOI também se vier no link (doi.org/...)
-const doiFromLink =
-  !doi && linkRaw && /doi\.org\//i.test(linkRaw)
-    ? linkRaw.split(/doi\.org\//i)[1]?.trim()
-    : "";
-
-const doiFinal = (doi || doiFromLink || "").trim();
-   
-  // garante absoluto
-  if (linkRaw && !/^https?:\/\//i.test(linkRaw)) {
-    linkRaw = `https://${linkRaw.replace(/^\/+/, "")}`;
-  }
-
-  // fallback
-  if (!linkRaw) linkRaw = "https://repositorio.ufsc.br/";
-
-  return {
-  titulo,
-  autores,
-  link: linkRaw,
-  ano: anoNum,
-  doi: doiFinal || undefined, // ✅ agora o objeto tem DOI
-};
-};
-  const dedupeByDoi = <T extends { doi?: string }>(items: T[]) => {
-    const seen = new Map<string, T>();
-    const out: T[] = [];
-
-    for (const item of items) {
-      const doi = typeof item?.doi === "string" ? item.doi.toLowerCase().trim() : "";
-
-      if (!doi) {
-        out.push(item);
-        continue;
-      }
-
-      const existing = seen.get(doi);
-      if (!existing) {
-        seen.set(doi, item);
-        out.push(item);
-      } else {
-        const merged = {
-          ...item,
-          ...existing,
-          titulo: (existing as any).titulo || (item as any).titulo,
-          autores: (existing as any).autores || (item as any).autores,
-          link: (existing as any).link || (item as any).link,
-          ano: (existing as any).ano ?? (item as any).ano,
-          doi,
-        } as T;
-
-        seen.set(doi, merged);
-        const idx = out.indexOf(existing);
-        if (idx >= 0) out[idx] = merged;
-      }
-    }
-
-    return out;
-  };
-
-  const buildCacheKey = (source: { doi?: string; titulo: string }) => {
-    const doi = (source?.doi ?? "").toLowerCase().trim();
-    if (doi) return `doi:${doi}`;
-    const title = (source?.titulo ?? "").toLowerCase().trim();
-    return `title:${title}`;
+    busy.current = false;
   };
 
   const submitAction = async () => {
-    console.log("[CLICK] submitAction disparou. playerInput =", playerInput);
-    if (!currentChallenge || !canSubmit || loading) return;
+    if (!currentChallenge || !canSubmit || busy.current) return;
+    busy.current = true;
 
     const emergencyExplanation = "Falha temporária ao avaliar sua proposta. Tente novamente em instantes.";
     let combinedExplanation = "";
 
     setLoading(true);
 
-    // ✅ safeMapped sempre existe (para emergency fallback)
-    const safeMapped = (() => {
-      try {
-        const areaSources = getSourcesByArea(currentChallenge.requiredArea) || [];
-        return areaSources.slice(0, 3).map(normalizeSourceItem);
-      } catch {
-        return [
-          { autores: "UFSC/EGC", titulo: "Repositório UFSC (busca)", link: "https://repositorio.ufsc.br/" },
-        ];
-      }
-    })();
-
     try {
-      // 1️⃣ Tenta Gemini
       let feedbackData: any = null;
-
-      try {
-        feedbackData = await withTimeout(
-          Promise.resolve(
-            getGeminiFeedback(
-              currentChallenge.description,
-              gameState,
-              playerInput,
-              gameState.activePlayers,
-              currentChallenge.requiredArea
-            )
-          ),
-          45000
-        );
-      } catch (e) {
-        console.warn("Gemini falhou (429/503/etc), usando fallback local:", e);
-        feedbackData = null;
-      }
-
       // 2️⃣ Avaliação local (blindada)
       const area = currentChallenge.requiredArea;
 
@@ -1352,188 +1216,26 @@ if (localScore >= correctThreshold) {
   };
 }
 
-      // 3️⃣ UFSC-FIRST nos itens locais
-      let usedMapped: any[] = [];
-      let recommendedMapped: any[] = [];
-
- try {
-  usedMapped = (await Promise.all(
-    (localEval.usedSources ?? []).map((source: any) =>
-      enrichSourceUFSCFirst(
-        source,
-        currentChallenge.description,
-        area
-      )
-    )
-  )).map(normalizeSourceItem);
-
-  recommendedMapped = (await Promise.all(
-    (localEval.recommendedSources ?? []).map((source: any) =>
-      enrichSourceUFSCFirst(
-        source,
-        currentChallenge.description,
-        area
-      )
-    )
-  )).map(normalizeSourceItem);
-
-} catch (e) {
-  console.error("[LOCAL_MAP] falhou ao mapear fontes:", e);
-  usedMapped = [];
-  recommendedMapped = [];
-}
-
-      // 4️⃣ Fallback pedagógico (sempre mostrar referências)
-      if (
-  usedMapped.length === 0 &&
-  recommendedMapped.length === 0 &&
-  area !== ResearchArea.INTEGRATION_ENG
-) {
-  const areaSources = getSourcesByArea(area);
-  recommendedMapped = (areaSources || [])
-    .slice(0, 3)
-    .map(normalizeSourceItem);
-}
-
-      // 5️⃣ Se Gemini falhou, gera feedback científico local
-      if (!feedbackData) {
-        const topRefs = (usedMapped.length ? usedMapped : recommendedMapped).slice(0, 3);
-        const refsText = topRefs.map((r) => `- ${r.autores}: ${r.titulo}`).join("\n");
-
-        feedbackData = {
-          verdict: "CORRETA",
-          explanation:
-            `Proposta recebida com sucesso: "${playerInput}"\n\n` + `Base científica do eixo:\n${refsText}`,
-          pointsEarned: 10,
-          references: topRefs.map((r) => `${r.autores} — ${r.titulo}`),
-          sourceType: "LOCAL_FALLBACK",
-        };
+      // Reference retrieval is independent of the calibrated grading rules above.
+      let research: SearchResult;
+      try {
+        research = await scientificSearch({
+          title: currentChallenge.title,
+          challenge: currentChallenge.description,
+          proposal: playerInput,
+          area,
+          limit: 4,
+        });
+      } catch {
+        research = { best: null, candidates: [], sourceType: "none", validation: "none",
+          trace: { steps: [] }, notice: "A busca de referências está indisponível nesta rodada. A avaliação da proposta foi mantida." };
       }
-
-      // 6️⃣ Pontuação
-      const pointsEarned: number = typeof feedbackData.pointsEarned === "number" ? feedbackData.pointsEarned : 10;
-
-      // 7️⃣ Enriquecimento OpenAlex (somente RECOMENDADAS do fluxo LOCAL UFSC-FIRST)
-      const enrichedRecommendedMapped = await Promise.all(
-        (recommendedMapped || []).map(async (source) => {
-          const cacheKey = `openalex:${buildCacheKey(source as any)}`;
-
-          try {
-            const cached = localStorage.getItem(cacheKey);
-            if (cached) return JSON.parse(cached);
-          } catch {
-            // ignora
-          }
-
-          let enriched: any = null;
-          try {
-            enriched = await enrichWithOpenAlex({
-              doi: (source as any)?.doi,
-              title: source.titulo,
-            });
-          } catch (e) {
-            enriched = null;
-          }
-
-          // ✅ UFSC-first: se não enriquecer, ao menos garantir "busca específica" UFSC (não link genérico)
-          if (!enriched) {
-            const titleQ = encodeURIComponent(source.titulo || "");
-            const ufscSearch = `https://repositorio.ufsc.br/simple-search?query=${titleQ}`;
-            const linkIsGeneric =
-              !source.link ||
-              source.link === "https://repositorio.ufsc.br/" ||
-              source.link === "https://repositorio.ufsc.br";
-
-            return { ...source, link: linkIsGeneric ? ufscSearch : source.link };
-          }
-
-          const doi = typeof enriched.doi === "string" ? enriched.doi.trim() : "";
-          const doiHref = doi ? `https://doi.org/${doi.replace(/^https?:\/\/doi\.org\//i, "")}` : "";
-             // 🔎 tenta encontrar mapeamento por DOI
-          const normalizeDoi = (v: any) =>
-           String(v ?? "")
-         .trim()
-        .toLowerCase()
-        .replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")
-        .replace(/^doi:\s*/i, "");
-
-       const doiKey =
-      normalizeDoi((enriched as any)?.doi) || normalizeDoi((source as any)?.doi);
-
-     const mappingByDoi = doiKey
-  ? articleIndex.find((item) => normalizeDoi(item.doi) === doiKey)
-  : undefined;
-       console.log("DOI KEY (UI):", doiKey);
-       console.log("INDEX SIZE:", articleIndex?.length);
-        console.log("MAPPING FOUND:", mappingByDoi);   
-        const finalSource = {
-           ...source,
-       titulo: enriched.titulo || source.titulo,
-              autores: enriched.autores || source.autores,
-               ano: (enriched as any).ano ?? (source as any).ano,
-             doi: (enriched as any).doi ?? (source as any).doi,
-             // 🔒 prioridade absoluta já tratada dentro do enrichWithOpenAlex
-                 link: enriched.link || source.link,
-                 driveUrl: mappingByDoi?.driveUrl,
-                  ufscHandle: mappingByDoi?.ufscHandle,
-                  };
-
-          try {
-            localStorage.setItem(cacheKey, JSON.stringify(finalSource));
-          } catch {
-            // ignora
-          }
-
-          return finalSource;
-        })
-      );
-
-      // 8️⃣ Dedup final (APENAS UMA VEZ) -> este é o que vai para UI
-      const dedupedRecommended = dedupeByDoi(enrichedRecommendedMapped as any[]);
-
-const scientificCandidatePool = (enrichedRecommendedMapped || [])
-  .flatMap((source: any) => source?.scientificCandidates ?? [])
-  .filter(
-    (candidate: any) =>
-      candidate?.title &&
-      candidate?.link &&
-      typeof candidate?.confidence === "number" &&
-      candidate.confidence >= 0.55
-  );
-
-      const mappedScientificCandidates = scientificCandidatePool.map(
-  (candidate: any) => ({
-    titulo: candidate.title,
-    autores:
-      Array.isArray(candidate.authors) && candidate.authors.length > 0
-        ? candidate.authors.join("; ")
-        : "Autor não informado",
-    ano: candidate.year,
-    doi: candidate.doi,
-    link: candidate.link,
-    sourceType: candidate.source,
-    confidence: candidate.confidence,
-    ufscHandle: candidate.ufscHandle,
-  })
-);
-      
-     console.log("UFSC-FIRST + OpenAlex recommended (best-effort):", dedupedRecommended?.slice?.(0, 3));
-
-console.log(
-  "DEBUG DEDUP FULL:",
-  (dedupedRecommended || []).map((s: any) => ({
-    titulo: s?.titulo,
-    doi: s?.doi,
-    link: s?.link,
-  }))
-);
-
-console.log(
-  "DEBUG DOI COUNT:",
-  (dedupedRecommended || []).filter((s: any) => !!s?.doi).length,
-  "/",
-  (dedupedRecommended || []).length
-);
+      const usedMapped: DisplayReference[] = [];
+      const dedupedRecommended: DisplayReference[] = research.candidates.map(source => ({
+        ...source, titulo: source.title, autores: source.authors.join("; "), ano: source.year,
+      }));
+      feedbackData.references = dedupedRecommended.map(source => `${source.autores} — ${source.titulo} — ${source.link}`);
+      const pointsEarned = feedbackData.pointsEarned;
 
       // 9️⃣ Explicação combinada
       combinedExplanation = String(feedbackData?.explanation ?? "").trim() || combinedExplanation || emergencyExplanation;
@@ -1546,7 +1248,8 @@ console.log(
         explanation: combinedExplanation,
         executors: [...gameState.activePlayers],
         references: feedbackData.references ?? [],
-        sourceType: feedbackData.sourceType ?? "local",
+        sourceType: research.sourceType,
+        referenceNotice: research.notice,
         pointsEarned,
         usedSources: usedMapped,
         recommendedSources: dedupedRecommended,
@@ -1554,34 +1257,20 @@ console.log(
       };
 
       setLastRecord(record);
-
-      console.log("ANTES do setFeedback", {
-        hasRec: recommendedMapped.length,
-        hasUsed: usedMapped.length,
-      });
-
-      console.log(
-        "DEBUG RECOMMENDED (flat):",
-        (dedupedRecommended as any[]).map((s) => ({
-          titulo: s?.titulo,
-          autores: s?.autores,
-          ano: s?.ano,
-          doi: s?.doi,
-          link: s?.link,
-        }))
-      );
+      setGameState(previous => ({ ...previous, report: [record, ...previous.report] }));
+      setRanking(previous => addRoundToRanking(previous, record.executors, record.area, record.pointsEarned));
 
       setFeedback({
         verdict: feedbackData.verdict,
         explanation: combinedExplanation,
         pointsEarned,
         references: feedbackData.references ?? [],
-        sourceType: feedbackData.sourceType ?? "local",
+        sourceType: research.sourceType,
+        referenceNotice: research.notice,
         usedSources: usedMapped,
         recommendedSources: dedupedRecommended,
       });
 
-      console.log("DEPOIS do setFeedback");
     } catch (err) {
       console.error("submitAction error:", err);
 
@@ -1589,28 +1278,18 @@ console.log(
         verdict: "ANALISE_INDISPONIVEL",
         explanation: emergencyExplanation,
         pointsEarned: 0,
-        references: safeMapped.map((r: any) => `${r.autores} — ${r.titulo}`),
+        references: [],
+        referenceNotice: "A busca de referências está indisponível nesta rodada.",
         sourceType: "EMERGENCY_FALLBACK",
         usedSources: [],
-        recommendedSources: safeMapped,
+        recommendedSources: [],
       });
     } finally {
+      busy.current = false;
       setLoading(false);
     }
   };
 
-  const buildQuery = (s: any) => {
-    const titulo = (s?.titulo ?? "").toString().trim();
-    const autores = (s?.autores ?? "").toString().trim();
-    const doiLike = (s?.doi ?? "").toString().trim();
-    const rawLink = (s?.link ?? "").toString().trim();
-
-    const doiLink = rawLink.includes("doi.org/") ? rawLink.split("doi.org/")[1]?.trim() : "";
-    const doi = doiLike || doiLink;
-
-    const q = [titulo, autores, doi].filter(Boolean).join(" ");
-    return q || titulo || autores || rawLink;
-  };
 
   return (
     <div className="min-h-screen terminal-bg text-blue-50 p-3 md:p-8 font-inter overflow-x-hidden">
@@ -1674,6 +1353,7 @@ console.log(
       </header>
 
       <main className="max-w-6xl mx-auto">
+        {storageUnavailable && <p role="status" className="mb-4 text-sm text-yellow-200">Não foi possível salvar os resultados neste navegador. Eles continuam disponíveis enquanto esta sessão estiver aberta.</p>}
         {showRanking ? (
           <div className="animate-in fade-in duration-500 space-y-4">
             <h2 className="font-orbitron text-lg text-yellow-500 border-b border-yellow-900/30 pb-2">RANKING</h2>
@@ -1796,6 +1476,7 @@ console.log(
                   {Object.values(ResearchArea).map((area) => (
                     <button
                       key={area}
+                      disabled={loading}
                       onClick={() => handleAreaSelect(area)}
                       className="p-5 bg-slate-900/60 border border-blue-900/40 rounded-2xl hover:border-blue-400 text-left transition-all active:bg-blue-900/20 group"
                     >
@@ -1806,6 +1487,8 @@ console.log(
                   ))}
                 </div>
               )}
+
+              {loading && !currentChallenge && <p role="status" className="mt-4 text-sm text-blue-200">Preparando desafio...</p>}
 
               {currentChallenge && (
                 <div className="bg-slate-900 border border-blue-500/20 rounded-2xl overflow-hidden shadow-2xl animate-in zoom-in duration-300">
@@ -1823,7 +1506,7 @@ console.log(
                           }`}
                         >
                           <h4 className={`font-orbitron text-lg mb-3 ${feedback.verdict === "CORRETA" ? "text-green-400" : "text-red-400"}`}>
-                            {feedback.verdict}
+                            {feedback.verdict.replaceAll("_", " ")}
                           </h4>
 
                           <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest mb-2">
@@ -1833,151 +1516,7 @@ console.log(
 
                           <p className="text-[10px] md:text-xs text-blue-50 leading-relaxed mb-4">{feedback.explanation}</p>
 
-                          {(lastRecord?.usedSources?.length || 0) > 0 && (
-                            <div className="mt-4 space-y-2">
-                              <p className="text-[9px] font-orbitron text-green-400 uppercase tracking-widest">Fontes acionadas</p>
-                              <ul className="space-y-1 text-[9px] text-blue-100/70">
-                                {lastRecord?.usedSources?.slice(0, 3).map((s: any, idx: number) => (
-                                  <li key={idx} className="leading-snug">
-                                    <span className="text-white font-bold">{s.autores || "Autor não informado"}</span>{" "}
-                                    <span className="text-blue-200/80">— {s.titulo}</span>{" "}
-                                    {s.doi ? (
-                                      <span className="ml-1 text-[9px] text-blue-200/60">
-                                      (DOI: <span className="text-blue-200/80">{s.doi}</span>)
-                                      </span>
-                                      ) : null}
-                                    {s.link ? (
-                                      <a
-                                        href={s.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-yellow-400 underline ml-1 inline-block break-all"
-                                        onClick={(e) => e.stopPropagation()}
-                                      >
-                                        abrir
-                                      </a>
-                                    ) : null}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-
-                          {((feedback as any)?.recommendedSources?.length || 0) > 0 && (
-                            <div className="mt-4 space-y-2">
-                              <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest">Recomendações para evoluir</p>
-                              <ul className="space-y-1 text-[9px] text-blue-100/70">
-                                {(feedback as any)?.recommendedSources?.slice(0, 3).map((s: any, idx: number) => (
-                                  <li key={idx} className="leading-snug">
-                                    <span className="text-white font-bold">{s.autores}</span>{" "}
-                                    <span className="text-blue-200/80">— {s.titulo}</span>{" "}
-                                   {(() => {
-                                   const q = `${(s?.titulo ?? "").toString()} ${(s?.autores ?? "").toString()}`.trim();
-                                    const qEnc = encodeURIComponent(q);
-
-                                  const raw = (s?.link ?? "").trim();
-                                 const mainHref = raw && !/^https?:\/\//i.test(raw) ? `https://${raw}` : raw;
-
-                               const doiCandidate = String(s?.doi ?? "").trim() || raw;
-                               const doiText = doiCandidate
-                               .replace(/^doi:\s*/i, "")
-                               .replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")
-                                .trim()
-                               .replace(/[)\].,;:]+$/g, "");
-                                const doiHref = doiText.startsWith("10.") ? `https://doi.org/${doiText}` : "";
-                                  const safeHref = (u: string) => {
-                                  if (!u) return "";
-                                  const cleaned = u.trim();
-                                  if (!/^https?:\/\//i.test(cleaned)) return "";
-                                  return cleaned;
-                                  };
-                              const finalHref = safeHref(doiHref || mainHref);
-
-                      const titleForQuery = (s?.titulo ?? q).toString();
-
-                    const rawMain = (s as any)?.link || "";
-                   const ufscHandle = (s as any)?.ufscHandle || "";
-              const driveItemUrl = (s as any)?.driveUrl || "";
-              console.log("INDEX DEBUG:", articleIndex?.length, articleIndex?.[0]);
-               console.log("MAP CHECK:", {
-              doiText,
-              finalHref,
-                ufscHandle: (s as any)?.ufscHandle,
-                driveUrl: (s as any)?.driveUrl,
-                    });
-                                    
-               const links = [
-            { label: "Google Acadêmico", href: safeHref(`https://scholar.google.com/scholar?q=${qEnc}`) },
-                  { label: "ERIC", href: safeHref(`https://eric.ed.gov/?q=${qEnc}`) },
-
-                   ...(ufscHandle
-               ? [{ label: "UFSC/EGC (direto)", href: safeHref(ufscHandle) }]
-                 : []),
-
-               ...(driveItemUrl
-                    ? [{ label: "Drive (arquivo)", href: safeHref(driveItemUrl) }]
-                   : []),
-
-                {
-               label: "Scopus",
-                 href: safeHref(
-                 `https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=TITLE-ABS-KEY%28${encodeURIComponent(
-                  (s?.titulo ?? q).toString()
-                  )}%29`
-                 ),
-                 },
-                 ];
-                         return (
-                      <div className="mt-1 space-y-1">
-                     {/* DOI (canal 1) */}
-                    {!!doiText && (
-                       <a
-                   href={`https://doi.org/${doiText}`}
-                   target="_blank"
-                   rel="noopener noreferrer"
-                  className="text-[9px] text-blue-200/80 underline block break-all"
-                    onClick={(e) => e.stopPropagation()}
-               >
-                DOI: {doiText}
-                 </a>
-                )}
-
-                 {/* Abrir artigo (mainHref) */}
-                  {!!(doiText || finalHref) && (
-                <a
-                  href={doiText ? `https://doi.org/${doiText}` : finalHref}
-                target="_blank"
-                 rel="noopener noreferrer"
-                   className="text-yellow-400 underline block break-all"
-                      onClick={(e) => e.stopPropagation()}
-                     >
-                      Abrir artigo
-                        </a>
-                        )}
-
-                       {/* Outras fontes (canal 3) */}
-                        <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
-                        {links.map((l) => (
-                          <a
-                           key={l.label}
-                          href={l.href}
-                           target="_blank"
-                            rel="noopener noreferrer"
-                             className="text-[9px] text-cyan-300 underline"
-                              onClick={(e) => e.stopPropagation()}
-                              >
-                              {l.label}
-                               </a>
-                                ))}
-                                </div>
-                                </div>
-                                );
-                                 })()}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
+                          <ReferenceList sources={feedback.recommendedSources || []} notice={feedback.referenceNotice} />
                         </div>
 
                         <button
@@ -2045,33 +1584,4 @@ const StatBar = ({ label, value, color }: { label: string; value: number; color:
   </div>
 );
 
-async function getGeminiFeedback(
-  challengeDescription: string,
-  _gameState: any,
-  playerInput: string,
-  _activePlayers: string[],
-  requiredArea: string
-) {
-  const answer = playerInput.trim();
-
-  if (answer.length < 40) {
-    return {
-      verdict: "PARCIALMENTE_CORRETA",
-      explanation:
-        "A proposta é pertinente, mas está pouco desenvolvida. É necessário explicar como a ação será implementada, quais mecanismos serão utilizados e como ela responde diretamente ao desafio apresentado.",
-      pointsEarned: 5,
-      references: [],
-      sourceType: "local",
-    };
-  }
-
-  return {
-    verdict: "CORRETA",
-    explanation:
-      `A proposta apresenta desenvolvimento suficiente para análise inicial no eixo ${requiredArea}.`,
-    pointsEarned: 10,
-    references: [],
-    sourceType: "local",
-  };
-}
 export default App;

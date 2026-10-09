@@ -1,499 +1,265 @@
-import { scientificSearch } from "./scientificSearchService";
-
 import { ResearchArea } from "../tipos";
+import { researchPlan, topicalRelevance } from "./researchTopics";
+import { dedupeReferences, normalizeDoi, safeArticleLink } from "./referenceUtils";
+import { screenAbstractsLocally } from "./localReferenceValidation";
 
 export type SourceType = "ufsc" | "external" | "mixed" | "none";
-
 export type SearchQuery = {
-  title: string;
-  year?: number;
-  authors?: string[];
-  keywords?: string[];
-  area?: ResearchArea;
+  title: string; year?: number; authors?: string[]; keywords?: string[];
+  area?: ResearchArea; challenge?: string; proposal?: string; limit?: number;
 };
-
 export type Evidence = {
-  title: string;
-  authors: string[];
-  year?: number;
-  doi?: string;
-  link: string;          // SEMPRE absoluto e funcional
-  venue?: string;        // periódico / evento / repositório
-  source: "UFSC" | "OpenAlex" | "Crossref" | "SemanticScholar" | "Other";
-  confidence: number;    // 0..1
-  ufscHandle?: string;   // quando aplicável
+  title: string; authors: string[]; year?: number; doi?: string; link: string;
+  venue?: string; source: "UFSC" | "OpenAlex" | "Crossref";
+  confidence: number; ufscHandle?: string; abstract?: string; topics?: string[];
+  relevanceReason?: string; evidenceExcerpt?: string; semanticValidated?: boolean;
+  validationMethod?: "local" | "gemini";
+  documentType?: string;
+  metadataVerified?: boolean;
 };
-
-export type SearchTrace = {
-  steps: Array<{ step: string; ok: boolean; note?: string }>;
-};
-
+export type SearchTrace = { steps: Array<{ step: string; ok: boolean; note?: string }> };
 export type SearchResult = {
-  best: Evidence | null;
-  candidates: Evidence[];
-  sourceType: SourceType;
-  trace: SearchTrace;
+  best: Evidence | null; candidates: Evidence[]; sourceType: SourceType; trace: SearchTrace;
+  validation: "semantic" | "local" | "none"; notice: string;
 };
 
-type FetchOpts = {
-  timeoutMs?: number;
-  retries?: number;
-  retryDelayMs?: number;
-};
+const API_BASE = (import.meta.env.VITE_RESEARCH_API_URL || `${import.meta.env.BASE_URL}api`).replace(/\/$/, "");
+const STATIC_REFERENCES = import.meta.env.VITE_STATIC_REFERENCES === "true";
+const inFlight = new Map<string, Promise<SearchResult>>();
+const CACHE_PREFIX = "nexus_references_v8:";
 
-const DEFAULT_FETCH: Required<FetchOpts> = {
-  timeoutMs: 12000,
-  retries: 1,
-  retryDelayMs: 600,
-};
-
-const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 dias
-const CACHE_PREFIX = "nexus_scisearch_v2:";
-
-// -------------------------
-// Public API
-// -------------------------
 export async function scientificSearch(query: SearchQuery): Promise<SearchResult> {
+  const area = query.area;
+  if (!area || !Object.values(ResearchArea).includes(area)) return emptyResult("Área de pesquisa não informada.");
+  const key = JSON.stringify([API_BASE, STATIC_REFERENCES, import.meta.env.VITE_DISABLE_GEMINI === "true", area, query.challenge || query.title, query.proposal || "", query.limit || 4]);
+  const cached = readCache(key);
+  if (cached) return cached;
+  const running = inFlight.get(key);
+  if (running) return running;
+  const work = runSearch(query, area).then(result => {
+    // Provisional results expire quickly so an outage or key change can recover.
+    try { localStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ exp: Date.now() + (result.validation === "semantic" ? 86400000 : 60000), result })); } catch { /* optional storage */ }
+    return result;
+  }).finally(() => inFlight.delete(key));
+  inFlight.set(key, work);
+  return work;
+}
+
+async function runSearch(query: SearchQuery, area: ResearchArea): Promise<SearchResult> {
   const trace: SearchTrace = { steps: [] };
-
-  const normTitle = normalizeTitle(query.title);
-  if (!normTitle) {
-    trace.steps.push({ step: "normalize", ok: false, note: "Título vazio após normalização" });
-    return { best: null, candidates: [], sourceType: "none", trace };
-  }
-  trace.steps.push({ step: "normalize", ok: true });
-
-  const cacheKey = `${CACHE_PREFIX}${hashKey(`${normTitle}|${query.year ?? ""}`)}`;
-  const cached = cacheRead<SearchResult>(cacheKey);
-  if (cached) {
-    trace.steps.push({ step: "cache", ok: true, note: "HIT" });
-    // Mantém trace local também (útil p/ debug)
-    return { ...cached, trace: mergeTrace(cached.trace, trace) };
-  }
-  trace.steps.push({ step: "cache", ok: true, note: "MISS" });
-
-  // 1) UFSC-first
-  const ufscCandidates = await searchUFSC(normTitle, query, trace);
-
-  // Heurística “evidência suficiente”:
-  // - tem handle OU
-  // - título muito parecido + (autores ou ano) OU
-  // - tem DOI e link bom
-  const ufscBest = pickBest(ufscCandidates, normTitle, query);
-
-  const ufscStrong = ufscBest ? isSufficientUFSC(ufscBest, normTitle, query) : false;
-
-  // 2) Externos (somente se UFSC não sustentar)
-  let externalCandidates: Evidence[] = [];
-  if (!ufscStrong) {
-    externalCandidates = await searchExternal(normTitle, query, trace);
-  } else {
-    trace.steps.push({ step: "external", ok: true, note: "skip (UFSC suficiente)" });
-  }
-
-  // 3) Merge + dedupe + score
-  const all = dedupeByKey([...ufscCandidates, ...externalCandidates]);
-  const best = pickBest(all, normTitle, query);
-
-  const sourceType: SourceType =
-    best?.source === "UFSC" ? "ufsc" : best ? (ufscCandidates.length ? "mixed" : "external") : "none";
-
-  const rankedCandidates = all
-  .map((candidate) => ({
-    ...candidate,
-    confidence: Math.max(
-      candidate.confidence,
-      titleSimilarity(normTitle, normalizeTitle(candidate.title))
-    ),
-  }))
-  .filter((candidate) => candidate.confidence >= 0.55)
-  .sort((a, b) => b.confidence - a.confidence)
-  .slice(0, 8);
-
-const result: SearchResult = {
-  best: best ?? null,
-  candidates: rankedCandidates,
-  sourceType,
-  trace,
-};
-
-  cacheWrite(cacheKey, result, CACHE_TTL_MS);
-  return result;
-}
-
-// -------------------------
-// UFSC Provider (UFSC-first)
-// -------------------------
-async function searchUFSC(normTitle: string, query: SearchQuery, trace: SearchTrace): Promise<Evidence[]> {
-  const out: Evidence[] = [];
-
-  // Estratégia 1: busca por título no Repositório UFSC (página de busca)
-  // Observação: endpoints podem variar; deixamos isolado para ajustar em um só lugar.
-  // A ideia é: pegar HTML -> extrair links de handle e títulos.
-
-  try {
-    trace.steps.push({ step: "ufsc.search", ok: true, note: "try" });
-
-    const searchUrl = buildUFSCSearchUrl(query.title);
-    const html = await fetchText(searchUrl);
-
-    const hits = parseUFSCSearchHtml(html);
-
-    for (const h of hits) {
-      const confidenceBase = titleSimilarity(normTitle, normalizeTitle(h.title));
-
-const minimumSimilarity =
-  query.area === ResearchArea.KNOWLEDGE_MGMT ? 0.55 : 0.72;
-
-if (confidenceBase < minimumSimilarity) continue;
-
-      const link = ensureAbsolute(h.link);
-      const handle = extractHandle(link);
-
-      out.push({
-        title: h.title,
-        authors: h.authors ?? [],
-        year: h.year,
-        link: preferHandleLink(handle, link),
-        ufscHandle: handle ?? undefined,
-        source: "UFSC",
-        confidence: clamp01(confidenceBase + (handle ? 0.15 : 0.0)),
-      });
-    }
-
-    trace.steps.push({ step: "ufsc.search", ok: true, note: `hits=${out.length}` });
-  } catch (e: any) {
-    trace.steps.push({ step: "ufsc.search", ok: false, note: String(e?.message ?? e) });
-  }
-
-  // Estratégia 2 (opcional futuro): se achou handle, tentar “metadata page”
-  // para extrair autores/ano/doi com mais precisão.
-  // Mantive comentado para não “inventar endpoint” agora.
-  //
-  // for (const ev of out) {
-  //   if (!ev.ufscHandle) continue;
-  //   // fetch metadata page, refine...
-  // }
-
-  return out;
-}
-
-function buildUFSCSearchUrl(originalTitle: string): string {
-  // Ajuste fino depois (1 lugar só).
-  // Exemplo comum em DSpace: /simple-search?query=...
-  const q = encodeURIComponent(originalTitle.trim());
-  return `https://repositorio.ufsc.br/simple-search?query=${q}`;
-}
-
-function parseUFSCSearchHtml(html: string): Array<{ title: string; link: string; authors?: string[]; year?: number }> {
-  // Parser leve por regex (browser). Se quiser robustez total, trocamos por DOMParser.
-  // A meta aqui é: extrair itens com link para /handle/...
-  const results: Array<{ title: string; link: string; authors?: string[]; year?: number }> = [];
-
-  try {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    const anchors = Array.from(doc.querySelectorAll("a"))
-      .map(a => ({ text: (a.textContent ?? "").trim(), href: a.getAttribute("href") ?? "" }))
-      .filter(x => x.href.includes("/handle/") && x.text.length > 8);
-
-    // Deduz autores/ano se estiver próximo no DOM (best-effort)
-    for (const a of anchors.slice(0, 10)) {
-      const link = a.href.startsWith("http") ? a.href : `https://repositorio.ufsc.br${a.href}`;
-      results.push({ title: a.text, link });
-    }
-  } catch {
-    // se falhar, retorna vazio
-  }
-
-  return results;
-}
-
-function isSufficientUFSC(ev: Evidence, normTitle: string, query: SearchQuery): boolean {
-  const sim = titleSimilarity(normTitle, normalizeTitle(ev.title));
-  const hasHandle = !!ev.ufscHandle;
-  const hasAuthors = (ev.authors?.length ?? 0) >= 1;
-  const yearMatch = query.year ? ev.year === query.year : true;
-
-  // “UFSC suficiente” = handle + sim alta, ou sim muito alta + (autor/ano)
-  if (hasHandle && sim >= 0.78) return true;
-  if (sim >= 0.88 && (hasAuthors || yearMatch)) return true;
-  return false;
-}
-
-// -------------------------
-// External Providers (fallback)
-// -------------------------
-async function searchExternal(normTitle: string, query: SearchQuery, trace: SearchTrace): Promise<Evidence[]> {
-  const out: Evidence[] = [];
-
-  // OpenAlex
-  try {
-    trace.steps.push({ step: "openalex.search", ok: true, note: "try" });
-    const oa = await searchOpenAlex(query.title);
-    out.push(...oa.map(x => scoreExternal(x, normTitle, query)));
-    trace.steps.push({ step: "openalex.search", ok: true, note: `hits=${oa.length}` });
-  } catch (e: any) {
-    trace.steps.push({ step: "openalex.search", ok: false, note: String(e?.message ?? e) });
-  }
-
-  // Crossref
-  try {
-    trace.steps.push({ step: "crossref.search", ok: true, note: "try" });
-    const cr = await searchCrossref(query.title);
-    out.push(...cr.map(x => scoreExternal(x, normTitle, query)));
-    trace.steps.push({ step: "crossref.search", ok: true, note: `hits=${cr.length}` });
-  } catch (e: any) {
-    trace.steps.push({ step: "crossref.search", ok: false, note: String(e?.message ?? e) });
-  }
-
-  return out;
-}
-
-async function searchOpenAlex(title: string): Promise<Evidence[]> {
-  const minYear = new Date().getFullYear() - 10;
-const url = `https://api.openalex.org/works?search=${encodeURIComponent(title)}&filter=from_publication_date:${minYear}-01-01&per-page=5`;
-  const data = await fetchJson<any>(url);
-
-  const results = Array.isArray(data?.results) ? data.results : [];
-  return results.map((r: any) => {
-    const doiRaw = (r?.doi ?? "").replace(/^https?:\/\/doi\.org\//i, "").trim();
-    const doi = doiRaw || undefined;
-    const link = doi ? `https://doi.org/${doi}` : (r?.primary_location?.landing_page_url ?? "");
-    const authors =
-      Array.isArray(r?.authorships)
-        ? r.authorships.map((a: any) => a?.author?.display_name).filter(Boolean)
-        : [];
-
-    const year = typeof r?.publication_year === "number" ? r.publication_year : undefined;
-
-    return {
-      title: r?.title ?? "Referência",
-      authors,
-      year,
-      doi,
-      link: ensureAbsolute(link),
-      venue: r?.primary_location?.source?.display_name ?? undefined,
-      source: "OpenAlex" as const,
-      confidence: 0.5,
-    };
-  }).filter((e: Evidence) => !!e.link);
-}
-
-async function searchCrossref(title: string): Promise<Evidence[]> {
-  const minYear = new Date().getFullYear() - 10;
-const url = `https://api.crossref.org/works?query.title=${encodeURIComponent(title)}&filter=from-pub-date:${minYear}-01-01&rows=5`;
-  const data = await fetchJson<any>(url);
-
-  const items = Array.isArray(data?.message?.items) ? data.message.items : [];
-  return items.map((it: any) => {
-    const doi = (it?.DOI ?? "").trim() || undefined;
-    const link = doi ? `https://doi.org/${doi}` : "";
-    const authors =
-      Array.isArray(it?.author)
-        ? it.author.map((a: any) => `${a?.given ?? ""} ${a?.family ?? ""}`.trim()).filter(Boolean)
-        : [];
-
-    const year =
-      Array.isArray(it?.issued?.["date-parts"]) && Array.isArray(it.issued["date-parts"][0])
-        ? Number(it.issued["date-parts"][0][0])
-        : undefined;
-
-    const titleStr = Array.isArray(it?.title) ? (it.title[0] ?? "Referência") : (it?.title ?? "Referência");
-
-    return {
-      title: titleStr,
-      authors,
-      year,
-      doi,
-      link: ensureAbsolute(link),
-      venue: Array.isArray(it?.container-title) ? it["container-title"][0] : it?.["container-title"],
-      source: "Crossref" as const,
-      confidence: 0.45,
-    };
-  }).filter((e: Evidence) => !!e.link);
-}
-
-function scoreExternal(ev: Evidence, normTitle: string, query: SearchQuery): Evidence {
-  const sim = titleSimilarity(normTitle, normalizeTitle(ev.title));
-  const hasDoi = !!ev.doi;
-
-  let bonus = 0;
-  if (hasDoi) bonus += 0.18;
-  if (query.year && ev.year && query.year === ev.year) bonus += 0.08;
-  if ((ev.authors?.length ?? 0) >= 1) bonus += 0.05;
-
-  return { ...ev, confidence: clamp01(sim * 0.75 + bonus) };
-}
-
-// -------------------------
-// Ranking / Dedupe
-// -------------------------
-function pickBest(cands: Evidence[], normTitle: string, query: SearchQuery): Evidence | null {
-  if (!cands.length) return null;
-
-  const scored = cands.map(c => {
-    const sim = titleSimilarity(normTitle, normalizeTitle(c.title));
-    const doiBonus = c.doi ? 0.08 : 0;
-    const handleBonus = c.ufscHandle ? 0.10 : 0;
-    const yearBonus = query.year && c.year && query.year === c.year ? 0.06 : 0;
-
-    const conf = clamp01(Math.max(c.confidence, sim * 0.7 + doiBonus + handleBonus + yearBonus));
-    return { ...c, confidence: conf, link: preferBestLink(c) };
-  });
-
-  scored.sort((a, b) => b.confidence - a.confidence);
-
-  // Garante link funcional preferindo DOI/handle
-  const best = scored[0];
-  if (!best.link || best.link === "https://repositorio.ufsc.br/") return null;
-  return best;
-}
-
-function preferBestLink(e: Evidence): string {
-  if (e.doi) return `https://doi.org/${e.doi.replace(/^https?:\/\/doi\.org\//i, "").trim()}`;
-  if (e.ufscHandle) return `https://repositorio.ufsc.br/handle/${e.ufscHandle}`;
-  return ensureAbsolute(e.link);
-}
-
-function dedupeByKey(items: Evidence[]): Evidence[] {
-  const map = new Map<string, Evidence>();
-
-  for (const it of items) {
-    const doiKey = it.doi ? `doi:${it.doi.toLowerCase().trim()}` : "";
-    const handleKey = it.ufscHandle ? `handle:${it.ufscHandle.trim()}` : "";
-    const titleKey = `t:${normalizeTitle(it.title)}`;
-
-    const key = doiKey || handleKey || titleKey;
-
-    const prev = map.get(key);
-    if (!prev || it.confidence > prev.confidence) map.set(key, it);
-  }
-
-  return Array.from(map.values());
-}
-
-// -------------------------
-// Utilities (fetch/cache/normalize)
-// -------------------------
-async function fetchText(url: string, opts: FetchOpts = {}): Promise<string> {
-  const o = { ...DEFAULT_FETCH, ...opts };
-  let lastErr: any = null;
-
-  for (let i = 0; i <= o.retries; i++) {
+  const challenge = query.challenge || query.title;
+  const plan = researchPlan(area, challenge);
+  const limit = Math.max(3, Math.min(6, query.limit || 4));
+  let ufscAvailable = true;
+  let catalogDate = "";
+  const ufscResults = STATIC_REFERENCES ? [await (async () => {
     try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), o.timeoutMs);
-
-      const res = await fetch(url, { signal: ctrl.signal });
-      clearTimeout(t);
-
-      if (!res.ok) throw new Error(`HTTP ${res.status} (${url})`);
-      return await res.text();
-    } catch (e) {
-      lastErr = e;
-      if (i < o.retries) await sleep(o.retryDelayMs);
+      const data = await fetchJson(`${import.meta.env.BASE_URL}ufsc-catalog.json`);
+      if (data.version !== 1 || !Array.isArray(data.areas?.[area]) ||
+          typeof data.retrievedAt !== "string" || !Number.isFinite(Date.parse(data.retrievedAt))) throw new Error("Catálogo inválido");
+      catalogDate = new Date(data.retrievedAt).toLocaleDateString("pt-BR", { timeZone: "UTC" });
+      const candidates = data.areas[area].filter((item: unknown): item is Evidence => validEvidence(item) &&
+        (item as Evidence).source === "UFSC" && /^https:\/\/repositorio\.ufsc\.br\/(?:xmlui\/)?handle\/\d+\/\d+$/.test((item as Evidence).link));
+      trace.steps.push({ step: "ufsc.catalog", ok: true, note: `${candidates.length} obras do catálogo de ${catalogDate}` });
+      return candidates;
+    } catch {
+      ufscAvailable = false;
+      trace.steps.push({ step: "ufsc.catalog", ok: false, note: "Catálogo indisponível" });
+      return [];
     }
-  }
-  throw lastErr;
-}
-
-async function fetchJson<T>(url: string, opts: FetchOpts = {}): Promise<T> {
-  const txt = await fetchText(url, opts);
-  return JSON.parse(txt) as T;
-}
-
-function cacheRead<T>(key: string): T | null {
-  try {
-    const raw = localStorage.getItem(key);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    if (!parsed?.exp || Date.now() > parsed.exp) {
-      localStorage.removeItem(key);
-      return null;
+  })()] : await Promise.all(plan.ufscQueries.map(async term => {
+    try {
+      const data = await fetchJson(`${API_BASE}/ufsc?query=${encodeURIComponent(term)}`, 28000);
+      if (!Array.isArray(data.candidates)) throw new Error("Resposta inválida do repositório");
+      trace.steps.push({ step: "ufsc", ok: true, note: `${data.candidates.length} obras recuperadas` });
+      return data.candidates.filter(validEvidence) as Evidence[];
+    } catch {
+      ufscAvailable = false;
+      trace.steps.push({ step: "ufsc", ok: false, note: "Consulta ao repositório indisponível" });
+      return [];
     }
-    return parsed.val as T;
-  } catch {
-    return null;
+  }));
+  let ufsc = rank(dedupeReferences(ufscResults.flat()), area, challenge);
+  const ufscValidation = await validateMeaning(ufsc, query, trace);
+  ufsc = ufscValidation.candidates;
+  // Fill a shortage even when UFSC returns a single good hit.
+  let external: Evidence[] = [];
+  let externalValidation: Awaited<ReturnType<typeof validateMeaning>> | undefined;
+  if (ufsc.length < limit) {
+    const results = await Promise.all(plan.externalQueries.flatMap(term => [
+      collect("OpenAlex", () => searchOpenAlex(term), trace),
+      collect("Crossref", () => searchCrossref(term), trace),
+    ]));
+    external = rank(dedupeReferences(results.flat()), area, challenge);
+    externalValidation = await validateMeaning(external, query, trace);
+    external = externalValidation.candidates;
   }
+  const candidates = (await Promise.all(dedupeReferences([...ufsc, ...external]).slice(0, limit).map(item =>
+    reconcileDoiMetadata(item, trace)))).filter((item): item is Evidence => item !== null);
+  const semantic = candidates.length > 0 && candidates.every(item => item.semanticValidated);
+  const sourceType: SourceType = candidates.length === 0 ? "none" : candidates.every(c => c.source === "UFSC") ? "ufsc" : candidates.some(c => c.source === "UFSC") ? "mixed" : "external";
+  const notices: string[] = [];
+  if (catalogDate) notices.push(`Obras da UFSC consultadas no catálogo atualizado em ${catalogDate}.`);
+  if (!ufscAvailable) notices.push("Não foi possível consultar a UFSC nesta rodada; a busca foi ampliada para fontes acadêmicas abertas.");
+  if (!semantic && candidates.length) notices.push("Estas leituras foram sugeridas pelo conteúdo dos resumos. A relação com a proposta precisa de revisão: abra as obras e confira se ajudam a responder ao desafio.");
+  if (semantic) notices.push("Estas leituras foram sugeridas com ajuda de IA. Abra as obras e confira se ajudam a responder ao desafio.");
+  if (trace.steps.some(step => ["OpenAlex", "Crossref"].includes(step.step) && !step.ok)) notices.push("Parte das fontes externas ficou indisponível; a busca pode estar incompleta.");
+  if (candidates.length < 3) notices.push(`Foram encontradas ${candidates.length} obras relacionadas ao desafio. Outras leituras podem ser necessárias; a quantidade não altera sua nota.`);
+  if ((ufscValidation.available || externalValidation?.available) && !candidates.length) notices.push("Nenhuma obra recuperada passou pela avaliação de pertinência ao desafio.");
+  return { best: candidates[0] || null, candidates, sourceType, trace, validation: semantic ? "semantic" : candidates.length ? "local" : "none", notice: notices.join(" ") };
 }
 
-function cacheWrite<T>(key: string, val: T, ttlMs: number) {
+function rank(items: Evidence[], area: ResearchArea, challenge: string): Evidence[] {
+  return items.filter(validEvidence).flatMap(item => {
+    const doi = normalizeDoi(item.doi);
+    const link = safeArticleLink(item.link) || (doi ? `https://doi.org/${doi}` : "");
+    if (!item.title.trim() || !item.authors.some(a => a.trim()) || !link) return [];
+    const match = topicalRelevance(area, challenge, item.title, item.abstract);
+    if (match.score < 0.55) return [];
+    return [{ ...item, doi: doi || undefined, link, confidence: match.score, topics: match.topics,
+      semanticValidated: false }];
+  }).sort((a, b) => b.confidence - a.confidence).slice(0, 24);
+}
+
+async function validateMeaning(candidates: Evidence[], query: SearchQuery, trace: SearchTrace) {
+  if (!candidates.length) return { available: false, candidates };
+  const local = () => {
+    const screened = screenAbstractsLocally(candidates, query);
+    trace.steps.push({ step: "local.abstracts", ok: true, note: `${screened.length} obras passaram pela triagem dos resumos` });
+    return { available: false, candidates: screened };
+  };
+  if (STATIC_REFERENCES || import.meta.env.VITE_DISABLE_GEMINI === "true") return local();
   try {
-    localStorage.setItem(key, JSON.stringify({ exp: Date.now() + ttlMs, val }));
+    const data = await fetchJson(`${API_BASE}/validate`, 25000, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ area: query.area, challenge: query.challenge || query.title, proposal: query.proposal || "", candidates }),
+    });
+    if (!data.available) return local();
+    if (!Array.isArray(data.matches)) throw new Error("Avaliação inválida");
+    const accepted: Evidence[] = [];
+    for (const match of data.matches) {
+      const candidate = candidates[match.index];
+      if (!Number.isInteger(match.index) || !candidate || typeof match.score !== "number" || !Number.isFinite(match.score) || match.score < 0.85 || match.score > 1 ||
+          typeof match.reason !== "string" || !match.reason.trim() || typeof match.excerpt !== "string" || match.excerpt.trim().length < 40 || match.excerpt.length > 350) continue;
+      const normalized = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
+      if (!candidate.abstract || !normalized(candidate.abstract).includes(normalized(match.excerpt))) continue;
+      accepted.push({ ...candidate, confidence: match.score, semanticValidated: true, validationMethod: "gemini", relevanceReason: match.reason, evidenceExcerpt: match.excerpt });
+    }
+    trace.steps.push({ step: "meaning", ok: true, note: `${accepted.length} obras pertinentes` });
+    return { available: true, candidates: dedupeReferences(accepted).sort((a, b) => b.confidence - a.confidence) };
   } catch {
-    // ignora (quota)
+    trace.steps.push({ step: "meaning", ok: false, note: "Avaliação de conteúdo indisponível" });
+    return local();
   }
 }
 
-function normalizeTitle(title: string): string {
-  return (title ?? "")
-    .toString()
-    .trim()
-    .replace(/\s+/g, " ")
-    .replace(/[“”"]/g, "")
-    .replace(/[’']/g, "")
-    .toLowerCase();
-}
-
-function ensureAbsolute(url: string): string {
-  const u = (url ?? "").trim();
-  if (!u) return "";
-  if (/^https?:\/\//i.test(u)) return u;
-  if (u.startsWith("//")) return `https:${u}`;
-  return u.startsWith("http") ? u : u;
-}
-
-function extractHandle(url: string): string | null {
-  const m = url.match(/\/handle\/([^?#]+)/i);
-  return m?.[1] ? decodeURIComponent(m[1]) : null;
-}
-
-function preferHandleLink(handle: string | null, fallback: string): string {
-  if (handle) return `https://repositorio.ufsc.br/handle/${handle}`;
-  const abs = ensureAbsolute(fallback);
-  // evita link genérico raiz
-  if (abs === "https://repositorio.ufsc.br/" || abs === "https://repositorio.ufsc.br") return "";
-  return abs;
-}
-
-function titleSimilarity(a: string, b: string): number {
-  // Similaridade simples (Jaccard de tokens) — suficiente para ranking inicial.
-  if (
-  a.includes("governança do conhecimento") &&
-  b.includes("governança corporativa") &&
-  !b.includes("governança do conhecimento")
-) {
-  return 0;
-}
-  const A = new Set(a.split(" ").filter(t => t.length >= 3));
-  const B = new Set(b.split(" ").filter(t => t.length >= 3));
-  if (!A.size || !B.size) return 0;
-
-  let inter = 0;
-  for (const t of A) if (B.has(t)) inter++;
-
-  const union = A.size + B.size - inter;
-  return union ? inter / union : 0;
-}
-
-function clamp01(n: number): number {
-  return Math.max(0, Math.min(1, n));
-}
-
-function sleep(ms: number): Promise<void> {
-  return new Promise(r => setTimeout(r, ms));
-}
-
-function hashKey(s: string): string {
-  // hash leve (não cripto)
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
+async function collect(provider: string, operation: () => Promise<Evidence[]>, trace: SearchTrace) {
+  try {
+    const results = await operation();
+    trace.steps.push({ step: provider, ok: true, note: `${results.length} obras recuperadas` });
+    return results;
+  } catch {
+    trace.steps.push({ step: provider, ok: false, note: "Fonte indisponível nesta tentativa" });
+    return [];
   }
-  return (h >>> 0).toString(16);
 }
 
-function mergeTrace(a: SearchTrace, b: SearchTrace): SearchTrace {
-  return { steps: [...(a?.steps ?? []), ...(b?.steps ?? [])] };
+function decodeAbstract(index: Record<string, number[]> | undefined) {
+  if (!index) return "";
+  const words: string[] = [];
+  for (const [word, positions] of Object.entries(index)) if (Array.isArray(positions))
+    for (const pos of positions) if (Number.isInteger(pos) && pos >= 0 && pos < 20000) words[pos] = word;
+  return words.join(" ").replace(/\\n/g, " ").replace(/\s+/g, " ").trim();
+}
+
+async function searchOpenAlex(term: string): Promise<Evidence[]> {
+  const params = new URLSearchParams({ search: term, "per-page": "15", filter: "is_retracted:false" });
+  const data = await fetchJson(`https://api.openalex.org/works?${params}`);
+  return (Array.isArray(data.results) ? data.results : []).flatMap((work: any) => {
+    if (!["article", "dissertation", "book", "book-chapter", "review"].includes(work.type)) return [];
+    const doi = normalizeDoi(work.doi);
+    return [{ title: work.title || work.display_name || "", authors: (work.authorships || []).map((a: any) => a.author?.display_name).filter(Boolean),
+      year: work.publication_year, doi: doi || undefined,
+      link: doi ? `https://doi.org/${doi}` : work.primary_location?.landing_page_url || work.best_oa_location?.landing_page_url || "",
+      abstract: decodeAbstract(work.abstract_inverted_index), venue: work.primary_location?.source?.display_name,
+      source: "OpenAlex" as const, confidence: 0, documentType: documentLabel(work.type) }];
+  });
+}
+
+async function searchCrossref(term: string): Promise<Evidence[]> {
+  const params = new URLSearchParams({ "query.bibliographic": term, rows: "15" });
+  const data = await fetchJson(`https://api.crossref.org/works?${params}`);
+  return (Array.isArray(data.message?.items) ? data.message.items : []).flatMap((work: any) => {
+    if (!["journal-article", "proceedings-article", "dissertation", "book", "book-chapter"].includes(work.type)) return [];
+    if ((work.relation?.["is-retracted-by"] || []).length || (work["update-to"] || []).some((u: any) => u.type === "retraction")) return [];
+    const doi = normalizeDoi(work.DOI);
+    return [{ title: work.title?.[0] || "", authors: (work.author || []).map((a: any) => [a.given, a.family].filter(Boolean).join(" ") || a.name).filter(Boolean),
+      year: work.issued?.["date-parts"]?.[0]?.[0], doi: doi || undefined, link: doi ? `https://doi.org/${doi}` : "",
+      abstract: stripMarkup(work.abstract || ""), venue: work["container-title"]?.[0], source: "Crossref" as const, confidence: 0, documentType: documentLabel(work.type) }];
+  });
+}
+
+function stripMarkup(html: string): string {
+  return new DOMParser().parseFromString(html, "text/html").body.textContent?.replace(/\s+/g, " ").trim() || "";
+}
+
+async function reconcileDoiMetadata(item: Evidence, trace: SearchTrace): Promise<Evidence | null> {
+  if (item.source !== "OpenAlex" || !item.doi) return item;
+  try {
+    const { message: work } = await fetchJson(`https://api.crossref.org/works/${encodeURIComponent(item.doi)}`);
+    if (normalizeDoi(work?.DOI) !== item.doi) return item;
+    if ((work.relation?.["is-retracted-by"] || []).length) return null;
+    const title = work.title?.[0];
+    if (typeof title !== "string") return item;
+    const words = (value: string) => value.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter(word => word.length > 3);
+    const current = words(item.title); const canonical = new Set(words(title));
+    // Do not attach an unrelated abstract to a DOI record with a different title.
+    if (!current.length || current.filter(word => canonical.has(word)).length / current.length < 0.6) return null;
+    const authors = (Array.isArray(work.author) ? work.author : []).map((author: any) =>
+      [author.given, author.family].filter(value => typeof value === "string").join(" ") || author.name).filter((name: unknown) => typeof name === "string" && name.trim());
+    if (!authors.length) return item;
+    trace.steps.push({ step: "doi.metadata", ok: true, note: "Autoria conferida no registro DOI" });
+    return { ...item, title, authors, year: work.issued?.["date-parts"]?.[0]?.[0] || item.year,
+      documentType: documentLabel(work.type), metadataVerified: true };
+  } catch {
+    trace.steps.push({ step: "doi.metadata", ok: false, note: "Não foi possível conferir os metadados no registro DOI" });
+    return item;
+  }
+}
+
+async function fetchJson(url: string, timeoutMs = 12000, options: RequestInit = {}) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { ...options, signal: ctrl.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } finally { clearTimeout(timer); }
+}
+
+function readCache(key: string): SearchResult | null {
+  try {
+    const raw = localStorage.getItem(CACHE_PREFIX + key);
+    const cached = raw ? JSON.parse(raw) : null;
+    return cached?.exp > Date.now() && typeof cached.result?.notice === "string" &&
+      Array.isArray(cached.result?.candidates) && cached.result.candidates.every(validEvidence) ? cached.result : null;
+  } catch { return null; }
+}
+
+function validEvidence(item: any): item is Evidence {
+  return item && typeof item.title === "string" && typeof item.link === "string" &&
+    Array.isArray(item.authors) && item.authors.every((author: unknown) => typeof author === "string") &&
+    (item.abstract === undefined || typeof item.abstract === "string") &&
+    ["venue", "documentType", "relevanceReason", "evidenceExcerpt"].every(field => item[field] === undefined || typeof item[field] === "string") &&
+    (item.year === undefined || Number.isFinite(item.year)) &&
+    ["UFSC", "OpenAlex", "Crossref"].includes(item.source);
+}
+
+function documentLabel(type: string): string {
+  return ({ article: "Artigo", "journal-article": "Artigo", dissertation: "Tese ou dissertação", book: "Livro",
+    "book-chapter": "Capítulo de livro", review: "Revisão", "proceedings-article": "Trabalho em evento" } as Record<string, string>)[type] || "Obra acadêmica";
+}
+
+function emptyResult(notice: string): SearchResult {
+  return { best: null, candidates: [], sourceType: "none", validation: "none", notice, trace: { steps: [] } };
 }
