@@ -52,8 +52,8 @@ export function screenAbstractsLocally(candidates: Evidence[], query: SearchQuer
     const score = Math.min(0.85, 0.55 + coverage * 0.2 + Math.min(answered.length, 2) * 0.025);
     return [{ ...candidate, confidence: score, topics, semanticValidated: false, validationMethod: "local" as const,
       relevanceReason: topics.length
-        ? `A triagem do resumo identificou os assuntos do desafio: ${topics.join("; ")}. A sustentação da proposta precisa de revisão acadêmica.`
-        : "O resumo trata do domínio desta área. A sustentação da proposta precisa de revisão acadêmica.",
+        ? `Assuntos encontrados no resumo: ${topics.join("; ")}.`
+        : "O resumo aborda assuntos desta área.",
       evidenceExcerpt: excerpt }];
   }).sort((a, b) => b.confidence - a.confidence);
 }

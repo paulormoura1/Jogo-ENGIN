@@ -1,5 +1,7 @@
 # Referências científicas — revisão local
 
+**Atualização de 09/10/2026:** foi preparado um modo para jogar no GitHub Pages sem servidor próprio, usando um catálogo datado da UFSC e consultas externas. Veja [PUBLICACAO.md](PUBLICACAO.md). O fluxo de consulta UFSC ao vivo descrito abaixo continua disponível no modo com servidor.
+
 O pedido é apresentar pelo menos três obras pertinentes nas quatro áreas, priorizando o Repositório Institucional da UFSC. A quantidade é uma meta: se não houver três obras que passem pelos critérios, o jogo informa a insuficiência em vez de inserir referências sem relação suficiente.
 
 ## O que foi preservado

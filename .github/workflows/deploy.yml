@@ -42,6 +42,7 @@ jobs:
         run: npm run build
         env:
           VITE_DISABLE_GEMINI: "true"
+          VITE_STATIC_REFERENCES: "true"
 
       - name: Upload artifact
         if: github.event_name == 'push'

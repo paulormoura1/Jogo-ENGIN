@@ -594,7 +594,7 @@ const FALLBACK_CHALLENGES: Record<
 ],
 };
 export const generateChallenge = async (area: ResearchArea) => {
-  if (import.meta.env.VITE_DISABLE_GEMINI === "true" || import.meta.env.VITE_USE_GEMINI_CHALLENGES !== "true") return getLocalChallenge(area);
+  if (import.meta.env.VITE_STATIC_REFERENCES === "true" || import.meta.env.VITE_DISABLE_GEMINI === "true" || import.meta.env.VITE_USE_GEMINI_CHALLENGES !== "true") return getLocalChallenge(area);
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 25000);
   try {

@@ -187,7 +187,7 @@ test('local screening requires substantive matching in the abstract, not just th
   assert.equal(result[0].validationMethod, 'local');
   assert.equal(result[0].semanticValidated, false);
   assert.ok(result[0].abstract.includes(result[0].evidenceExcerpt));
-  assert.match(result[0].relevanceReason, /revisão acadêmica/);
+  assert.match(result[0].relevanceReason, /Assuntos encontrados no resumo/);
 });
 
 test('local screening rejects a shared domain when the actual problem is different', () => {

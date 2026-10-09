@@ -4,9 +4,11 @@ import { load } from 'cheerio';
 import { mkdir, writeFile } from 'node:fs/promises';
 
 const origin = process.env.RESEARCH_TEST_ORIGIN || 'http://127.0.0.1:5173';
+const staticMode = process.env.RESEARCH_TEST_STATIC === 'true';
+const output = staticMode ? 'artifacts/publicacao-live.json' : 'artifacts/review-live.json';
 async function compiled(file) {
   const result = await build({ entryPoints: [file], bundle: true, platform: 'node', format: 'esm', write: false,
-    define: { 'import.meta.env': JSON.stringify({ BASE_URL: '/Jogo-ENGIN/', VITE_DISABLE_GEMINI: 'true' }) } });
+    define: { 'import.meta.env': JSON.stringify({ BASE_URL: '/Jogo-ENGIN/', VITE_DISABLE_GEMINI: 'true', VITE_STATIC_REFERENCES: String(staticMode) }) } });
   return import('data:text/javascript;base64,' + Buffer.from(result.outputFiles[0].text).toString('base64'));
 }
 const { scientificSearch } = await compiled('src/services/scientificSearchService.ts');
@@ -19,6 +21,7 @@ const originalFetch = globalThis.fetch;
 let modelRequests = 0;
 globalThis.fetch = (url, options) => {
   if (/validate|challenge|generativelanguage/.test(String(url))) { modelRequests++; throw Error('Unexpected model request'); }
+  if (staticMode && String(url).includes('/api/')) throw Error('Static build must not require an API server');
   return originalFetch(new URL(url, origin), options);
 };
 const results = [];
@@ -32,6 +35,6 @@ for (const area of researchAreas) {
     works: result.candidates.map(item => ({ title: item.title, authors: item.authors, source: item.source, type: item.documentType, link: item.link })), trace: result.trace }));
 }
 await mkdir('artifacts', { recursive: true });
-await writeFile('artifacts/review-live.json', JSON.stringify({ date: new Date().toISOString(), modelRequests, results }, null, 2));
+await writeFile(output, JSON.stringify({ date: new Date().toISOString(), staticMode, modelRequests, results }, null, 2));
 if (modelRequests) process.exitCode = 1;
-console.log(`Saved artifacts/review-live.json; model requests: ${modelRequests}`);
+console.log(`Saved ${output}; model requests: ${modelRequests}`);

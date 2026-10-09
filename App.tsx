@@ -1506,7 +1506,7 @@ if (localScore >= correctThreshold) {
                           }`}
                         >
                           <h4 className={`font-orbitron text-lg mb-3 ${feedback.verdict === "CORRETA" ? "text-green-400" : "text-red-400"}`}>
-                            {feedback.verdict}
+                            {feedback.verdict.replaceAll("_", " ")}
                           </h4>
 
                           <p className="text-[9px] font-orbitron text-yellow-400 uppercase tracking-widest mb-2">

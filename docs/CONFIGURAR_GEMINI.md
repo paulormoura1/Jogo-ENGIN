@@ -1,5 +1,7 @@
 # Usar o jogo com ou sem Gemini
 
+**Para jogar pelo link publicado, nenhuma configuração é necessária.** O GitHub Pages usa o catálogo de obras da UFSC e fontes externas, sem Gemini. Veja [PUBLICACAO.md](PUBLICACAO.md). As instruções abaixo são para quem mantém a versão com servidor.
+
 A consulta anterior confirmou o secret GitHub VITE_GEMINI_API_KEY, sem revelar seu valor nem verificar sua validade. A revisão removeu o uso dessa variável no navegador e no workflow. Todas as chamadas Gemini agora usam GEMINI_API_KEY somente no servidor. Nenhum secret foi alterado.
 
 ## Sem Gemini
@@ -21,6 +23,7 @@ Obtenha uma chave válida no [Google AI Studio](https://aistudio.google.com/apik
 
     GEMINI_API_KEY=COLE_A_CHAVE_PRIVADA_AQUI
     GEMINI_REFERENCE_MODEL=gemini-3.8-flash
+    VITE_STATIC_REFERENCES=false
     VITE_DISABLE_GEMINI=false
     DISABLE_GEMINI=false
 

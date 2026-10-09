@@ -11,7 +11,9 @@ async function repositoryHtml(url) {
   if (new URL(url).origin !== UFSC) throw new Error('Invalid repository host');
   const response = await fetch(url, { signal: AbortSignal.timeout(12000), redirect: 'error' });
   if (!response.ok) throw new Error(`Repository HTTP ${response.status}`);
-  return response.text();
+  const html = await response.text();
+  if (/Sistema de Prevenção de Ataques|validaç[aã]o ser[aá] solicitada/i.test(html)) throw new Error('Repository access verification required');
+  return html;
 }
 
 export function parseRepositoryResults(html) {

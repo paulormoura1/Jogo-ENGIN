@@ -6,7 +6,7 @@ export type DisplayReference = Evidence & { titulo: string; autores: string; ano
 export function ReferenceList({ sources, notice }: { sources: DisplayReference[]; notice?: string }) {
   return <section className="mt-4 space-y-3" aria-label="Referências científicas">
     <p className="text-[10px] font-orbitron text-yellow-400 uppercase tracking-widest">
-      Referências científicas ({sources.length})
+      Leituras para apoiar sua resposta ({sources.length})
     </p>
     {notice && <p role="status" className="text-xs text-blue-100/80 leading-relaxed">{notice}</p>}
     <ul className="space-y-4 text-xs text-blue-100/80">
@@ -19,7 +19,7 @@ export function ReferenceList({ sources, notice }: { sources: DisplayReference[]
           <span>{source.titulo}{source.ano ? ` (${source.ano})` : ""}</span>
           <p className="text-[10px] text-blue-300 mt-1">{source.source === "UFSC" ? "Repositório UFSC" : `Registro acadêmico: ${source.source}`}
             {source.venue ? ` · ${source.venue}` : ""}</p>
-          <p className="text-[10px] text-blue-200/80">Tipo informado pela fonte: {source.documentType || "não informado"} · {source.validationMethod === "gemini" ? "Triagem por IA" : "Triagem local"}</p>
+          <p className="text-[10px] text-blue-200/80">Tipo informado pela fonte: {source.documentType || "não informado"}</p>
           {source.metadataVerified && <p className="text-[10px] text-blue-200/80">Autoria conferida no registro DOI</p>}
           {source.relevanceReason && <p className="mt-2 text-blue-50">{source.relevanceReason}</p>}
           {source.evidenceExcerpt && <><p className="mt-2 text-[10px] text-blue-200/70">Trecho do resumo original:</p>

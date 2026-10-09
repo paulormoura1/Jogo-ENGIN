@@ -24,13 +24,14 @@ export type SearchResult = {
 };
 
 const API_BASE = (import.meta.env.VITE_RESEARCH_API_URL || `${import.meta.env.BASE_URL}api`).replace(/\/$/, "");
+const STATIC_REFERENCES = import.meta.env.VITE_STATIC_REFERENCES === "true";
 const inFlight = new Map<string, Promise<SearchResult>>();
-const CACHE_PREFIX = "nexus_references_v7:";
+const CACHE_PREFIX = "nexus_references_v8:";
 
 export async function scientificSearch(query: SearchQuery): Promise<SearchResult> {
   const area = query.area;
   if (!area || !Object.values(ResearchArea).includes(area)) return emptyResult("Área de pesquisa não informada.");
-  const key = JSON.stringify([API_BASE, import.meta.env.VITE_DISABLE_GEMINI === "true", area, query.challenge || query.title, query.proposal || "", query.limit || 4]);
+  const key = JSON.stringify([API_BASE, STATIC_REFERENCES, import.meta.env.VITE_DISABLE_GEMINI === "true", area, query.challenge || query.title, query.proposal || "", query.limit || 4]);
   const cached = readCache(key);
   if (cached) return cached;
   const running = inFlight.get(key);
@@ -50,7 +51,23 @@ async function runSearch(query: SearchQuery, area: ResearchArea): Promise<Search
   const plan = researchPlan(area, challenge);
   const limit = Math.max(3, Math.min(6, query.limit || 4));
   let ufscAvailable = true;
-  const ufscResults = await Promise.all(plan.ufscQueries.map(async term => {
+  let catalogDate = "";
+  const ufscResults = STATIC_REFERENCES ? [await (async () => {
+    try {
+      const data = await fetchJson(`${import.meta.env.BASE_URL}ufsc-catalog.json`);
+      if (data.version !== 1 || !Array.isArray(data.areas?.[area]) ||
+          typeof data.retrievedAt !== "string" || !Number.isFinite(Date.parse(data.retrievedAt))) throw new Error("Catálogo inválido");
+      catalogDate = new Date(data.retrievedAt).toLocaleDateString("pt-BR", { timeZone: "UTC" });
+      const candidates = data.areas[area].filter((item: unknown): item is Evidence => validEvidence(item) &&
+        (item as Evidence).source === "UFSC" && /^https:\/\/repositorio\.ufsc\.br\/(?:xmlui\/)?handle\/\d+\/\d+$/.test((item as Evidence).link));
+      trace.steps.push({ step: "ufsc.catalog", ok: true, note: `${candidates.length} obras do catálogo de ${catalogDate}` });
+      return candidates;
+    } catch {
+      ufscAvailable = false;
+      trace.steps.push({ step: "ufsc.catalog", ok: false, note: "Catálogo indisponível" });
+      return [];
+    }
+  })()] : await Promise.all(plan.ufscQueries.map(async term => {
     try {
       const data = await fetchJson(`${API_BASE}/ufsc?query=${encodeURIComponent(term)}`, 28000);
       if (!Array.isArray(data.candidates)) throw new Error("Resposta inválida do repositório");
@@ -82,11 +99,12 @@ async function runSearch(query: SearchQuery, area: ResearchArea): Promise<Search
   const semantic = candidates.length > 0 && candidates.every(item => item.semanticValidated);
   const sourceType: SourceType = candidates.length === 0 ? "none" : candidates.every(c => c.source === "UFSC") ? "ufsc" : candidates.some(c => c.source === "UFSC") ? "mixed" : "external";
   const notices: string[] = [];
+  if (catalogDate) notices.push(`Obras da UFSC consultadas no catálogo atualizado em ${catalogDate}.`);
   if (!ufscAvailable) notices.push("Não foi possível consultar a UFSC nesta rodada; a busca foi ampliada para fontes acadêmicas abertas.");
-  if (!semantic && candidates.length) notices.push("Referências selecionadas por triagem automática dos resumos, sem confirmação de sustentação científica. A relação com a proposta precisa de revisão acadêmica.");
-  if (semantic) notices.push("Pertinência avaliada por IA a partir dos resumos. Confira o contexto e o texto completo antes de usar a obra como sustentação científica.");
+  if (!semantic && candidates.length) notices.push("Estas leituras foram sugeridas pelo conteúdo dos resumos. A relação com a proposta precisa de revisão: abra as obras e confira se ajudam a responder ao desafio.");
+  if (semantic) notices.push("Estas leituras foram sugeridas com ajuda de IA. Abra as obras e confira se ajudam a responder ao desafio.");
   if (trace.steps.some(step => ["OpenAlex", "Crossref"].includes(step.step) && !step.ok)) notices.push("Parte das fontes externas ficou indisponível; a busca pode estar incompleta.");
-  if (candidates.length < 3) notices.push(`Foram encontradas ${candidates.length} obras com os critérios disponíveis. A lista não foi completada com referências sem relação suficiente.`);
+  if (candidates.length < 3) notices.push(`Foram encontradas ${candidates.length} obras relacionadas ao desafio. Outras leituras podem ser necessárias; a quantidade não altera sua nota.`);
   if ((ufscValidation.available || externalValidation?.available) && !candidates.length) notices.push("Nenhuma obra recuperada passou pela avaliação de pertinência ao desafio.");
   return { best: candidates[0] || null, candidates, sourceType, trace, validation: semantic ? "semantic" : candidates.length ? "local" : "none", notice: notices.join(" ") };
 }
@@ -110,7 +128,7 @@ async function validateMeaning(candidates: Evidence[], query: SearchQuery, trace
     trace.steps.push({ step: "local.abstracts", ok: true, note: `${screened.length} obras passaram pela triagem dos resumos` });
     return { available: false, candidates: screened };
   };
-  if (import.meta.env.VITE_DISABLE_GEMINI === "true") return local();
+  if (STATIC_REFERENCES || import.meta.env.VITE_DISABLE_GEMINI === "true") return local();
   try {
     const data = await fetchJson(`${API_BASE}/validate`, 25000, {
       method: "POST", headers: { "Content-Type": "application/json" },

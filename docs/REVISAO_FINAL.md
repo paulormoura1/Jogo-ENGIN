@@ -1,5 +1,7 @@
 # Parecer da revisão final — Jogo ENGIN
 
+**Atualização de 09/10/2026:** o modo com catálogo UFSC permite publicar uma versão jogável para avaliação no GitHub Pages, sem Gemini. Veja [PUBLICACAO.md](PUBLICACAO.md) para o escopo e as limitações. O parecer abaixo é o registro da revisão de 03/10, anterior a essa adaptação.
+
 Data: 3 de outubro de 2026. Branch: fix/referencias-cientificas. Base de comparação: 9685c3d. O parecer descreve a revisão anterior ao envio da branch ao GitHub.
 
 **Pronto para teste local com ressalvas acadêmicas. Ainda não pronto para publicação do fluxo completo.** O envio posterior da branch e a abertura de uma proposta de atualização não publicam o jogo. Nenhuma contratação ou mudança de secret foi feita.
