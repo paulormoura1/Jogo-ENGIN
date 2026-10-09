@@ -6,6 +6,8 @@ export function screenAbstractsLocally(candidates: Evidence[], query: SearchQuer
   if (!query.area) return [];
   const challenge = query.challenge || query.title;
   const plan = researchPlan(query.area, challenge);
+  // An unrecognized problem must not fall back to recommending any work in the area.
+  if (!plan.topics.length) return [];
   const answerTopics = researchPlan(query.area, query.proposal || "").topics;
   // Concrete workplace contexts, not broad stems such as "institution" (which
   // incorrectly admitted "institutionalised governance" of an entire society).
