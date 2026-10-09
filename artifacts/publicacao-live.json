@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-09T19:35:22.583Z",
+  "date": "2026-10-09T19:42:23.016Z",
   "staticMode": true,
   "modelRequests": 0,
   "results": [
@@ -9,7 +9,7 @@
         "title": "Conhecimento sem Governança",
         "description": "A organização possui informações estratégicas distribuídas entre diferentes setores, mas não existem responsabilidades claramente definidas sobre sua gestão e utilização. Decisões importantes são tomadas sem critérios consistentes de acesso, registro e compartilhamento do conhecimento. Como especialista, que estrutura de governança você implantaria, como ela funcionaria e por que seria adequada para essa situação?"
       },
-      "durationMs": 1473,
+      "durationMs": 1613,
       "best": {
         "title": "Proposta de um modelo de governança de dados apoiado na Filosofia Lean para gestão das escalas operacionais da PMMG",
         "authors": [
@@ -100,26 +100,31 @@
           "evidenceExcerpt": "It was also found in this study that physical distance, inability to access the knowledge and questioning the repatriate knowledge deterred knowledge sharing."
         },
         {
-          "title": "Designing [Knowledge] Systems That Work: Examining conceptual coherence, knowledge governance, and organizational learning routines in a knowledge-intensive education intermediary",
+          "title": "Social media algorithmic governance and knowledge processes: building decision-making effectiveness and knowledge sharing",
           "authors": [
-            "Sophia B Roy"
+            "Mengmeng Guo",
+            "Vaishali Agarwal",
+            "Rsha Alghafes",
+            "Giovanni Papa",
+            "Luigi Piccolo"
           ],
           "year": 2026,
-          "link": "https://dash.harvard.edu/handle/1/42738897",
-          "abstract": "Knowledge-intensive intermediary organizations learn rapidly through fast-moving, politically mediated delivery work, yet often experience challenges when attempting to convert that engagement learning into reusable organizational memory. This capstone examines that conversion challenge within the National Center on Education and the Economy (NCEE), focusing on how a lean Policy team can sustain high-quality state-facing advisory work while building coherent, governed knowledge assets that travel across projects, staff, and time and ultimately create durable value for the organization. Drawing on organizational knowledge creation, knowledge management strategy, transfer constraints, and organizational learning scholarship, this capstone introduces the Knowledge Conversion in a Managed System (KCIAMS) framework to specify the coupled infrastructure required for reuse at speed. Core elements include a clear codification–personalization posture, conceptual coherence anchors, a governance spine, and repeatable learning routines that surface and select what matters. Using a practice-grounded strategic project conducted during a ten-month leader-in-residence period, the work analyzes two pilot streams: (1) a working group used to strengthen policy product lines and (2) a live Michigan engagement producing politically sensitive policy topic briefs under tight timelines and mixed staffing. Evidence drawn from interviews, artifact audits, version histories, and reflection from pilot participants indicates that lightweight entry routines like charters and writing kickoffs reduced ambiguity for rotating contributors and shortened early drafting and revision cycles, while explicit naming/versioning conventions and review gates improved traceability and cross-project legibility. At the same time, adoption and durability were uneven under delivery pressure, constrained by tooling and repository limitations, ambiguous stewardship expectations, and the risks associated with documenting sensitive judgment in shared environments. The capstone concludes with design principles for intermediaries seeking to make engagement learning cumulative: 1) specify a deliberate codification–personalization mix, 2) build low-friction governance and bookend routines into ordinary workflow, and 3) invest leadership attention and enable infrastructure to protect conversion labor as core work.",
-          "venue": "Digital Access to Scholarship at Harvard (DASH) (Harvard University)",
-          "source": "OpenAlex",
+          "doi": "10.1108/jkm-12-2025-1752",
+          "link": "https://doi.org/10.1108/jkm-12-2025-1752",
+          "abstract": "Purpose This study aims to investigate how perceived social media algorithmic transparency (SMAT) and fairness (SMAF) influence knowledge processes and organizational outcomes in professional digital environments. Drawing on knowledge management (KM), trust and algorithmic governance perspectives, the study conceptualizes social media algorithms as socio-technical knowledge intermediaries that shape how individuals access, interpret and apply knowledge. Specifically, the study examines the trust-enabled pathways through which algorithmic attributes affect tacit knowledge application (TKA), explicit knowledge application (EKA), decision-making effectiveness (DME) and knowledge-sharing intention (KSI). Design/methodology/approach Data were collected from 297 used participants in the United States through Prolific, focusing on individuals who actively use social media platforms for professional purposes such as networking, learning and information seeking. Structural equation modeling using SmartPLS 4 was used to test the proposed relationships among algorithmic attributes, trust in algorithms (TA), knowledge application and organizational outcomes. Serial mediation analysis was conducted to examine indirect pathways. Findings The findings reveal that both SMAT and SMAF significantly enhance TA, with fairness exerting a stronger effect. Trust subsequently promotes both tacit and EKA. TKA positively influences DME, while EKA strengthens KSI. Furthermore, transparency and fairness indirectly affect these outcomes through sequential pathways involving trust and knowledge application, highlighting trust as the central mechanism linking algorithmic governance to knowledge outcomes. Research limitations/implications The study uses a cross-sectional design and self-reported measures, limiting causal inference. Additionally, the use of a generally used sample may constrain generalizability to specific organizational contexts. Future research may examine additional algorithmic attributes, such as accountability and explainability and validate the model across sectors, cultures and regulatory environments. Practical implications The findings provide actionable insights for platform designers, managers and policymakers seeking to develop trustworthy algorithmic ecosystems. Enhancing transparency and fairness can strengthen user trust, improve professional decision-making and foster knowledge-sharing practices. Organizations can also integrate algorithmically curated insights into formal knowledge workflows to support more effective KM. Social implications As algorithmic systems increasingly mediate professional interactions and information access, transparent and fair algorithms can promote more inclusive knowledge ecosystems, facilitate informed decision-making and encourage collaborative knowledge exchange in digitally mediated environments. Originality/value This study extends KM theory by positioning algorithmically curated social media platforms as active knowledge intermediaries rather than passive information repositories. By integrating KM, trust and algorithmic governance perspectives, it demonstrates how transparency and fairness shape distinct trust-enabled pathways for tacit and EKA, thereby advancing understanding of knowledge processes in algorithmically governed environments.",
+          "venue": "Journal of Knowledge Management",
+          "source": "Crossref",
           "confidence": 0.7000000000000001,
-          "documentType": "Tese ou dissertação",
+          "documentType": "Artigo",
           "topics": [
             "compartilhamento do conhecimento",
-            "memória organizacional",
-            "tomada de decisão"
+            "tomada de decisão",
+            "acesso à informação"
           ],
           "semanticValidated": false,
           "validationMethod": "local",
-          "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; memória organizacional; tomada de decisão.",
-          "evidenceExcerpt": "At the same time, adoption and durability were uneven under delivery pressure, constrained by tooling and repository limitations, ambiguous stewardship expectations, and the risks associated with documenting sensitive judgment in shared environments."
+          "relevanceReason": "Assuntos encontrados no resumo: compartilhamento do conhecimento; tomada de decisão; acesso à informação.",
+          "evidenceExcerpt": "Social implications As algorithmic systems increasingly mediate professional interactions and information access, transparent and fair algorithms can promote more inclusive knowledge ecosystems, facilitate informed decision-making and encourage collaborative knowledge exchange in digitally mediated environments."
         }
       ],
       "sourceType": "mixed",
@@ -148,7 +153,7 @@
           {
             "step": "Crossref",
             "ok": true,
-            "note": "14 obras recuperadas"
+            "note": "13 obras recuperadas"
           },
           {
             "step": "OpenAlex",
@@ -168,7 +173,7 @@
           {
             "step": "local.abstracts",
             "ok": true,
-            "note": "7 obras passaram pela triagem dos resumos"
+            "note": "8 obras passaram pela triagem dos resumos"
           }
         ]
       },
@@ -181,7 +186,7 @@
         "title": "Capital Intelectual em Risco",
         "description": "A organização depende fortemente do conhecimento de profissionais experientes, mas parte desse conhecimento não está registrada nem compartilhada com as equipes. A saída de pessoas-chave começa a comprometer processos e resultados. Como especialista, que solução de gestão do conhecimento você implantaria para preservar e desenvolver esse capital intelectual, como ela funcionaria e por quê?"
       },
-      "durationMs": 1812,
+      "durationMs": 1751,
       "best": {
         "title": "Gestão do conhecimento na Polícia Militar de Santa Catarina: retenção do conhecimento nas transições de comando",
         "authors": [
@@ -316,18 +321,18 @@
           },
           {
             "step": "Crossref",
+            "ok": false,
+            "note": "Fonte indisponível nesta tentativa"
+          },
+          {
+            "step": "Crossref",
             "ok": true,
-            "note": "15 obras recuperadas"
+            "note": "13 obras recuperadas"
           },
           {
             "step": "OpenAlex",
             "ok": true,
             "note": "12 obras recuperadas"
-          },
-          {
-            "step": "Crossref",
-            "ok": true,
-            "note": "15 obras recuperadas"
           },
           {
             "step": "OpenAlex",
@@ -342,7 +347,7 @@
           {
             "step": "local.abstracts",
             "ok": true,
-            "note": "5 obras passaram pela triagem dos resumos"
+            "note": "4 obras passaram pela triagem dos resumos"
           },
           {
             "step": "doi.metadata",
@@ -360,7 +365,7 @@
         "title": "Dados Duplicados entre Setores",
         "description": "Dois setores utilizam sistemas diferentes para registrar informações sobre o mesmo processo. Os dados precisam ser digitados novamente e frequentemente apresentam diferenças entre uma área e outra. Como você estruturaria uma solução para conectar esses ambientes e reduzir as inconsistências?"
       },
-      "durationMs": 1622,
+      "durationMs": 1650,
       "best": {
         "title": "Concepção, implementação e validação de um enfoque para integração e recuperação de conhecimento distribuído em bases de dados heterogêneas",
         "authors": [
@@ -458,17 +463,17 @@
           {
             "step": "OpenAlex",
             "ok": true,
+            "note": "15 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
             "note": "12 obras recuperadas"
           },
           {
             "step": "OpenAlex",
             "ok": true,
             "note": "13 obras recuperadas"
-          },
-          {
-            "step": "OpenAlex",
-            "ok": true,
-            "note": "15 obras recuperadas"
           },
           {
             "step": "local.abstracts",
@@ -491,7 +496,7 @@
         "title": "Educação Corporativa Desconectada",
         "description": "A organização oferece ações de capacitação em diferentes unidades, mas os programas funcionam de forma isolada e o conhecimento produzido não circula entre os participantes. A instituição pretende transformar essas iniciativas em uma estrutura integrada de educação corporativa. Como você estruturaria uma Universidade Corporativa em Rede para conectar pessoas, conhecimentos e unidades organizacionais?"
       },
-      "durationMs": 1329,
+      "durationMs": 1517,
       "best": {
         "title": "Framework Ponte TAP: gestão da curva de aprendizagem para a efetivação da transferência de aprendizagem para a prática do trabalho",
         "authors": [
@@ -645,17 +650,17 @@
           {
             "step": "OpenAlex",
             "ok": true,
-            "note": "15 obras recuperadas"
-          },
-          {
-            "step": "OpenAlex",
-            "ok": true,
-            "note": "15 obras recuperadas"
-          },
-          {
-            "step": "OpenAlex",
-            "ok": true,
             "note": "14 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "15 obras recuperadas"
+          },
+          {
+            "step": "OpenAlex",
+            "ok": true,
+            "note": "15 obras recuperadas"
           },
           {
             "step": "local.abstracts",

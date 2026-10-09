@@ -27,6 +27,7 @@ const AREAS: Record<ResearchArea, { searches: string[]; domains: string[][] }> =
 };
 
 const TOPICS = [
+  { triggers: ["retrabalho", "duplic", "reutiliz", "reaproveit", "resolvid", "redundan"], pt: "reutilização do conhecimento", en: "knowledge reuse", terms: ["reutiliz", "reaproveit", "reuse", "reusing", "reutilization", "retrabalho", "rework", "duplic", "redundan"] },
   { triggers: ["reten", "reter", "perd", "saida", "rotativ", "deixara"], pt: "retenção do conhecimento", en: "knowledge retention", terms: ["retenc", "retention", "perda", "loss", "turnover", "rotativ"] },
   { triggers: ["compartilh", "troca", "circul", "colabor", "silos"], pt: "compartilhamento do conhecimento", en: "knowledge sharing", terms: ["compartilh", "sharing", "colaboracao", "colaborativ", "collaboration", "collaborative", "silo", "transfer"] },
   { triggers: ["aprendiz", "capacit", "competenc", "curso", "educa", "formacao"], pt: "aprendizagem organizacional", en: "organizational learning", terms: ["aprendiz", "learning", "competenc", "training", "capacit", "educa"] },

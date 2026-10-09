@@ -26,7 +26,7 @@ export type SearchResult = {
 const API_BASE = (import.meta.env.VITE_RESEARCH_API_URL || `${import.meta.env.BASE_URL}api`).replace(/\/$/, "");
 const STATIC_REFERENCES = import.meta.env.VITE_STATIC_REFERENCES === "true";
 const inFlight = new Map<string, Promise<SearchResult>>();
-const CACHE_PREFIX = "nexus_references_v8:";
+const CACHE_PREFIX = "nexus_references_v9:";
 
 export async function scientificSearch(query: SearchQuery): Promise<SearchResult> {
   const area = query.area;

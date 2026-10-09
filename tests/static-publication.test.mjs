@@ -13,6 +13,7 @@ async function compiled(file) {
 }
 const { scientificSearch } = await compiled('src/services/scientificSearchService.ts');
 const { generateChallenge } = await compiled('geminiService.ts');
+const { screenAbstractsLocally } = await compiled('src/services/localReferenceValidation.ts');
 const catalog = JSON.parse(await readFile('public/ufsc-catalog.json', 'utf8'));
 const previous = JSON.parse(await readFile('artifacts/review-live.json', 'utf8'));
 let calls, catalogResponse, externalFailure;
@@ -90,4 +91,17 @@ test('unrelated and invalid catalog entries cannot pad the count', async () => {
 test('UFSC access verification is reported as unavailable, not an empty successful search', async () => {
   globalThis.fetch = async () => new Response('<html><body>Sistema de Prevenção de Ataques da RedeUFSC</body></html>');
   await assert.rejects(searchRepository('test-access-verification'), /access verification required/);
+});
+
+test('duplicated solutions require reuse evidence; an unrecognized problem cannot match only the area', () => {
+  const area = 'Gestão do Conhecimento';
+  const challenge = 'Duas equipes trabalham separadamente e desenvolvem soluções semelhantes para problemas que já haviam sido resolvidos internamente. Elas só descobrem a duplicidade quando os projetos estão praticamente concluídos. Como você reduziria esse retrabalho utilizando o conhecimento existente na organização?';
+  const unrelated = { title: 'Knowledge management and knowledge retention', authors: ['Test Author'], source: 'UFSC', link: 'https://repositorio.ufsc.br/handle/1/1', confidence: 0,
+    abstract: 'Knowledge management and knowledge retention support organizations during leadership transitions. This study analyzes turnover among managers and the preservation of critical knowledge when employees leave their departments.' };
+  const relevant = { ...unrelated, title: 'Knowledge management and reuse of existing solutions', link: 'https://repositorio.ufsc.br/handle/1/2',
+    abstract: 'Knowledge management enables teams in organizations to reuse existing solutions before starting new projects. A shared repository of lessons learned supports knowledge reuse and reduces duplicated work across departments.' };
+  const result = screenAbstractsLocally([unrelated, relevant], { area, title: '', challenge });
+  assert.equal(result.length, 1);
+  assert.equal(result[0].title, relevant.title);
+  assert.deepEqual(screenAbstractsLocally([unrelated, relevant], { area, title: '', challenge: 'O que você sugere para este caso específico?' }), []);
 });

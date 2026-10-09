@@ -151,7 +151,7 @@ test('all four areas return multiple works through the same retrieval flow', asy
   ];
   for (const [researchArea, title] of examples) {
     ufsc = [1, 2, 3, 4].map(n => reference(n, { title: `${title} ${n}`, abstract: `${title}. This research studies organizational policies, knowledge mechanisms and learning processes in organizations, examining practices for collaboration and the development of professional competencies.` }));
-    const result = await scientificSearch({ title: researchArea, area: researchArea, challenge: 'Desafio desta área', limit: 4 });
+    const result = await scientificSearch({ title: researchArea, area: researchArea, challenge: 'Como melhorar a aprendizagem entre equipes?', limit: 4 });
     assert.equal(result.candidates.length, 4, researchArea);
     assert.equal(result.sourceType, 'ufsc', researchArea);
   }

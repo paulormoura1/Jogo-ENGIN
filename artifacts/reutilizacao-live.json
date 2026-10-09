@@ -1,0 +1,172 @@
+{
+  "date": "2026-10-09T19:42:46.147Z",
+  "query": {
+    "area": "Gestão do Conhecimento",
+    "title": "Equipes que Resolvem o Mesmo Problema",
+    "challenge": "Duas equipes trabalham separadamente e desenvolvem soluções semelhantes para problemas que já haviam sido resolvidos internamente. Elas só descobrem a duplicidade quando os projetos estão praticamente concluídos. Como você reduziria esse retrabalho utilizando o conhecimento existente na organização?",
+    "proposal": "Mapear o conhecimento existente e registrar as soluções em um repositório acessível. Criar comunidades de prática para compartilhar lições aprendidas, conectar especialistas às equipes e estabelecer uma rotina de consulta antes de iniciar novos projetos. Acompanhar indicadores de reutilização do conhecimento e redução do retrabalho."
+  },
+  "best": {
+    "title": "Gestão do conhecimento na Assembleia Legislativa do Estado de Santa Catarina à luz do Direito Administrativo e das práticas de gestão pública",
+    "authors": [
+      "Gubert, Laura Celeste Jaeger"
+    ],
+    "year": 2026,
+    "abstract": "A presente dissertação investiga a relação entre a Gestão do Conhecimento e a retenção do saber institucional na Diretoria de Recursos Humanos da Assembleia Legislativa do Estado de Santa Catarina, considerando o contexto de elevada rotatividade funcional, característico das instituições legislativas brasileiras. O problema de pesquisa questionade que modo a adoção sistemática de práticas de Gestão do Conhecimento pode contribuir para salvaguardar o conhecimento institucional, assegurando a continuidade administrativa e a eficiência operacional. O objetivo desta pesquisa consiste em propor práticas institucionais de Gestão do Conhecimento que promovam a transferência, a retenção e a sistematização do saber organizacional. A pesquisa, de natureza qualitativa e aplicada, adota abordagem exploratória e descritiva, utilizando procedimentos de pesquisa bibliográfica e documental, com análise de conteúdo como método interpretativo. Os resultados confirmam que a ausência de mecanismos formais de retenção do conhecimento compromete a continuidade dos processos administrativos, gerando retrabalho, perda de saberes tácitos e fragilização da memória organizacional. A pesquisa evidenciou que a padronização de processos constitui instrumento essencial para mitigar os efeitos da rotatividade, fortalecendo a governança institucional e assegurando conformidade com os princípios constitucionais da legalidade, impessoalidade, eficiência e continuidade do serviço público. Do ponto de vista prático, propõe-se que a manualização padronizada seja articulada aos sistemas utilizados pelos servidores para a comunicação oficial e tramitação de todos os processos, com potencial de replicação em outras casas legislativas. Conclui-se que a Gestão do Conhecimento constitui imperativo estratégico, técnico e jurídico para a administração pública legislativa contemporânea, cuja institucionalização fortalece a capacidade institucional, a legitimidade democrática e a responsabilidade perante a sociedade.",
+    "link": "https://repositorio.ufsc.br/handle/123456789/275488",
+    "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/275488",
+    "venue": "Repositório Institucional da UFSC",
+    "source": "UFSC",
+    "documentType": "Dissertação (Mestrado profissional)",
+    "confidence": 0.8,
+    "topics": [
+      "reutilização do conhecimento"
+    ],
+    "semanticValidated": false,
+    "validationMethod": "local",
+    "relevanceReason": "Assuntos encontrados no resumo: reutilização do conhecimento.",
+    "evidenceExcerpt": "Os resultados confirmam que a ausência de mecanismos formais de retenção do conhecimento compromete a continuidade dos processos administrativos, gerando retrabalho, perda de saberes tácitos e fragilização da memória organizacional."
+  },
+  "candidates": [
+    {
+      "title": "Gestão do conhecimento na Assembleia Legislativa do Estado de Santa Catarina à luz do Direito Administrativo e das práticas de gestão pública",
+      "authors": [
+        "Gubert, Laura Celeste Jaeger"
+      ],
+      "year": 2026,
+      "abstract": "A presente dissertação investiga a relação entre a Gestão do Conhecimento e a retenção do saber institucional na Diretoria de Recursos Humanos da Assembleia Legislativa do Estado de Santa Catarina, considerando o contexto de elevada rotatividade funcional, característico das instituições legislativas brasileiras. O problema de pesquisa questionade que modo a adoção sistemática de práticas de Gestão do Conhecimento pode contribuir para salvaguardar o conhecimento institucional, assegurando a continuidade administrativa e a eficiência operacional. O objetivo desta pesquisa consiste em propor práticas institucionais de Gestão do Conhecimento que promovam a transferência, a retenção e a sistematização do saber organizacional. A pesquisa, de natureza qualitativa e aplicada, adota abordagem exploratória e descritiva, utilizando procedimentos de pesquisa bibliográfica e documental, com análise de conteúdo como método interpretativo. Os resultados confirmam que a ausência de mecanismos formais de retenção do conhecimento compromete a continuidade dos processos administrativos, gerando retrabalho, perda de saberes tácitos e fragilização da memória organizacional. A pesquisa evidenciou que a padronização de processos constitui instrumento essencial para mitigar os efeitos da rotatividade, fortalecendo a governança institucional e assegurando conformidade com os princípios constitucionais da legalidade, impessoalidade, eficiência e continuidade do serviço público. Do ponto de vista prático, propõe-se que a manualização padronizada seja articulada aos sistemas utilizados pelos servidores para a comunicação oficial e tramitação de todos os processos, com potencial de replicação em outras casas legislativas. Conclui-se que a Gestão do Conhecimento constitui imperativo estratégico, técnico e jurídico para a administração pública legislativa contemporânea, cuja institucionalização fortalece a capacidade institucional, a legitimidade democrática e a responsabilidade perante a sociedade.",
+      "link": "https://repositorio.ufsc.br/handle/123456789/275488",
+      "ufscHandle": "https://repositorio.ufsc.br/handle/123456789/275488",
+      "venue": "Repositório Institucional da UFSC",
+      "source": "UFSC",
+      "documentType": "Dissertação (Mestrado profissional)",
+      "confidence": 0.8,
+      "topics": [
+        "reutilização do conhecimento"
+      ],
+      "semanticValidated": false,
+      "validationMethod": "local",
+      "relevanceReason": "Assuntos encontrados no resumo: reutilização do conhecimento.",
+      "evidenceExcerpt": "Os resultados confirmam que a ausência de mecanismos formais de retenção do conhecimento compromete a continuidade dos processos administrativos, gerando retrabalho, perda de saberes tácitos e fragilização da memória organizacional."
+    },
+    {
+      "title": "Knowledge management for reuse",
+      "authors": [
+        "Renate Fruchter",
+        "Peter Demian"
+      ],
+      "year": 2002,
+      "link": "http://itc.scix.net/data/works/att/w78-2002-20.content.pdf",
+      "abstract": "Managing and reusing knowledge in architecture, engineering and construction firms can lead to greater competitive advantage, improved designs, and more effective management of constructed facilities. We define design knowledge reuse as the reuse of previously designed buildings, building subsystems, or building components, as well as the knowledge and expertise ingrained in these previous designs. This paper introduces the notion of knowledge in context. We argue that in order for knowledge to be reusable, the user should be able to see the context in which this knowledge was originally created and interact with this rich content. We call a repository of such knowledge in context the corporate memory. We describe empirical observations of designers reusing knowledge from their personal design experiences. Based on these observations, we formalize two key activities in the process of knowledge reuse: finding reusable items and understanding these items in context. We formalize six degrees of exploration that lead to understanding. We describe a prototype knowledge management system, CoMem (Corporate Memory), that supports these activities. CoMem is distinguished from the document-centric state-of-practice solutions by its approach of “overview first, zoom and filter, and then details-on-demand.”",
+      "source": "OpenAlex",
+      "confidence": 0.8,
+      "documentType": "Artigo",
+      "topics": [
+        "reutilização do conhecimento"
+      ],
+      "semanticValidated": false,
+      "validationMethod": "local",
+      "relevanceReason": "Assuntos encontrados no resumo: reutilização do conhecimento.",
+      "evidenceExcerpt": "Managing and reusing knowledge in architecture, engineering and construction firms can lead to greater competitive advantage, improved designs, and more effective management of constructed facilities."
+    },
+    {
+      "title": "Knowledge Reuse and Transfer in a Project Management Environment",
+      "authors": [
+        "Jill Owen",
+        "Frada Burstein",
+        "Steven Mitchell"
+      ],
+      "year": 2004,
+      "doi": "10.1080/15228053.2004.10856052",
+      "link": "https://doi.org/10.1080/15228053.2004.10856052",
+      "abstract": "This paper analyzes how project management companies manage knowledge. The research focuses on the creation, transfer, reuse and management of that knowledge. We propose a model for knowledge reuse in a project management environment where knowledge is absorbed at a tactical level and flows to a strategic level. This model derives from the: the OODA loop - Observe, Orient, Decide, Act, which focuses on strategic requirements and the Plan Do Study Act (PDSA) cycle, which focuses on the operational or tactical level of projects. Both the OODA Loop and the PDSA Cycle are adaptive learning and decision- making cycles where changes or actions are produced via repeated cycling through that loop. We suggest the ’Act’ step of the PDSA cycle is similar to the ’Orient’ step of the OODA loop because changes or learning is occurring. In this instance the PDSA cycle is renamed the PDSO (Plan-Do-Study-Orient) cycle. Research results indicate that knowledge flows between projects at all steps of (the PDSO Cycle) and OODA Loop. Key findings include a preference for informal over formal networks, the lack of a knowledge management system and the link between knowledge processes and the corporate project methodology. However, an effective knowledge management strategy also requires a strategic fit between social networks, technology, processes and corporate culture.",
+      "venue": "Journal of Information Technology Case and Application Research",
+      "source": "OpenAlex",
+      "confidence": 0.8,
+      "documentType": "Artigo",
+      "topics": [
+        "reutilização do conhecimento"
+      ],
+      "semanticValidated": false,
+      "validationMethod": "local",
+      "relevanceReason": "Assuntos encontrados no resumo: reutilização do conhecimento.",
+      "evidenceExcerpt": "The research focuses on the creation, transfer, reuse and management of that knowledge.",
+      "metadataVerified": true
+    },
+    {
+      "title": "Acquisition, reuse and sharing of knowledge in property management firms",
+      "authors": [
+        "Patrick S.W. Fong",
+        "Hang Fung Lee"
+      ],
+      "year": 2009,
+      "doi": "10.1108/02632770910956148",
+      "link": "https://doi.org/10.1108/02632770910956148",
+      "abstract": "Purpose In the knowledge economy, the management of knowledge is important because the value of corporations and individuals is directly related to their knowledge and intellectual capital. This is especially true for real estate management, which is of increasing concern to the public and plays an important role in the property market today. This paper aims to show the nature of property professionals' acquisition, sharing and reuse of knowledge in their work. Design/methodology/approach To better understand the practices of knowledge management (KM) currently employed by property management firms, a study of the general practices of knowledge management in property management firms in Hong Kong was undertaken. This study described the notion of knowledge and knowledge management and investigated the norms of property professionals in acquiring, sharing and reusing knowledge in their daily practices. It also analyzed the relationship between size of firms and methods of knowledge acquisition and sharing. A questionnaire survey was conducted to study the opinions of professional property managers on the acquisition and reuse of knowledge and experience in their daily work. Questionnaires were sent to 103 PM firms with a response rate of 30 percent. Findings The survey results reveal that property managers mostly acquire their knowledge from the internet and newspapers. They also obtain knowledge from their colleagues and thus they are always important target persons with whom to share knowledge. In addition, property managers have close contact with professionals within and beyond their profession, allowing them to tap into and share knowledge across organizational boundaries. Although property managers are willing to share knowledge with others, there is no evidence to show that there are formal knowledge management strategies in PM firms. It seems that there is a need for explicit knowledge management strategies in property management, which could leverage their employees' knowledge assets. Research limitations/implications Past research that studied other types of knowledge workers may not be applicable to the unique nature of professionals working in the property management sector. Originality/value The originality of this paper is that it examines the practices of property professionals in acquiring, sharing and reusing knowledge in their daily practices which have not been studied systematically before. This paper also makes suggestions for improving knowledge‐managing strategies in this profession to prevent knowledge loss.",
+      "venue": "Facilities",
+      "source": "OpenAlex",
+      "confidence": 0.8,
+      "documentType": "Artigo",
+      "topics": [
+        "reutilização do conhecimento"
+      ],
+      "semanticValidated": false,
+      "validationMethod": "local",
+      "relevanceReason": "Assuntos encontrados no resumo: reutilização do conhecimento.",
+      "evidenceExcerpt": "This paper aims to show the nature of property professionals' acquisition, sharing and reuse of knowledge in their work.",
+      "metadataVerified": true
+    }
+  ],
+  "sourceType": "mixed",
+  "trace": {
+    "steps": [
+      {
+        "step": "ufsc.catalog",
+        "ok": true,
+        "note": "2 obras do catálogo de 03/10/2026"
+      },
+      {
+        "step": "local.abstracts",
+        "ok": true,
+        "note": "1 obras passaram pela triagem dos resumos"
+      },
+      {
+        "step": "Crossref",
+        "ok": true,
+        "note": "13 obras recuperadas"
+      },
+      {
+        "step": "Crossref",
+        "ok": true,
+        "note": "13 obras recuperadas"
+      },
+      {
+        "step": "OpenAlex",
+        "ok": true,
+        "note": "12 obras recuperadas"
+      },
+      {
+        "step": "OpenAlex",
+        "ok": true,
+        "note": "15 obras recuperadas"
+      },
+      {
+        "step": "local.abstracts",
+        "ok": true,
+        "note": "6 obras passaram pela triagem dos resumos"
+      },
+      {
+        "step": "doi.metadata",
+        "ok": true,
+        "note": "Autoria conferida no registro DOI"
+      },
+      {
+        "step": "doi.metadata",
+        "ok": true,
+        "note": "Autoria conferida no registro DOI"
+      }
+    ]
+  },
+  "validation": "local",
+  "notice": "Obras da UFSC consultadas no catálogo atualizado em 03/10/2026. Estas leituras foram sugeridas pelo conteúdo dos resumos. A relação com a proposta precisa de revisão: abra as obras e confira se ajudam a responder ao desafio."
+}
